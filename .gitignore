@@ -1,0 +1,82 @@
+
+# OSX
+.DS_Store
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Visual Studio IDE
+.vs/
+.vscode/
+
+# output directory of our create-nuget-packages script
+nuget-dist
+
+# User-specific files
+*.suo
+*.user
+*.sln.docstates
+*.userprefs
+
+# ignore Xamarin.Android Resource.Designer.cs files
+**/*.Droid/**/[Rr]esource.[Dd]esigner.cs
+**/*.Android/**/[Rr]esource.[Dd]esigner.cs
+**/Android/**/[Rr]esource.[Dd]esigner.cs
+
+# Xamarin Components
+Components/
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+x64/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+/*Configuration.d.ts
+
+# MSTest test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+*_i.c
+*_p.c
+*_i.h
+*.ilk
+*.meta
+*.obj
+*.pch
+*.pdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*.log
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc
+
+# NuGet Packages Directory
+packages/
+*.nuget.targets
+*.lock.json
+*.nuget.props
+*.nuget.cache
+
+# Gradle
+.gradle
+android-packages/
+gradle/
+gradlew
+gradlew.bat

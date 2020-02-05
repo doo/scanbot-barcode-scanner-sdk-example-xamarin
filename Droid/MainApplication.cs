@@ -1,0 +1,25 @@
+﻿using System;
+using Android.App;
+using Android.Runtime;
+using IO.Scanbot.Sdk.Barcode_scanner;
+
+namespace BarcodeScannerExample.Droid
+{
+    [Application(LargeHeap = true)]
+    public class MainApplication : Application
+    {
+        public MainApplication(IntPtr javaReference, JniHandleOwnership transfer)
+            : base(javaReference, transfer)
+        { }
+
+        public override void OnCreate()
+        {
+            base.OnCreate();
+
+            var initializer = new ScanbotBarcodeScannerSDKInitializer();
+            initializer.WithLogging(true);
+            initializer.License(this, SDKLicense.Key);
+            initializer.Initialize(this);
+        }
+    }
+}
