@@ -4,7 +4,7 @@ using Android.OS;
 
 namespace BarcodeScannerExample.Droid
 {
-    [Activity(Label = "io.scanbot.barcode.example.xamarin", MainLauncher = true, Icon = "@mipmap/icon")]
+    [Activity(MainLauncher = true, Icon = "@mipmap/icon")]
     public class MainActivity : Activity
     {
         int count = 1;
