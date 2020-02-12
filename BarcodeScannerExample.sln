@@ -42,4 +42,8 @@ Global
 		{0D97B7C4-07FB-422E-B70E-6AA33C5190C9}.Debug|iPhone.ActiveCfg = Debug|iPhone
 		{0D97B7C4-07FB-422E-B70E-6AA33C5190C9}.Debug|iPhone.Build.0 = Debug|iPhone
 	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+	EndGlobalSection
 EndGlobal
