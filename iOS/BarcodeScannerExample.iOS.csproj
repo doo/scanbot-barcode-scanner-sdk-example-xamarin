@@ -94,6 +94,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="Controllers\" />
+    <Folder Include="Services\" />
+    <Folder Include="Views\" />
+    <Folder Include="Views\Subviews\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -111,6 +115,21 @@
     <Compile Include="ViewController.designer.cs">
       <DependentUpon>ViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\MainViewController.cs" />
+    <Compile Include="Services\BarcodeResultReceiver.cs" />
+    <Compile Include="Views\MainView.cs" />
+    <Compile Include="Services\BarcodeTypes.cs" />
+    <Compile Include="Controllers\BarcodeDetailsController.cs" />
+    <Compile Include="Views\BarcodeDetailsView.cs" />
+    <Compile Include="Services\BarcodeFormatter.cs" />
+    <Compile Include="Controllers\BarcodeListController.cs" />
+    <Compile Include="Views\BarcodeListView.cs" />
+    <Compile Include="Views\Subviews\BarcodeTypebutton.cs" />
+    <Compile Include="Services\ImagePicker.cs" />
+    <Compile Include="Views\Subviews\ScanResultCell.cs" />
+    <Compile Include="Controllers\ScanResultListController.cs" />
+    <Compile Include="Views\ScanResultListView.cs" />
+    <Compile Include="Controllers\ClassicScannerController.cs" />
   </ItemGroup>
   <Import Project="..\BarcodeScannerExample\BarcodeScannerExample.projitems" Label="Shared" Condition="Exists('..\BarcodeScannerExample\BarcodeScannerExample.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
