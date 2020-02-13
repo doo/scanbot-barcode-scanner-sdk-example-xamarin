@@ -1,10 +1,12 @@
 ﻿using System;
 using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Android.Provider;
 using IO.Scanbot.Sdk.Barcode.Entity;
 using IO.Scanbot.Sdk.Barcode_scanner;
 using IO.Scanbot.Sdk.UI.Barcode_scanner.View.Barcode;
@@ -126,8 +128,33 @@ namespace BarcodeScannerExample.Droid
             }
             else if (requestCode == IMPORT_IMAGE_REQUEST_CODE)
             {
+                var bitmap = ProcessGalleryResult(data);
+                var result = SDK.BarcodeDetector().DetectFromBitmap(bitmap, 0);
 
+                BarcodeResultBundle.Instance = new BarcodeResultBundle
+                {
+                    ScanningResult = result
+                };
+
+                StartActivity(new Intent(this, typeof(BarcodeResultActivity)));
             }
+        }
+
+        private Bitmap ProcessGalleryResult(Intent data)
+        {
+            var imageUri = data.Data;
+            Bitmap bitmap = null;
+            if (imageUri != null)
+            {
+                try
+                {
+                    bitmap = MediaStore.Images.Media.GetBitmap(ContentResolver, imageUri);
+                }
+                catch (Exception)
+                {
+                }
+            }
+            return bitmap;
         }
 
         protected override void OnResume()
