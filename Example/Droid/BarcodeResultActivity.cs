@@ -1,4 +1,5 @@
 ﻿
+using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
@@ -7,6 +8,7 @@ using IO.Scanbot.Sdk.Barcode.Entity;
 
 namespace BarcodeScannerExample.Droid
 {
+    [Activity(Theme = "@style/AppTheme")]
     public class BarcodeResultActivity : AppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)

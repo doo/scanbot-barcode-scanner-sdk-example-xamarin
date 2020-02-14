@@ -14,7 +14,7 @@ using IO.Scanbot.Sdk.Barcode.Entity;
 
 namespace BarcodeScannerExample.Droid
 {
-    [Activity]
+    [Activity(Theme = "@style/AppTheme")]
     public class DetailedItemDataActivity : AppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)

@@ -18,9 +18,8 @@ using Net.Doo.Snap.Camera;
 
 namespace BarcodeScannerExample.Droid
 {
-    [Activity]
+    [Activity(Theme = "@style/AppTheme")]
     public class QRScanCameraViewActivity : AppCompatActivity, ICameraOpenCallback, IPictureCallback
-    //IResultHandler
     {
         ScanbotCameraView cameraView;
         ImageView resultView;

@@ -7,7 +7,7 @@ using Android.Views;
 
 namespace BarcodeScannerExample.Droid
 {
-    [Activity]
+    [Activity(Theme = "@style/AppTheme")]
     public class BarcodeTypesActivity : AppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
