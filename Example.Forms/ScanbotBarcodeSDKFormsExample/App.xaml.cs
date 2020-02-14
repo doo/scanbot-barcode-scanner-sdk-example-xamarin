@@ -28,7 +28,7 @@ namespace ScanbotBarcodeSDKFormsExample
             });
 
             // TODO: Register your license
-            SBSDK.LicenseManager.Register(Key);
+            //SBSDK.LicenseManager.Register(Key);
         }
 
         private void OnLicenseError(object sender, LicenseEventArgs e)
