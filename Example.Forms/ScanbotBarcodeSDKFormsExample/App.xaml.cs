@@ -6,7 +6,7 @@ namespace ScanbotBarcodeSDKFormsExample
 {
     public partial class App : Application
     {
-        public const string Key = "<your-scanbot-license-key>";
+        public const string Key = null;
 
         public App()
         {
@@ -27,7 +27,6 @@ namespace ScanbotBarcodeSDKFormsExample
                 HorizontalTextAlignment = TextAlignment.Center
             });
 
-            // TODO: Register your license
             SBSDK.LicenseManager.Register(Key);
         }
 
