@@ -42,4 +42,8 @@ Global
 		{C91C7421-ED61-40FF-BDC3-3ADAF3DA5ACE}.Release|iPhone.ActiveCfg = Release|iPhone
 		{C91C7421-ED61-40FF-BDC3-3ADAF3DA5ACE}.Release|iPhone.Build.0 = Release|iPhone
 	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+	EndGlobalSection
 EndGlobal

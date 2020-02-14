@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Foundation;
+using ScanbotBarcodeSDK.Forms.iOS;
 using UIKit;
 
 namespace ScanbotBarcodeSDKFormsExample.iOS
@@ -22,6 +23,8 @@ namespace ScanbotBarcodeSDKFormsExample.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            DependencyManager.RegisterNativeDependencies();
+
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
 

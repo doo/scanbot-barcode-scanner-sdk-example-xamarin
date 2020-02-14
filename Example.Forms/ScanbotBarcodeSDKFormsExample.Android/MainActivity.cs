@@ -6,6 +6,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using ScanbotBarcodeSDK.Forms.Droid;
 
 namespace ScanbotBarcodeSDKFormsExample.Droid
 {
@@ -18,6 +19,8 @@ namespace ScanbotBarcodeSDKFormsExample.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(savedInstanceState);
+
+            DependencyManager.RegisterNativeDependencies();
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
