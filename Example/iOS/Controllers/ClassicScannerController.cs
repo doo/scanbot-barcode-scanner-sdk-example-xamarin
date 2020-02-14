@@ -20,25 +20,23 @@ namespace BarcodeScannerExample.iOS
 
             receiver = new ClassicScannerReceiver();
             scannerController.Delegate = receiver;
+            receiver.ResultReceived += OnScanResultReceived;
 
             scannerController.BarcodeAccumulatedFramesCount = 15;
-        }
-
-        public override void ViewWillAppear(bool animated)
-        {
-            base.ViewWillAppear(animated);
-            receiver.ResultReceived += OnScanResultReceived;
-        }
-
-        public override void ViewWillDisappear(bool animated)
-        {
-            base.ViewWillDisappear(animated);
-            receiver.ResultReceived -= OnScanResultReceived;
         }
 
         private void OnScanResultReceived(object sender, ScannerEventArgs e)
         {
             Console.WriteLine("Results received");
+            receiver.ResultReceived -= OnScanResultReceived;
+
+            SBSDKBarcodeScannerResult[] codes = null;
+            if (e.Codes != null)
+            {
+                codes = e.Codes.ToArray();
+            }
+            var controller = new ScanResultListController(e.BarcodeImage, codes);
+            NavigationController.PushViewController(controller, true);
         }
     }
 }

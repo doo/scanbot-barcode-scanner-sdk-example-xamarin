@@ -50,6 +50,11 @@ namespace BarcodeScannerExample.iOS
         {
             ResultReceived?.Invoke(this, new ScannerEventArgs(null, barcodeImage, null));
         }
+
+        public override bool BarcodeScannerControllerShouldDetectBarcodes(SBSDKBarcodeScannerViewController controller)
+        {
+            return true;
+        }
     }
 
     public class BarcodeResultReceiver : SBSDKUIBarcodeScannerViewControllerDelegate
