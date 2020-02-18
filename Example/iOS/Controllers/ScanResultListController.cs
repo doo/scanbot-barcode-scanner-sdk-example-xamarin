@@ -27,7 +27,11 @@ namespace BarcodeScannerExample.iOS
             View = ContentView;
 
             ContentView.Source.Items = Items;
-            ContentView.TableView.ReloadData();
+
+            if (Items.Count > 0)
+            {
+                ContentView.TableView.ReloadData();
+            }
         }
 
         public override void ViewWillAppear(bool animated)

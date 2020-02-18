@@ -26,6 +26,8 @@ namespace BarcodeScannerExample.Droid
 		
 		public static void UpdateIdValues()
 		{
+			global::Scanbot.ImagePicker.Droid.Resource.String.app_name = global::BarcodeScannerExample.Droid.Resource.String.app_name;
+			global::Scanbot.ImagePicker.Droid.Resource.String.hello = global::BarcodeScannerExample.Droid.Resource.String.hello;
 			global::ScanbotBarcodeSDK.Xamarin.Droid.Resource.Animation.abc_fade_in = global::BarcodeScannerExample.Droid.Resource.Animation.abc_fade_in;
 			global::ScanbotBarcodeSDK.Xamarin.Droid.Resource.Animation.abc_fade_out = global::BarcodeScannerExample.Droid.Resource.Animation.abc_fade_out;
 			global::ScanbotBarcodeSDK.Xamarin.Droid.Resource.Animation.abc_grow_fade_in_from_bottom = global::BarcodeScannerExample.Droid.Resource.Animation.abc_grow_fade_in_from_bottom;

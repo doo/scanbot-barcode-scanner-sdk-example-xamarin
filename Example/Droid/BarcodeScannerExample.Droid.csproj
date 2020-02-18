@@ -209,6 +209,9 @@
     <Reference Include="Xamarin.Android.Support.Constraint.Layout">
       <HintPath>..\packages\Xamarin.Android.Support.Constraint.Layout.2.0.0-beta2\lib\monoandroid90\Xamarin.Android.Support.Constraint.Layout.dll</HintPath>
     </Reference>
+    <Reference Include="Scanbot.ImagePicker.Droid">
+      <HintPath>..\packages\Scanbot.ImagePicker.0.0.1-preview3\lib\MonoAndroid81\Scanbot.ImagePicker.Droid.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />

@@ -127,6 +127,9 @@
     <PackageReference Include="ScanbotBarcodeSDK.Xamarin.Forms">
       <Version>1.0.0-preview3</Version>
     </PackageReference>
+    <PackageReference Include="Scanbot.ImagePicker.Forms">
+      <Version>0.0.1-preview3</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\ScanbotBarcodeSDKFormsExample\ScanbotBarcodeSDKFormsExample.projitems" Label="Shared" />

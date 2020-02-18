@@ -63,6 +63,9 @@
     <PackageReference Include="Xamarin.Android.Support.Constraint.Layout">
       <Version>2.0.0-beta2</Version>
     </PackageReference>
+    <PackageReference Include="Scanbot.ImagePicker.Forms">
+      <Version>0.0.1-preview3</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />

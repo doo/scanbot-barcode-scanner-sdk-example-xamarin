@@ -44,20 +44,6 @@ namespace BarcodeScannerExample.iOS
             ContentView.CodeTypesButton.TouchUpInside -= OnCodeTypeButtonClick;
         }
 
-        private void ImageImported(object sender, UIImagePickerMediaPickedEventArgs e)
-        {
-            ImagePicker.Instance.Controller.FinishedPickingMedia -= ImageImported;
-            ImagePicker.Instance.Dismiss();
-
-            var image = e.OriginalImage;
-            var scanner = new SBSDKBarcodeScanner(BarcodeTypes.Instance.AcceptedTypes.ToArray());
-
-            SBSDKBarcodeScannerResult[] result = scanner.DetectBarCodesOnImage(image);
-
-            var controller = new ScanResultListController(image, result);
-            NavigationController.PushViewController(controller, true);
-        }
-
         private void OnScanResultReceived(object sender, ScannerEventArgs e)
         {
             if (e.IsEmpty)
@@ -95,10 +81,16 @@ namespace BarcodeScannerExample.iOS
             OpenRTUUIBarcodeScanner(true);
         }
 
-        private void OnLibraryButtonClick(object sender, EventArgs e)
+        private async void OnLibraryButtonClick(object sender, EventArgs e)
         {
-            ImagePicker.Instance.Controller.FinishedPickingMedia += ImageImported;
-            ImagePicker.Instance.Present(this);
+            UIImage image = await Scanbot.ImagePicker.iOS.ImagePicker.Instance.Pick();
+
+            var scanner = new SBSDKBarcodeScanner(BarcodeTypes.Instance.AcceptedTypes.ToArray());
+
+            SBSDKBarcodeScannerResult[] result = scanner.DetectBarCodesOnImage(image);
+
+            var controller = new ScanResultListController(image, result);
+            NavigationController.PushViewController(controller, true);
         }
 
         private void OnCodeTypeButtonClick(object sender, EventArgs e)

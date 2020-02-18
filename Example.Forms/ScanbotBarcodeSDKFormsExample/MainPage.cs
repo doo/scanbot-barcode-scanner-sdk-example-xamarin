@@ -104,10 +104,10 @@ namespace ScanbotBarcodeSDKFormsExample
         {
             return async (sender, e) =>
             {
-                var result = await SBSDK.ImagePicker.PickImageAsync();
-                if (result != null)
+                ImageSource source = await Scanbot.ImagePicker.Forms.ImagePicker.Instance.Pick();
+                if (source != null)
                 {
-                    ShowImage(result);
+                    ShowImage(source);
                 }
             };
         }

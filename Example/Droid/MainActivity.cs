@@ -60,16 +60,18 @@ namespace BarcodeScannerExample.Droid
             StartBarcodeScannerActivity(BarcodeImageGenerationType.VideoFrame);
         }
 
-        private void OnRTUUIImportClick(object sender, EventArgs e)
+        private async void OnRTUUIImportClick(object sender, EventArgs e)
         {
-            var intent = new Intent();
-            intent.SetType("image/*");
-            intent.SetAction(Intent.ActionGetContent);
-            intent.PutExtra(Intent.ExtraLocalOnly, false);
-            intent.PutExtra(Intent.ExtraAllowMultiple, false);
+            Bitmap bitmap = await Scanbot.ImagePicker.Droid.ImagePicker.Instance.Pick();
 
-            var chooser = Intent.CreateChooser(intent, "Select image");
-            StartActivityForResult(chooser, IMPORT_IMAGE_REQUEST_CODE);
+            var result = SDK.BarcodeDetector().DetectFromBitmap(bitmap, 0);
+
+            BarcodeResultBundle.Instance = new BarcodeResultBundle
+            {
+                ScanningResult = result
+            };
+
+            StartActivity(new Intent(this, typeof(BarcodeResultActivity)));
         }
 
         private void OnSettingsClick(object sender, EventArgs e)
@@ -122,18 +124,6 @@ namespace BarcodeScannerExample.Droid
                     ScanningResult = barcode,
                     ImagePath = imagePath,
                     PreviewPath = previewPath
-                };
-
-                StartActivity(new Intent(this, typeof(BarcodeResultActivity)));
-            }
-            else if (requestCode == IMPORT_IMAGE_REQUEST_CODE)
-            {
-                var bitmap = ProcessGalleryResult(data);
-                var result = SDK.BarcodeDetector().DetectFromBitmap(bitmap, 0);
-
-                BarcodeResultBundle.Instance = new BarcodeResultBundle
-                {
-                    ScanningResult = result
                 };
 
                 StartActivity(new Intent(this, typeof(BarcodeResultActivity)));

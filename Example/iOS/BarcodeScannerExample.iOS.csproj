@@ -87,6 +87,9 @@
     <Reference Include="ScanbotBarcodeSDK.Xamarin.iOS">
       <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.1.0.0-preview2\lib\Xamarin.iOS10\ScanbotBarcodeSDK.Xamarin.iOS.dll</HintPath>
     </Reference>
+    <Reference Include="Scanbot.ImagePicker.iOS">
+      <HintPath>..\packages\Scanbot.ImagePicker.0.0.1-preview3\lib\Xamarin.iOS10\Scanbot.ImagePicker.iOS.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
