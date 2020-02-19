@@ -10,7 +10,7 @@ namespace ScanbotBarcodeSDKFormsExample
         public BarcodeSelectorPage()
         {
             var list = new ListView();
-            list.ItemTemplate = new DataTemplate(typeof(BarcodeCell));
+            list.ItemTemplate = new DataTemplate(typeof(BarcodeFormatCell));
             list.ItemsSource = BarcodeTypes.Instance.List;
             list.RowHeight = 50;
 
@@ -18,7 +18,7 @@ namespace ScanbotBarcodeSDKFormsExample
         }
     }
 
-    public class BarcodeCell : ViewCell
+    public class BarcodeFormatCell : ViewCell
     {
         public KeyValuePair<BarcodeFormat, bool> Source { get; private set; }
 
@@ -26,7 +26,7 @@ namespace ScanbotBarcodeSDKFormsExample
 
         public Switch Switch { get; set; }
 
-        public BarcodeCell()
+        public BarcodeFormatCell()
         {
             Label = new Label()
             {

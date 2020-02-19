@@ -107,16 +107,17 @@ namespace ScanbotBarcodeSDKFormsExample
                 ImageSource source = await Scanbot.ImagePicker.Forms.ImagePicker.Instance.Pick();
                 if (source != null)
                 {
-                    ShowImage(source);
+                    //ShowImage(source);
 
-                    var codes = await SBSDK.Operations.DetectBarcodesFrom(source);
-                    if (codes.Count == 0)
-                    {
-                        return;
-                    }
-                    var code = codes[0];
-                    
-                    await DisplayAlert("Barcode", $"Format: {code.Format}, value:\n\n{code.Text}", "Close");
+                    //var codes = await SBSDK.Operations.DetectBarcodesFrom(source);
+                    await Navigation.PushAsync(new BarcodeResultsPage(source));
+                    //if (codes.Count == 0)
+                    //{
+                    //    return;
+                    //}
+                    //var code = codes[0];
+
+                    //await DisplayAlert("Barcode", $"Format: {code.Format}, value:\n\n{code.Text}", "Close");
                 }
             };
         }
