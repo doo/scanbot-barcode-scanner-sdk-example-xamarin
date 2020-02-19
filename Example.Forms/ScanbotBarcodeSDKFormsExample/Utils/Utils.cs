@@ -1,4 +1,6 @@
-﻿using System;
+﻿using System.IO;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
 using ScanbotBarcodeSDK.Forms;
 using Xamarin.Forms;
 
@@ -19,6 +21,17 @@ namespace ScanbotBarcodeSDKFormsExample
         static async void Alert(ContentPage context, string title, string message)
         {
             await context.DisplayAlert(title, message, "Close");
+        }
+
+        public static ImageSource Copy(ImageSource original)
+        {
+            var streamImageSource = (StreamImageSource)original;
+            var cancellationToken = System.Threading.CancellationToken.None;
+            Task<Stream> task = streamImageSource.Stream(cancellationToken);
+            Stream stream = task.Result;
+            //streamImageSource
+            return ImageSource.FromStream(() => stream);
+
         }
     }
 }

@@ -41,7 +41,7 @@ namespace ScanbotBarcodeSDKFormsExample
             SnappedImage = new Image
             {
                 HorizontalOptions = LayoutOptions.FillAndExpand,
-                Source = source,
+                //Source = source,
                 BackgroundColor = Color.LightGray,
                 Aspect = Aspect.AspectFit
             };
@@ -57,15 +57,19 @@ namespace ScanbotBarcodeSDKFormsExample
             Container.Children.Add(SnappedImage);
             Container.Children.Add(Loader);
 
+            SnappedImage.Source = Utils.Copy(source);
+
             if (barcodes == null)
             {
-                DetectBarcodes(source, delegate
+                //var copy = Utils.Copy(source);
+                DetectBarcodes(Utils.Copy(source), delegate
                 {
                     InitializeList();
                     Container.Children.Remove(Loader);
                     Container.Children.Add(List);
-                });
-            }
+
+            });
+        }
             else
             {
                 Barcodes = barcodes;
@@ -76,18 +80,10 @@ namespace ScanbotBarcodeSDKFormsExample
 
         }
 
-        void DetectBarcodes(ImageSource source, Action callback = null)
+        async void DetectBarcodes(ImageSource source, Action callback = null)
         {
-            // Start background thread for the heavy detection logic
-            Task.Run(async delegate
-            {
-                Barcodes = await SBSDK.Operations.DetectBarcodesFrom(source);
-                // Return to main thread to update the UI
-                Device.BeginInvokeOnMainThread(delegate
-                {
-                    callback();
-                });
-            });
+            Barcodes = await SBSDK.Operations.DetectBarcodesFrom(source);
+            callback();
         }
 
         void SetTitle()
