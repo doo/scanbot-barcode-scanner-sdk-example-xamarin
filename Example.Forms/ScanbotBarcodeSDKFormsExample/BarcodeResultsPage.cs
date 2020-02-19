@@ -57,7 +57,7 @@ namespace ScanbotBarcodeSDKFormsExample
             Container.Children.Add(SnappedImage);
             Container.Children.Add(Loader);
 
-            SnappedImage.Source = Utils.Copy(source);
+            SnappedImage.Source = source;
 
             if (barcodes == null)
             {
@@ -67,9 +67,8 @@ namespace ScanbotBarcodeSDKFormsExample
                     InitializeList();
                     Container.Children.Remove(Loader);
                     Container.Children.Add(List);
-
-            });
-        }
+                });
+            }
             else
             {
                 Barcodes = barcodes;

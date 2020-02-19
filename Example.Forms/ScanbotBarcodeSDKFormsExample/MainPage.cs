@@ -115,6 +115,7 @@ namespace ScanbotBarcodeSDKFormsExample
                         return;
                     }
 
+                    var barcodes = await SBSDK.Operations.DetectBarcodesFrom(source);
                     await Navigation.PushAsync(new BarcodeResultsPage(source, barcodes));
                 }
             };

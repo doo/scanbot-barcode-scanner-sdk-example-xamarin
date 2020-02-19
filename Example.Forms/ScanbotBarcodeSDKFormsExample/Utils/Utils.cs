@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using ScanbotBarcodeSDK.Forms;
 using Xamarin.Forms;
 
@@ -29,7 +28,6 @@ namespace ScanbotBarcodeSDKFormsExample
             var cancellationToken = System.Threading.CancellationToken.None;
             Task<Stream> task = streamImageSource.Stream(cancellationToken);
             Stream stream = task.Result;
-            //streamImageSource
             return ImageSource.FromStream(() => stream);
 
         }
