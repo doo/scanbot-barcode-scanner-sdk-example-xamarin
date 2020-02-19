@@ -71,12 +71,13 @@ namespace ScanbotBarcodeSDKFormsExample
                 var result = await SBSDK.Scanner.Open(config);
                 if (result.Status == OperationResult.Ok)
                 {
-                    if (result.Barcodes.Count == 0)
+                    var isValid = Utils.CheckLicense(this);
+                    if (!isValid)
                     {
                         return;
                     }
-                    var code = result.Barcodes[0];
-                    await DisplayAlert("Barcode", $"Format: {code.Format}, value:\n\n{code.Text}", "Close");
+
+                    await Navigation.PushAsync(new BarcodeResultsPage(result.Barcodes));
                 }
             };
         }
@@ -89,13 +90,14 @@ namespace ScanbotBarcodeSDKFormsExample
                 var result = await SBSDK.Scanner.Open(config);
                 if (result.Status == OperationResult.Ok)
                 {
-                    if (result.Barcodes.Count == 0)
+                    var isValid = Utils.CheckLicense(this);
+                    if (!isValid)
                     {
                         return;
                     }
-                    var code = result.Barcodes[0];
-                    ShowImage(code.Image);
-                    await DisplayAlert("Barcode", $"Format: {code.Format}, value:\n\n{code.Text}", "Close");
+
+                    var source = ImageSource.FromFile(result.ImagePath);
+                    await Navigation.PushAsync(new BarcodeResultsPage(source, result.Barcodes));
                 }
             };
         }
@@ -107,17 +109,13 @@ namespace ScanbotBarcodeSDKFormsExample
                 ImageSource source = await Scanbot.ImagePicker.Forms.ImagePicker.Instance.Pick();
                 if (source != null)
                 {
-                    //ShowImage(source);
+                    var isValid = Utils.CheckLicense(this);
+                    if (!isValid)
+                    {
+                        return;
+                    }
 
-                    //var codes = await SBSDK.Operations.DetectBarcodesFrom(source);
                     await Navigation.PushAsync(new BarcodeResultsPage(source));
-                    //if (codes.Count == 0)
-                    //{
-                    //    return;
-                    //}
-                    //var code = codes[0];
-
-                    //await DisplayAlert("Barcode", $"Format: {code.Format}, value:\n\n{code.Text}", "Close");
                 }
             };
         }

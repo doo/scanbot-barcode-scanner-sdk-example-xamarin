@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading.Tasks;
 using ScanbotBarcodeSDK.Forms;
 using Xamarin.Forms;
 
@@ -26,7 +29,7 @@ namespace ScanbotBarcodeSDKFormsExample
             Content = List;
         }
 
-        public BarcodeResultsPage(ImageSource source)
+        public BarcodeResultsPage(ImageSource source, List<Barcode> barcodes = null)
         {
             SetTitle();
 
@@ -37,34 +40,54 @@ namespace ScanbotBarcodeSDKFormsExample
 
             SnappedImage = new Image
             {
-                VerticalOptions = LayoutOptions.StartAndExpand,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
-                Source = source
+                Source = source,
+                BackgroundColor = Color.LightGray,
+                Aspect = Aspect.AspectFit
             };
             
             Loader = new ActivityIndicator
             {
-                VerticalOptions = LayoutOptions.StartAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 IsEnabled = true,
                 IsRunning = true,
             };
-            
+
             Container.Children.Add(SnappedImage);
             Container.Children.Add(Loader);
 
-            DetectBarcodes(source, delegate
+            if (barcodes == null)
             {
+                DetectBarcodes(source, delegate
+                {
+                    InitializeList();
+                    Container.Children.Remove(Loader);
+                    Container.Children.Add(List);
+                });
+            }
+            else
+            {
+                Barcodes = barcodes;
                 InitializeList();
                 Container.Children.Remove(Loader);
                 Container.Children.Add(List);
-            });
+            }
+
         }
 
-        async void DetectBarcodes(ImageSource source, Action callback = null)
+        void DetectBarcodes(ImageSource source, Action callback = null)
         {
-            Barcodes = await SBSDK.Operations.DetectBarcodesFrom(source);
-            callback();
+            // Start background thread for the heavy detection logic
+            Task.Run(async delegate
+            {
+                Barcodes = await SBSDK.Operations.DetectBarcodesFrom(source);
+                // Return to main thread to update the UI
+                Device.BeginInvokeOnMainThread(delegate
+                {
+                    callback();
+                });
+            });
         }
 
         void SetTitle()

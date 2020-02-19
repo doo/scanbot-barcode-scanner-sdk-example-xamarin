@@ -3,10 +3,7 @@
 using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.OS;
-using ScanbotBarcodeSDK.Forms.Droid;
 
 namespace ScanbotBarcodeSDKFormsExample.Droid
 {
@@ -21,6 +18,7 @@ namespace ScanbotBarcodeSDKFormsExample.Droid
 
             base.OnCreate(savedInstanceState);
 
+            ScanbotBarcodeSDK.Forms.Droid.DependencyManager.RegisterNativeDependencies();
             Scanbot.ImagePicker.Forms.Droid.DependencyManager.Register();
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);

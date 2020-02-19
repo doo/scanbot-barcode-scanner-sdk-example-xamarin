@@ -27,7 +27,7 @@ namespace ScanbotBarcodeSDKFormsExample
                 HorizontalTextAlignment = TextAlignment.Center
             });
 
-            SBSDK.Initialize(new InitializationOptions
+            SBSDK.Initialize(new ScanbotBarcodeSDK.Forms.InitializationOptions
             {
                 LicenseKey = Key,
                 LoggingEnabled = true,
