@@ -27,22 +27,16 @@ namespace ScanbotBarcodeSDKFormsExample
                 HorizontalTextAlignment = TextAlignment.Center
             });
 
-            SBSDK.LicenseManager.Register(Key);
-        }
-
-        private void OnLicenseError(object sender, LicenseEventArgs e)
-        {
-            Console.WriteLine($"License error: {e.Status}, {e.Feature}");
-        }
-
-        protected override void OnStart()
-        {
-            SBSDK.LicenseManager.OnLicenseError += OnLicenseError;
-        }
-
-        protected override void OnSleep()
-        {
-            SBSDK.LicenseManager.OnLicenseError -= OnLicenseError;
+            SBSDK.Initialize(new InitializationOptions
+            {
+                LicenseKey = Key,
+                LoggingEnabled = true,
+                ErrorHandler = (status, feature) =>
+                {
+                    var message = $"Error! Status: {status}; Your license is missing the feature: {feature}";
+                    Console.WriteLine(message);
+                }
+            });
         }
 
     }

@@ -108,6 +108,15 @@ namespace ScanbotBarcodeSDKFormsExample
                 if (source != null)
                 {
                     ShowImage(source);
+
+                    var codes = await SBSDK.Operations.DetectBarcodesFrom(source);
+                    if (codes.Count == 0)
+                    {
+                        return;
+                    }
+                    var code = codes[0];
+                    
+                    await DisplayAlert("Barcode", $"Format: {code.Format}, value:\n\n{code.Text}", "Close");
                 }
             };
         }
