@@ -40,7 +40,7 @@ namespace BarcodeScannerExample.Droid
             FindViewById<TextView>(Resource.Id.qr_demo).Click += OnQRClick;
             FindViewById<TextView>(Resource.Id.rtu_ui).Click += OnRTUUIClick;
             FindViewById<TextView>(Resource.Id.rtu_ui_image).Click += OnRTUUIImageClick;
-            FindViewById<TextView>(Resource.Id.rtu_ui_import).Click += OnRTUUIImportClick;
+            FindViewById<TextView>(Resource.Id.rtu_ui_import).Click += OnImportClick;
             FindViewById<TextView>(Resource.Id.settings).Click += OnSettingsClick;
         }
 
@@ -60,7 +60,7 @@ namespace BarcodeScannerExample.Droid
             StartBarcodeScannerActivity(BarcodeImageGenerationType.VideoFrame);
         }
 
-        private async void OnRTUUIImportClick(object sender, EventArgs e)
+        private async void OnImportClick(object sender, EventArgs e)
         {
             Bitmap bitmap = await Scanbot.ImagePicker.Droid.ImagePicker.Instance.Pick();
 
@@ -68,7 +68,8 @@ namespace BarcodeScannerExample.Droid
 
             BarcodeResultBundle.Instance = new BarcodeResultBundle
             {
-                ScanningResult = result
+                ScanningResult = result,
+                ResultBitmap = bitmap
             };
 
             StartActivity(new Intent(this, typeof(BarcodeResultActivity)));
@@ -128,23 +129,6 @@ namespace BarcodeScannerExample.Droid
 
                 StartActivity(new Intent(this, typeof(BarcodeResultActivity)));
             }
-        }
-
-        private Bitmap ProcessGalleryResult(Intent data)
-        {
-            var imageUri = data.Data;
-            Bitmap bitmap = null;
-            if (imageUri != null)
-            {
-                try
-                {
-                    bitmap = MediaStore.Images.Media.GetBitmap(ContentResolver, imageUri);
-                }
-                catch (Exception)
-                {
-                }
-            }
-            return bitmap;
         }
 
         protected override void OnResume()

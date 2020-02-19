@@ -1,4 +1,5 @@
 ﻿using System;
+using Android.Graphics;
 using IO.Scanbot.Sdk.Barcode.Entity;
 
 namespace BarcodeScannerExample.Droid
@@ -15,6 +16,8 @@ namespace BarcodeScannerExample.Droid
         public string ImagePath { get; set; }
 
         public string PreviewPath { get; set; }
+
+        public Bitmap ResultBitmap { get; set; }
 
         public BarcodeResultBundle() { }
 

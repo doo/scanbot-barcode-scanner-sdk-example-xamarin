@@ -10,7 +10,6 @@
     <ImageView
         android:id="@+id/snapImage"
         android:layout_width="0dp"
-        android:background="@color/colorAccent"
         android:layout_height="wrap_content"
         android:maxWidth="200dp"
         android:maxHeight="200dp"

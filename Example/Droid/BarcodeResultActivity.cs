@@ -1,6 +1,7 @@
 ﻿
 using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
@@ -16,7 +17,7 @@ namespace BarcodeScannerExample.Droid
             base.OnCreate(savedInstanceState);
 
             SetContentView(Resource.Layout.barcode_result);
-            
+
             var toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
 
@@ -33,21 +34,36 @@ namespace BarcodeScannerExample.Droid
 
             if (imagePath != null)
             {
-                ShowSnapImage(imagePath);
+                ShowSnapImageFromPath(imagePath);
+            }
+            else if (BarcodeResultBundle.Instance.ResultBitmap != null)
+            {
+                ShowSnapImageFromBitmap();
             }
 
             ShowBarcodeResult(BarcodeResultBundle.Instance.ScanningResult);
         }
 
-        void ShowSnapImage(string path)
+        void ShowSnapImageFromPath(string path)
+        {
+            AddImageView().SetImageURI(Android.Net.Uri.Parse(path));
+        }
+
+        void ShowSnapImageFromBitmap()
+        {
+            var original = BarcodeResultBundle.Instance.ResultBitmap;
+            Bitmap scaled = Bitmap.CreateScaledBitmap(original, 200, 200, true);
+            AddImageView().SetImageBitmap(scaled);
+        }
+
+        ImageView AddImageView()
         {
             var items = FindViewById<LinearLayout>(Resource.Id.recognisedItems);
 
             var view = LayoutInflater.Inflate(Resource.Layout.snap_image_item, items, false);
             items.AddView(view);
 
-            var imageView = view.FindViewById<ImageView>(Resource.Id.snapImage);
-            imageView.SetImageURI(Android.Net.Uri.Parse(path));
+            return view.FindViewById<ImageView>(Resource.Id.snapImage);
         }
 
         void ShowBarcodeResult(BarcodeScanningResult result)
