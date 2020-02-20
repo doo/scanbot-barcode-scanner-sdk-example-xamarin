@@ -13,7 +13,7 @@ namespace ScanbotBarcodeSDKFormsExample.iOS
     {
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            DependencyManager.RegisterNativeDependencies();
+            DependencyManager.Register();
             Scanbot.ImagePicker.Forms.iOS.DependencyManager.Register();
 
             global::Xamarin.Forms.Forms.Init();

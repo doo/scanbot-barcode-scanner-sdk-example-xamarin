@@ -89,7 +89,7 @@ namespace ScanbotBarcodeSDKFormsExample
             return async (sender, e) =>
             {
                 var config = GetScannerConfiguration(true);
-                var result = await SBSDK.Scanner.Open(config);
+                BarcodeResultBundle result = await SBSDK.Scanner.Open(config);
                 if (result.Status == OperationResult.Ok)
                 {
                     var isValid = Utils.CheckLicense(this);
@@ -98,8 +98,7 @@ namespace ScanbotBarcodeSDKFormsExample
                         return;
                     }
 
-                    var source = ImageSource.FromFile(result.ImagePath);
-                    await Navigation.PushAsync(new BarcodeResultsPage(source, result.Barcodes));
+                    await Navigation.PushAsync(new BarcodeResultsPage(result.Image, result.Barcodes));
                 }
             };
         }
