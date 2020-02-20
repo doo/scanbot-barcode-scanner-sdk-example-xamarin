@@ -41,11 +41,14 @@ namespace ScanbotBarcodeSDKFormsExample
             SnappedImage = new Image
             {
                 HorizontalOptions = LayoutOptions.FillAndExpand,
-                //Source = source,
                 BackgroundColor = Color.LightGray,
                 Aspect = Aspect.AspectFit
             };
-            
+            SnappedImage.SizeChanged += delegate
+            {
+                // Don't allow images larger than a third of the screen
+                SnappedImage.HeightRequest = Content.Height / 3;
+            };
             Loader = new ActivityIndicator
             {
                 VerticalOptions = LayoutOptions.FillAndExpand,
