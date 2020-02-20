@@ -225,6 +225,7 @@
     <Compile Include="BarcodeTypesActivity.cs" />
     <Compile Include="BarcodeTypesAdapter.cs" />
     <Compile Include="Model\BarcodeTypes.cs" />
+    <Compile Include="Utils\Alert.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -307,6 +308,7 @@
     <Folder Include="Resources\layout\" />
     <Folder Include="Resources\values\" />
     <Folder Include="Model\" />
+    <Folder Include="Utils\" />
   </ItemGroup>
   <Import Project="..\BarcodeScannerExample\BarcodeScannerExample.projitems" Label="Shared" Condition="Exists('..\BarcodeScannerExample\BarcodeScannerExample.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

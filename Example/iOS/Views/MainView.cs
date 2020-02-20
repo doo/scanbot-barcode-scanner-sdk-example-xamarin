@@ -17,6 +17,10 @@ namespace BarcodeScannerExample.iOS
 
         public UIButton CodeTypesButton { get; private set; }
 
+        public UIButton StorageClearButton { get; private set; }
+
+        public UIButton LicenseInfoButton { get; private set; }
+
         readonly List<UIButton> buttons = new List<UIButton>();
 
         public MainView()
@@ -32,6 +36,10 @@ namespace BarcodeScannerExample.iOS
             LibraryButton = CreateButton("PICK IMAGE FROM LIBRARY");
 
             CodeTypesButton = CreateButton("SET ACCEPTED BARCODE TYPES");
+
+            StorageClearButton = CreateButton("CLEAR IMAGE STORAGE");
+
+            LicenseInfoButton = CreateButton("VIEW LICENSE INFO");
         }
 
         public override void LayoutSubviews()

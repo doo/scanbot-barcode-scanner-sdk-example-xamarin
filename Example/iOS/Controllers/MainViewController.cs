@@ -31,6 +31,8 @@ namespace BarcodeScannerExample.iOS
             ContentView.RTUUIImageButton.TouchUpInside += OnRTUUIImageButtonClick;
             ContentView.LibraryButton.TouchUpInside += OnLibraryButtonClick;
             ContentView.CodeTypesButton.TouchUpInside += OnCodeTypeButtonClick;
+            ContentView.StorageClearButton.TouchUpInside += OnClearStorageButtonClick;
+            ContentView.LicenseInfoButton.TouchUpInside += OnLicenseInfoButtonClick;
         }
 
         public override void ViewWillDisappear(bool animated)
@@ -42,6 +44,8 @@ namespace BarcodeScannerExample.iOS
             ContentView.RTUUIImageButton.TouchUpInside -= OnRTUUIImageButtonClick;
             ContentView.LibraryButton.TouchUpInside -= OnLibraryButtonClick;
             ContentView.CodeTypesButton.TouchUpInside -= OnCodeTypeButtonClick;
+            ContentView.StorageClearButton.TouchUpInside -= OnClearStorageButtonClick;
+            ContentView.LicenseInfoButton.TouchUpInside -= OnLicenseInfoButtonClick;
         }
 
         private void OnScanResultReceived(object sender, ScannerEventArgs e)
@@ -98,6 +102,29 @@ namespace BarcodeScannerExample.iOS
             var controller = new BarcodeListController();
             NavigationController.PushViewController(controller, true);
         }
+
+
+        private void OnClearStorageButtonClick(object sender, EventArgs e)
+        {
+            SBSDKUIBarcodeImageStorage.CleanUpStorage();
+            Alert.Show(this, "Success", "Image storage cleared");
+        }
+
+        private void OnLicenseInfoButtonClick(object sender, EventArgs e)
+        {
+            var status = ScanbotSDK.LicenseStatus;
+            var date = ScanbotSDK.LicenseExpirationDate;
+
+            var message = $"License status is {status}";
+
+            if (date != null)
+            {
+                message += $" until {date.ToDateTime()}";
+            }
+
+            Alert.Show(this, "Status", message);
+        }
+
 
         void OpenRTUUIBarcodeScanner(bool withImage)
         {

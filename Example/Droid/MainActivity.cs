@@ -42,6 +42,8 @@ namespace BarcodeScannerExample.Droid
             FindViewById<TextView>(Resource.Id.rtu_ui_image).Click += OnRTUUIImageClick;
             FindViewById<TextView>(Resource.Id.rtu_ui_import).Click += OnImportClick;
             FindViewById<TextView>(Resource.Id.settings).Click += OnSettingsClick;
+            FindViewById<TextView>(Resource.Id.clear_storage).Click += OnClearStorageClick;
+            FindViewById<TextView>(Resource.Id.license_info).Click += OnLicenseInfoClick;
         }
 
         private void OnQRClick(object sender, EventArgs e)
@@ -79,6 +81,26 @@ namespace BarcodeScannerExample.Droid
         {
             var intent = new Intent(this, typeof(BarcodeTypesActivity));
             StartActivity(intent);
+        }
+
+        private void OnClearStorageClick(object sender, EventArgs e)
+        {
+            SDK.BarcodeFileStorage().CleanupBarcodeImagesDirectory();
+            Alert.Toast(this, "Cleared image storage");
+        }
+
+        private void OnLicenseInfoClick(object sender, EventArgs e)
+        {
+            var status = SDK.LicenseInfo.Status;
+            var date = SDK.LicenseInfo.ExpirationDate;
+
+            var message = $"License is {status}";
+            if (date != null)
+            {
+                message += $" until {date.ToString()}";
+            }
+
+            Alert.Toast(this, message);
         }
 
         void StartBarcodeScannerActivity(BarcodeImageGenerationType type)

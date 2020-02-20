@@ -101,6 +101,7 @@
     <Folder Include="Services\" />
     <Folder Include="Views\" />
     <Folder Include="Views\Subviews\" />
+    <Folder Include="Utils\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -133,6 +134,8 @@
     <Compile Include="Controllers\ScanResultListController.cs" />
     <Compile Include="Views\ScanResultListView.cs" />
     <Compile Include="Controllers\ClassicScannerController.cs" />
+    <Compile Include="Utils\Extensions.cs" />
+    <Compile Include="Utils\Alert.cs" />
   </ItemGroup>
   <Import Project="..\BarcodeScannerExample\BarcodeScannerExample.projitems" Label="Shared" Condition="Exists('..\BarcodeScannerExample\BarcodeScannerExample.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

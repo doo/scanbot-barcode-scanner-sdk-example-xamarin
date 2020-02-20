@@ -135,6 +135,36 @@
                 android:layout_height="1dp"
                 android:background="#50000000" />
 
+            <TextView
+                android:id="@+id/clear_storage"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="16dp"
+                style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
+                android:text="Clear image storage"
+                android:textColor="@color/textColorPrimary" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#50000000" />
+
+            <TextView
+                android:id="@+id/license_info"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="16dp"
+                style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
+                android:text="View license info"
+                android:textColor="@color/textColorPrimary" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#50000000" />
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
