@@ -24,7 +24,6 @@ namespace BarcodeScannerExample.Droid
         ScanbotCameraView cameraView;
         ImageView resultView;
 
-        bool flashEnabled;
         BarcodeDetectorFrameHandler handler;
 
         const int REQUEST_PERMISSION_CODE = 200;
@@ -88,7 +87,7 @@ namespace BarcodeScannerExample.Droid
         {
             cameraView.PostDelayed(delegate
             {
-                cameraView.UseFlash(flashEnabled);
+                cameraView.UseFlash(true);
                 cameraView.ContinuousFocus();
             }, 300);
         }

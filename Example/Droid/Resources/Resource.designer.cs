@@ -6526,103 +6526,103 @@ namespace BarcodeScannerExample.Droid
 			public const int abc_tooltip = 2131427355;
 			
 			// aapt resource value: 0x7F0B001C
-			public const int activity_barcode_camera = 2131427356;
+			public const int activity_main = 2131427356;
 			
 			// aapt resource value: 0x7F0B001D
-			public const int activity_main = 2131427357;
+			public const int barcode_item = 2131427357;
 			
 			// aapt resource value: 0x7F0B001E
-			public const int barcode_camera_view = 2131427358;
+			public const int barcode_result = 2131427358;
 			
 			// aapt resource value: 0x7F0B001F
-			public const int barcode_item = 2131427359;
+			public const int barcode_type = 2131427359;
 			
 			// aapt resource value: 0x7F0B0020
-			public const int barcode_result = 2131427360;
+			public const int barcode_types = 2131427360;
 			
 			// aapt resource value: 0x7F0B0021
-			public const int barcode_type = 2131427361;
+			public const int camera_permission_placeholder = 2131427361;
 			
 			// aapt resource value: 0x7F0B0022
-			public const int barcode_types = 2131427362;
+			public const int design_bottom_navigation_item = 2131427362;
 			
 			// aapt resource value: 0x7F0B0023
-			public const int camera_permission_placeholder = 2131427363;
+			public const int design_bottom_sheet_dialog = 2131427363;
 			
 			// aapt resource value: 0x7F0B0024
-			public const int design_bottom_navigation_item = 2131427364;
+			public const int design_layout_snackbar = 2131427364;
 			
 			// aapt resource value: 0x7F0B0025
-			public const int design_bottom_sheet_dialog = 2131427365;
+			public const int design_layout_snackbar_include = 2131427365;
 			
 			// aapt resource value: 0x7F0B0026
-			public const int design_layout_snackbar = 2131427366;
+			public const int design_layout_tab_icon = 2131427366;
 			
 			// aapt resource value: 0x7F0B0027
-			public const int design_layout_snackbar_include = 2131427367;
+			public const int design_layout_tab_text = 2131427367;
 			
 			// aapt resource value: 0x7F0B0028
-			public const int design_layout_tab_icon = 2131427368;
+			public const int design_menu_item_action_area = 2131427368;
 			
 			// aapt resource value: 0x7F0B0029
-			public const int design_layout_tab_text = 2131427369;
+			public const int design_navigation_item = 2131427369;
 			
 			// aapt resource value: 0x7F0B002A
-			public const int design_menu_item_action_area = 2131427370;
+			public const int design_navigation_item_header = 2131427370;
 			
 			// aapt resource value: 0x7F0B002B
-			public const int design_navigation_item = 2131427371;
+			public const int design_navigation_item_separator = 2131427371;
 			
 			// aapt resource value: 0x7F0B002C
-			public const int design_navigation_item_header = 2131427372;
+			public const int design_navigation_item_subheader = 2131427372;
 			
 			// aapt resource value: 0x7F0B002D
-			public const int design_navigation_item_separator = 2131427373;
+			public const int design_navigation_menu = 2131427373;
 			
 			// aapt resource value: 0x7F0B002E
-			public const int design_navigation_item_subheader = 2131427374;
+			public const int design_navigation_menu_item = 2131427374;
 			
 			// aapt resource value: 0x7F0B002F
-			public const int design_navigation_menu = 2131427375;
+			public const int design_text_input_password_icon = 2131427375;
 			
 			// aapt resource value: 0x7F0B0030
-			public const int design_navigation_menu_item = 2131427376;
+			public const int detailed_item_data = 2131427376;
 			
 			// aapt resource value: 0x7F0B0031
-			public const int design_text_input_password_icon = 2131427377;
+			public const int mtrl_layout_snackbar = 2131427377;
 			
 			// aapt resource value: 0x7F0B0032
-			public const int detailed_item_data = 2131427378;
+			public const int mtrl_layout_snackbar_include = 2131427378;
 			
 			// aapt resource value: 0x7F0B0033
-			public const int fragment_barcode_camera = 2131427379;
+			public const int notification_action = 2131427379;
 			
 			// aapt resource value: 0x7F0B0034
-			public const int mtrl_layout_snackbar = 2131427380;
+			public const int notification_action_tombstone = 2131427380;
 			
 			// aapt resource value: 0x7F0B0035
-			public const int mtrl_layout_snackbar_include = 2131427381;
+			public const int notification_template_custom_big = 2131427381;
 			
 			// aapt resource value: 0x7F0B0036
-			public const int notification_action = 2131427382;
+			public const int notification_template_icon_group = 2131427382;
 			
 			// aapt resource value: 0x7F0B0037
-			public const int notification_action_tombstone = 2131427383;
+			public const int notification_template_part_chronometer = 2131427383;
 			
 			// aapt resource value: 0x7F0B0038
-			public const int notification_template_custom_big = 2131427384;
+			public const int notification_template_part_time = 2131427384;
 			
 			// aapt resource value: 0x7F0B0039
-			public const int notification_template_icon_group = 2131427385;
+			public const int qr_camera_view = 2131427385;
 			
 			// aapt resource value: 0x7F0B003A
-			public const int notification_template_part_chronometer = 2131427386;
+			public const int scanbot_sdk_activity_barcode_camera = 2131427386;
 			
 			// aapt resource value: 0x7F0B003B
-			public const int notification_template_part_time = 2131427387;
+			public const int scanbot_sdk_barcode_camera_view = 2131427387;
 			
 			// aapt resource value: 0x7F0B003C
-			public const int qr_camera_view = 2131427388;
+			public const int scanbot_sdk_fragment_barcode_camera = 2131427388;
 			
 			// aapt resource value: 0x7F0B003D
 			public const int select_dialog_item_material = 2131427389;
