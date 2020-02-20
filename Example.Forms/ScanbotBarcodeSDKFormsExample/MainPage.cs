@@ -30,7 +30,9 @@ namespace ScanbotBarcodeSDKFormsExample
                 CreateCell("READY-TO-USE UI", RTUUIClicked()),
                 CreateCell("RTU UI WITH BARCODE IMAGE", RTUUIWithImageClicked()),
                 CreateCell("PICK IMAGE FROM LIBRARY", ImportButtonClicked()),
-                CreateCell("SET ACCEPTED BARCODE TYPES", BarcodeButtonClicked())
+                CreateCell("SET ACCEPTED BARCODE TYPES", BarcodeButtonClicked()),
+                CreateCell("CLEAR IMAGE STORAGE", StorageCleanupClicked()),
+                CreateCell("VIEW LICENSE INFO", ViewLicenseInfoClicked())
             });
 
             Content = Container;
@@ -128,6 +130,41 @@ namespace ScanbotBarcodeSDKFormsExample
                 Navigation.PushAsync(new BarcodeSelectorPage());
             };
         }
+
+
+        EventHandler StorageCleanupClicked()
+        {
+            return (sender, e) =>
+            {
+                var result = SBSDK.Operations.ClearStorageDirectory();
+
+                if (result.Status == OperationResult.Ok)
+                {
+                    Utils.Alert(this, "Success!", "Cleared image storage");
+                }
+                else
+                {
+                    Utils.Alert(this, "Oops!", result.Error);
+                }
+            };
+        }
+
+        EventHandler ViewLicenseInfoClicked()
+        {
+            return (sender, e) =>
+            {
+                var info = SBSDK.LicenseInfo;
+                var message = $"License status {info.Status}";
+
+                if (info.IsValid)
+                {
+                    message += $" until {info.ExpirationDate.ToString()}";
+                }
+
+                Utils.Alert(this, "Info", message);
+            };
+        }
+
 
         BarcodeScannerConfiguration GetScannerConfiguration(bool withImage)
         {

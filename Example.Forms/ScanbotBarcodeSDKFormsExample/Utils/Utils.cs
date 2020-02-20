@@ -17,7 +17,7 @@ namespace ScanbotBarcodeSDKFormsExample
             return SBSDK.LicenseInfo.IsValid;
         }
 
-        static async void Alert(ContentPage context, string title, string message)
+        public static async void Alert(ContentPage context, string title, string message)
         {
             await context.DisplayAlert(title, message, "Close");
         }
