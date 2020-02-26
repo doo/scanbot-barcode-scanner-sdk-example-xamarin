@@ -39,14 +39,6 @@ namespace ScanbotBarcodeSDKFormsExample
             Content.BackgroundColor = Color.White;
         }
 
-        void ShowImage(ImageSource source)
-        {
-            BarcodeImage.Source = source;
-            BarcodeImage.WidthRequest = Container.Width;
-            BarcodeImage.HeightRequest = Container.Width / 2;
-            BarcodeImage.Aspect = Aspect.AspectFit;
-        }
-
         ViewCell CreateCell(string title, EventHandler action)
         {
             var cell = new ViewCell
@@ -69,16 +61,14 @@ namespace ScanbotBarcodeSDKFormsExample
         {
             return async (sender, e) =>
             {
+                if (!Utils.CheckLicense(this))
+                {
+                    return;
+                }
                 var config = GetScannerConfiguration(false);
                 var result = await SBSDK.Scanner.Open(config);
                 if (result.Status == OperationResult.Ok)
                 {
-                    var isValid = Utils.CheckLicense(this);
-                    if (!isValid)
-                    {
-                        return;
-                    }
-
                     await Navigation.PushAsync(new BarcodeResultsPage(result.Barcodes));
                 }
             };
@@ -88,15 +78,15 @@ namespace ScanbotBarcodeSDKFormsExample
         {
             return async (sender, e) =>
             {
+                if (!Utils.CheckLicense(this))
+                {
+                    return;
+                }
                 var config = GetScannerConfiguration(true);
                 BarcodeResultBundle result = await SBSDK.Scanner.Open(config);
                 if (result.Status == OperationResult.Ok)
                 {
-                    var isValid = Utils.CheckLicense(this);
-                    if (!isValid)
-                    {
-                        return;
-                    }
+                    
 
                     await Navigation.PushAsync(new BarcodeResultsPage(result.Image, result.Barcodes));
                 }
@@ -107,15 +97,13 @@ namespace ScanbotBarcodeSDKFormsExample
         {
             return async (sender, e) =>
             {
+                if (!Utils.CheckLicense(this))
+                {
+                    return;
+                }
                 ImageSource source = await Scanbot.ImagePicker.Forms.ImagePicker.Instance.Pick();
                 if (source != null)
                 {
-                    var isValid = Utils.CheckLicense(this);
-                    if (!isValid)
-                    {
-                        return;
-                    }
-
                     var barcodes = await SBSDK.Operations.DetectBarcodesFrom(source);
                     await Navigation.PushAsync(new BarcodeResultsPage(source, barcodes));
                 }
@@ -126,6 +114,10 @@ namespace ScanbotBarcodeSDKFormsExample
         {
             return (sender, e) =>
             {
+                if (!Utils.CheckLicense(this))
+                {
+                    return;
+                }
                 Navigation.PushAsync(new BarcodeSelectorPage());
             };
         }
@@ -135,6 +127,11 @@ namespace ScanbotBarcodeSDKFormsExample
         {
             return (sender, e) =>
             {
+                if (!Utils.CheckLicense(this))
+                {
+                    return;
+                }
+
                 var result = SBSDK.Operations.ClearStorageDirectory();
 
                 if (result.Status == OperationResult.Ok)

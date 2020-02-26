@@ -11,7 +11,7 @@ namespace ScanbotBarcodeSDKFormsExample
         {
             if (!SBSDK.LicenseInfo.IsValid)
             {
-                Alert(context, "Invalid license!", "License expired or invalid, mate");
+                Alert(context, "Oops!", "License expired or invalid");
             }
 
             return SBSDK.LicenseInfo.IsValid;
