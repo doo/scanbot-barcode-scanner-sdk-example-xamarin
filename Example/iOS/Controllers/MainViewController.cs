@@ -25,7 +25,7 @@ namespace BarcodeScannerExample.iOS
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-
+            
             ContentView.ClassicButton.TouchUpInside += OnClassicButtonClick;
             ContentView.RTUUIButton.TouchUpInside += OnRTUUIButtonClick;
             ContentView.RTUUIImageButton.TouchUpInside += OnRTUUIImageButtonClick;
@@ -71,22 +71,38 @@ namespace BarcodeScannerExample.iOS
 
         private void OnClassicButtonClick(object sender, EventArgs e)
         {
+            if (!Alert.CheckLicense(this))
+            {
+                return;
+            }
             var controller = new ClassicScannerController();
             NavigationController.PushViewController(controller, true);
         }
 
         private void OnRTUUIButtonClick(object sender, EventArgs e)
         {
+            if (!Alert.CheckLicense(this))
+            {
+                return;
+            }
             OpenRTUUIBarcodeScanner(false);
         }
 
         private void OnRTUUIImageButtonClick(object sender, EventArgs e)
         {
+            if (!Alert.CheckLicense(this))
+            {
+                return;
+            }
             OpenRTUUIBarcodeScanner(true);
         }
 
         private async void OnLibraryButtonClick(object sender, EventArgs e)
         {
+            if (!Alert.CheckLicense(this))
+            {
+                return;
+            }
             UIImage image = await Scanbot.ImagePicker.iOS.ImagePicker.Instance.Pick();
 
             var scanner = new SBSDKBarcodeScanner(BarcodeTypes.Instance.AcceptedTypes.ToArray());
@@ -99,6 +115,10 @@ namespace BarcodeScannerExample.iOS
 
         private void OnCodeTypeButtonClick(object sender, EventArgs e)
         {
+            if (!Alert.CheckLicense(this))
+            {
+                return;
+            }
             var controller = new BarcodeListController();
             NavigationController.PushViewController(controller, true);
         }
@@ -106,6 +126,10 @@ namespace BarcodeScannerExample.iOS
 
         private void OnClearStorageButtonClick(object sender, EventArgs e)
         {
+            if (!Alert.CheckLicense(this))
+            {
+                return;
+            }
             SBSDKUIBarcodeImageStorage.CleanUpStorage();
             Alert.Show(this, "Success", "Image storage cleared");
         }

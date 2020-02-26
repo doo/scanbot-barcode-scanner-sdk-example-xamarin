@@ -20,15 +20,7 @@ namespace BarcodeScannerExample.Droid
         View WarningView => FindViewById<View>(Resource.Id.warning_view);
 
         ScanbotBarcodeScannerSDK SDK => new ScanbotBarcodeScannerSDK(this);
-        bool IsLicenseValid
-        {
-            get
-            {
-                return SDK.LicenseInfo.Status == IO.Scanbot.Sap.Status.StatusOkay
-                    || SDK.LicenseInfo.Status == IO.Scanbot.Sap.Status.StatusTrial;
-            }
-        }
-
+        
         const int BARCODE_DEFAULT_UI_REQUEST_CODE = 910;
         const int IMPORT_IMAGE_REQUEST_CODE = 911;
 
@@ -48,22 +40,38 @@ namespace BarcodeScannerExample.Droid
 
         private void OnQRClick(object sender, EventArgs e)
         {
+            if (!Alert.CheckLicense(this, SDK))
+            {
+                return;
+            }
             var intent = new Intent(this, typeof(QRScanCameraViewActivity));
             StartActivity(intent);
         }
 
         private void OnRTUUIClick(object sender, EventArgs e)
         {
+            if (!Alert.CheckLicense(this, SDK))
+            {
+                return;
+            }
             StartBarcodeScannerActivity(BarcodeImageGenerationType.None);
         }
 
         private void OnRTUUIImageClick(object sender, EventArgs e)
         {
+            if (!Alert.CheckLicense(this, SDK))
+            {
+                return;
+            }
             StartBarcodeScannerActivity(BarcodeImageGenerationType.VideoFrame);
         }
 
         private async void OnImportClick(object sender, EventArgs e)
         {
+            if (!Alert.CheckLicense(this, SDK))
+            {
+                return;
+            }
             Bitmap bitmap = await Scanbot.ImagePicker.Droid.ImagePicker.Instance.Pick();
 
             var result = SDK.BarcodeDetector().DetectFromBitmap(bitmap, 0);
@@ -79,12 +87,20 @@ namespace BarcodeScannerExample.Droid
 
         private void OnSettingsClick(object sender, EventArgs e)
         {
+            if (!Alert.CheckLicense(this, SDK))
+            {
+                return;
+            }
             var intent = new Intent(this, typeof(BarcodeTypesActivity));
             StartActivity(intent);
         }
 
         private void OnClearStorageClick(object sender, EventArgs e)
         {
+            if (!Alert.CheckLicense(this, SDK))
+            {
+                return;
+            }
             SDK.BarcodeFileStorage().CleanupBarcodeImagesDirectory();
             Alert.Toast(this, "Cleared image storage");
         }
@@ -157,7 +173,7 @@ namespace BarcodeScannerExample.Droid
         {
             base.OnResume();
 
-            if (IsLicenseValid)
+            if (SDK.LicenseInfo.IsValid)
             {
                 WarningView.Visibility = ViewStates.Gone;
             }
