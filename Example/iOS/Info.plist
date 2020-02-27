@@ -4,8 +4,6 @@
 <dict>
 	<key>CFBundleName</key>
 	<string>Scanbot BarcodeScanner SDK Example app</string>
-	<key>CFBundleIdentifier</key>
-	<string>io.scanbot.barcode.example.xamarin</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0.0</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -46,5 +44,7 @@
 	<string>1</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>CFBundleIdentifier</key>
+	<string>io.scanbot.example.sdk.barcode.xamarin</string>
 </dict>
 </plist>
