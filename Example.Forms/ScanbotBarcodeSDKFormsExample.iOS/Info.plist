@@ -24,8 +24,6 @@
 	<string>8.0</string>
 	<key>CFBundleDisplayName</key>
 	<string>ScanbotBarcodeSDKFormsExample</string>
-	<key>CFBundleIdentifier</key>
-	<string>io.scanbot.example.barcode.forms</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>UILaunchStoryboardName</key>
@@ -42,5 +40,7 @@
 	<string>UIStatusBarStyleLightContent</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0.0</string>
+	<key>CFBundleIdentifier</key>
+	<string>io.scanbot.example.sdk.barcode.xamarin.forms</string>
 </dict>
 </plist>
