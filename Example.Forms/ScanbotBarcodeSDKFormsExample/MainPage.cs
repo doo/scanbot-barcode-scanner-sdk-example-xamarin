@@ -86,8 +86,6 @@ namespace ScanbotBarcodeSDKFormsExample
                 BarcodeResultBundle result = await SBSDK.Scanner.Open(config);
                 if (result.Status == OperationResult.Ok)
                 {
-                    
-
                     await Navigation.PushAsync(new BarcodeResultsPage(result.Image, result.Barcodes));
                 }
             };
