@@ -15,7 +15,7 @@ The SDK for Xamarin is available as NuGet packages:
 
 
 ## Requirements
-Latest version of [Microsoft Visual Studio](https://www.visualstudio.com) with Xamarin Platform.
+Latest version of [Microsoft Visual Studio](https://visualstudio.microsoft.com/xamarin/) with Xamarin Platform.
 
 
 ## Documentation
