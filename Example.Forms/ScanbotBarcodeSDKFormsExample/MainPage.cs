@@ -12,6 +12,8 @@ namespace ScanbotBarcodeSDKFormsExample
 
         public MainPage()
         {
+            Title = "BARCODE SCANNER";
+
             Container = new StackLayout();
             Container.Orientation = StackOrientation.Vertical;
             Container.BackgroundColor = Color.White;

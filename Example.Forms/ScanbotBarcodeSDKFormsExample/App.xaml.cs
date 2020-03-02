@@ -19,14 +19,6 @@ namespace ScanbotBarcodeSDKFormsExample
                 BarTextColor = Color.White
             };
 
-            NavigationPage.SetTitleView(content, new Label
-            {
-                Text = "BARCODE SCANNER",
-                TextColor = Color.White,
-                VerticalTextAlignment = TextAlignment.Center,
-                HorizontalTextAlignment = TextAlignment.Center
-            });
-
             SBSDK.Initialize(new ScanbotBarcodeSDK.Forms.InitializationOptions
             {
                 LicenseKey = Key,

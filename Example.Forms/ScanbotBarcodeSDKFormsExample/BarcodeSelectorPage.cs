@@ -9,6 +9,8 @@ namespace ScanbotBarcodeSDKFormsExample
     {
         public BarcodeSelectorPage()
         {
+            Title = "ACCEPTED BARCODES";
+
             var list = new ListView();
             list.ItemTemplate = new DataTemplate(typeof(BarcodeFormatCell));
             list.ItemsSource = BarcodeTypes.Instance.List;
