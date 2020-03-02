@@ -22,7 +22,6 @@ namespace BarcodeScannerExample.Droid
         ScanbotBarcodeScannerSDK SDK => new ScanbotBarcodeScannerSDK(this);
         
         const int BARCODE_DEFAULT_UI_REQUEST_CODE = 910;
-        const int IMPORT_IMAGE_REQUEST_CODE = 911;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -123,8 +122,6 @@ namespace BarcodeScannerExample.Droid
         {
             var configuration = new BarcodeScannerConfiguration();
             var list = BarcodeTypes.Instance.AcceptedTypes;
-            // The option to set barcode formats filter is missing in Xamarin android
-            // It is a known issue that will be fixed in the future
             configuration.SetBarcodeFormatsFilter(list);
             configuration.SetBarcodeImageGenerationType(type);
 
