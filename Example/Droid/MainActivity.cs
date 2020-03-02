@@ -122,10 +122,10 @@ namespace BarcodeScannerExample.Droid
         void StartBarcodeScannerActivity(BarcodeImageGenerationType type)
         {
             var configuration = new BarcodeScannerConfiguration();
-            var list = BarcodeFormat.Values();
+            var list = BarcodeTypes.Instance.AcceptedTypes;
             // The option to set barcode formats filter is missing in Xamarin android
             // It is a known issue that will be fixed in the future
-            //configuration.SetBarcodeFormatsFilter(list);
+            configuration.SetBarcodeFormatsFilter(list);
             configuration.SetBarcodeImageGenerationType(type);
 
             var intent = BarcodeScannerActivity.NewIntent(this, configuration);

@@ -14,22 +14,18 @@ namespace BarcodeScannerExample.Droid
 
         public override int ItemCount => Items.Count;
 
-        BarcodeFormat LastCheckedFormat;
-
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
-            LastCheckedFormat = Items[position];
+            var format = Items[position];
 
             var barcodeHolder = (BarcodeViewHolder)holder;
-            barcodeHolder.Name.Text = LastCheckedFormat.Name();
-            barcodeHolder.Checker.Checked = BarcodeTypes.Instance.IsChecked(LastCheckedFormat);
+            barcodeHolder.Name.Text = format.Name();
+            barcodeHolder.Checker.Checked = BarcodeTypes.Instance.IsChecked(format);
 
-            barcodeHolder.Checker.CheckedChange += OnCheckedChange;
-        }
-
-        void OnCheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
-        {
-            BarcodeTypes.Instance.Update(LastCheckedFormat, e.IsChecked);
+            barcodeHolder.Checker.CheckedChange += (sender, e) =>
+            {
+                BarcodeTypes.Instance.Update(format, e.IsChecked);
+            };
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)

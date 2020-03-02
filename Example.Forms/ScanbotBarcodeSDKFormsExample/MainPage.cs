@@ -163,7 +163,7 @@ namespace ScanbotBarcodeSDKFormsExample
         BarcodeScannerConfiguration GetScannerConfiguration(bool withImage)
         {
             var configuration = new BarcodeScannerConfiguration();
-            //configuration.AcceptedFormats = BarcodeTypes.Instance.AcceptedTypes;
+            configuration.AcceptedFormats = BarcodeTypes.Instance.AcceptedTypes;
 
             if (withImage)
             {
