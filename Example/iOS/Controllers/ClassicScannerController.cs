@@ -36,30 +36,8 @@ namespace BarcodeScannerExample.iOS
             Flash.Frame = new CGRect(padding, padding, size, size);
             Flash.Click += (sender, e) =>
             {
-                var devices = AVCaptureDevice.DevicesWithMediaType(AVMediaType.Video);
-                if (devices.Length == 0)
-                {
-                    Console.WriteLine("No video capture devices available");
-                    return;
-                }
-                var device = devices[0];
-                if (device.HasTorch && device.HasFlash)
-                {
-                    NSError error = null;
-                    device.LockForConfiguration(out error);
-                    if (e.Enabled)
-                    {
-                        device.SetTorchModeLevel((float)AVCaptureTorchMode.On, out error);
-                    }
-                    else
-                    {
-                        device.TorchMode = AVCaptureTorchMode.Off;
-                    }
-                    device.UnlockForConfiguration();
-                }
+                scannerController.FlashLightEnabled = e.Enabled;
             };
-
-            
         }
 
         private void OnScanResultReceived(object sender, ScannerEventArgs e)
