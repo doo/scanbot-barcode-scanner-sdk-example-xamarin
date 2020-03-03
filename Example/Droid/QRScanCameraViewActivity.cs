@@ -33,6 +33,8 @@ namespace BarcodeScannerExample.Droid
             get => new string[] { Manifest.Permission.Camera };
         }
 
+        bool flashEnabled = false;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             SupportRequestWindowFeature(WindowCompat.FeatureActionBarOverlay);
@@ -47,6 +49,7 @@ namespace BarcodeScannerExample.Droid
 
             var SDK = new ScanbotBarcodeScannerSDK(this);
             var detector = SDK.BarcodeDetector();
+            detector.SetBarcodeFormatsFilter(BarcodeTypes.Instance.AcceptedTypes);
 
             handler = BarcodeDetectorFrameHandler.Attach(cameraView, detector);
             handler.SetDetectionInterval(1000);
@@ -60,6 +63,12 @@ namespace BarcodeScannerExample.Droid
             var snappingcontroller = BarcodeAutoSnappingController.Attach(cameraView, handler);
             snappingcontroller.SetSensitivity(1f);
             cameraView.AddPictureCallback(this);
+
+            FindViewById<Button>(Resource.Id.flash).Click += delegate
+            {
+                flashEnabled = !flashEnabled;
+                cameraView.UseFlash(flashEnabled);
+            };
         }
 
         private void OnBarcodeResult(object sender, BarcodeEventArgs e)
@@ -90,7 +99,7 @@ namespace BarcodeScannerExample.Droid
         {
             cameraView.PostDelayed(delegate
             {
-                cameraView.UseFlash(true);
+                cameraView.UseFlash(flashEnabled);
                 cameraView.ContinuousFocus();
             }, 300);
         }

@@ -75,6 +75,7 @@ namespace BarcodeScannerExample.Droid
             }
             Bitmap bitmap = await Scanbot.ImagePicker.Droid.ImagePicker.Instance.Pick();
 
+            SDK.BarcodeDetector().SetBarcodeFormatsFilter(BarcodeTypes.Instance.AcceptedTypes);
             var result = SDK.BarcodeDetector().DetectFromBitmap(bitmap, 0);
 
             BarcodeResultBundle.Instance = new BarcodeResultBundle
