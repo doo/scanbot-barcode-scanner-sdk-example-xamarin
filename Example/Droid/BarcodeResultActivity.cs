@@ -78,11 +78,23 @@ namespace BarcodeScannerExample.Droid
                 var barFormat = child.FindViewById<TextView>(Resource.Id.barcodeFormat);
                 var docFormat = child.FindViewById<TextView>(Resource.Id.docFormat);
                 var docText = child.FindViewById<TextView>(Resource.Id.docText);
+
+                if (item.Image != null)
+                {
+                    image.SetImageBitmap(item.Image);
+                }
                 
-                image.SetImageBitmap(item.Image);
-                barFormat.Text = item.BarcodeFormat.Name();
-                docFormat.Text = item.BarcodeDocumentFormat?.DocumentFormat;
-                docText.Text = item.Text;
+                barFormat.Text = "Format: " + item.BarcodeFormat.Name();
+
+                if (item.BarcodeDocumentFormat != null && item.BarcodeDocumentFormat.DocumentFormat != null)
+                {
+                    docFormat.Text = item.BarcodeDocumentFormat?.DocumentFormat;
+                } else
+                {
+                    docFormat.Text = "Document: –";
+                }
+                
+                docText.Text = "Content: " + item.Text;
 
                 child.Click += delegate
                 {
