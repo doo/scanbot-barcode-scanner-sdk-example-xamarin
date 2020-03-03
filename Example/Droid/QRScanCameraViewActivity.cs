@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Android;
 using Android.App;
 using Android.Content;
@@ -45,7 +46,9 @@ namespace BarcodeScannerExample.Droid
             cameraView.SetCameraOpenCallback(this);
 
             var SDK = new ScanbotBarcodeScannerSDK(this);
-            handler = BarcodeDetectorFrameHandler.Attach(cameraView, SDK.BarcodeDetector());
+            var detector = SDK.BarcodeDetector();
+
+            handler = BarcodeDetectorFrameHandler.Attach(cameraView, detector);
             handler.SetDetectionInterval(1000);
 
             var resultHandler = new BarcodeResultDelegate();

@@ -12,6 +12,8 @@ using IO.Scanbot.Sdk.Barcode_scanner;
 using IO.Scanbot.Sdk.UI.Barcode_scanner.View.Barcode;
 using IO.Scanbot.Sdk.UI.View.Barcode;
 using IO.Scanbot.Sdk.UI.View.Barcode.Configuration;
+using System.Collections.Generic;
+
 namespace BarcodeScannerExample.Droid
 {
     [Activity(MainLauncher = true, Theme = "@style/AppTheme", Icon = "@mipmap/icon")]
