@@ -26,7 +26,7 @@ namespace BarcodeScannerExample.iOS
         {
             base.LayoutSubviews();
 
-            var padding = 8;
+            var padding = 11;
             var size = Frame.Width - 2 * padding;
             flashIcon.Frame = new CGRect(padding, padding, size, size);
 
