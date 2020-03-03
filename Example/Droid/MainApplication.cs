@@ -18,7 +18,7 @@ namespace BarcodeScannerExample.Droid
 
             var initializer = new ScanbotBarcodeScannerSDKInitializer();
             initializer.WithLogging(true);
-            initializer.License(this, SDKLicense.Key);
+            initializer.License(this, "");
             initializer.Initialize(this);
         }
     }
