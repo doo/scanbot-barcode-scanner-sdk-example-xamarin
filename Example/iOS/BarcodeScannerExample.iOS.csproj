@@ -136,6 +136,11 @@
     <Compile Include="Controllers\ClassicScannerController.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Utils\Alert.cs" />
+    <Compile Include="Views\Subviews\FlashButton.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\flash_on_white.png" />
+    <BundleResource Include="Resources\flash_off_white.png" />
   </ItemGroup>
   <Import Project="..\BarcodeScannerExample\BarcodeScannerExample.projitems" Label="Shared" Condition="Exists('..\BarcodeScannerExample\BarcodeScannerExample.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

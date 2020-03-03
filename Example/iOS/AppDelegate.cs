@@ -7,6 +7,8 @@ namespace BarcodeScannerExample.iOS
     [Register("AppDelegate")]
     public class AppDelegate : UIApplicationDelegate
     {
+        public static readonly UIColor ScanbotRed = UIColor.FromRGB(200, 25, 60);
+
         public UINavigationController Controller { get; set; }
 
         public override UIWindow Window { get; set; }
@@ -21,7 +23,7 @@ namespace BarcodeScannerExample.iOS
             Controller = new UINavigationController(initial);
 
             // Navigation bar background color
-            Controller.NavigationBar.BarTintColor = UIColor.FromRGB(200, 25, 60);
+            Controller.NavigationBar.BarTintColor = ScanbotRed;
             // Back button color
             Controller.NavigationBar.TintColor = UIColor.White;
             // Title color

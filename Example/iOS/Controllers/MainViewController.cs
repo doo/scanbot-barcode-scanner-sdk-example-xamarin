@@ -155,13 +155,13 @@ namespace BarcodeScannerExample.iOS
             var configuration = SBSDKUIMachineCodeScannerConfiguration.DefaultConfiguration;
             configuration.UiConfiguration.FinderHeight = 0.5f;
             configuration.UiConfiguration.FinderWidth = 1f;
-
+            
             if (withImage)
             {
                 configuration.BehaviorConfiguration.BarcodeImageGenerationType =
                     SBSDKBarcodeImageGenerationType.CapturedImage;
             }
-
+            
             receiver.WaitForImage = withImage;
             receiver.ResultsReceived += OnScanResultReceived;
 
