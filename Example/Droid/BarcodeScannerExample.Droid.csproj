@@ -65,10 +65,10 @@
       <HintPath>..\packages\Scanbot.Xamarin.Kotlin.StdLib.Jdk7.1.3.11\lib\MonoAndroid81\Scanbot.Xamarin.Kotlin.StdLib.Jdk7.dll</HintPath>
     </Reference>
     <Reference Include="ScanbotBarcodeSDK.Xamarin">
-      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.1.0.0\lib\MonoAndroid81\ScanbotBarcodeSDK.Xamarin.dll</HintPath>
+      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.1.0.1\lib\MonoAndroid81\ScanbotBarcodeSDK.Xamarin.dll</HintPath>
     </Reference>
     <Reference Include="ScanbotBarcodeSDK.Xamarin.Droid">
-      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.1.0.0\lib\MonoAndroid81\ScanbotBarcodeSDK.Xamarin.Droid.dll</HintPath>
+      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.1.0.1\lib\MonoAndroid81\ScanbotBarcodeSDK.Xamarin.Droid.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.Annotations">
       <HintPath>..\packages\Xamarin.Android.Support.Annotations.28.0.0.3\lib\monoandroid90\Xamarin.Android.Support.Annotations.dll</HintPath>
@@ -183,34 +183,34 @@
       <HintPath>..\packages\Scanbot.Xamarin.ImagePicker.0.0.1-rc5\lib\MonoAndroid81\Scanbot.ImagePicker.Droid.dll</HintPath>
     </Reference>
     <Reference Include="Barcode.Scanner.SDK">
-      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.1.0.0\lib\MonoAndroid81\Barcode.Scanner.SDK.dll</HintPath>
+      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.1.0.1\lib\MonoAndroid81\Barcode.Scanner.SDK.dll</HintPath>
     </Reference>
     <Reference Include="Barcode.Scanner.SDK.UI">
-      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.1.0.0\lib\MonoAndroid81\Barcode.Scanner.SDK.UI.dll</HintPath>
+      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.1.0.1\lib\MonoAndroid81\Barcode.Scanner.SDK.UI.dll</HintPath>
     </Reference>
     <Reference Include="Scanbot.SDK.Dependencies">
-      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.1.0.0\lib\MonoAndroid81\Scanbot.SDK.Dependencies.dll</HintPath>
+      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.1.0.1\lib\MonoAndroid81\Scanbot.SDK.Dependencies.dll</HintPath>
     </Reference>
     <Reference Include="SDK.Barcode">
-      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.1.0.0\lib\MonoAndroid81\SDK.Barcode.dll</HintPath>
+      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.1.0.1\lib\MonoAndroid81\SDK.Barcode.dll</HintPath>
     </Reference>
     <Reference Include="SDK.Base">
-      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.1.0.0\lib\MonoAndroid81\SDK.Base.dll</HintPath>
+      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.1.0.1\lib\MonoAndroid81\SDK.Base.dll</HintPath>
     </Reference>
     <Reference Include="SDK.Core.Barcode">
-      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.1.0.0\lib\MonoAndroid81\SDK.Core.Barcode.dll</HintPath>
+      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.1.0.1\lib\MonoAndroid81\SDK.Core.Barcode.dll</HintPath>
     </Reference>
     <Reference Include="SDK.Core.Barcode.Native">
-      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.1.0.0\lib\MonoAndroid81\SDK.Core.Barcode.Native.dll</HintPath>
+      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.1.0.1\lib\MonoAndroid81\SDK.Core.Barcode.Native.dll</HintPath>
     </Reference>
     <Reference Include="SDK.Core.Sap">
-      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.1.0.0\lib\MonoAndroid81\SDK.Core.Sap.dll</HintPath>
+      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.1.0.1\lib\MonoAndroid81\SDK.Core.Sap.dll</HintPath>
     </Reference>
     <Reference Include="SDK.UI.Barcode">
-      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.1.0.0\lib\MonoAndroid81\SDK.UI.Barcode.dll</HintPath>
+      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.1.0.1\lib\MonoAndroid81\SDK.UI.Barcode.dll</HintPath>
     </Reference>
     <Reference Include="SDK.UI.Base">
-      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.1.0.0\lib\MonoAndroid81\SDK.UI.Base.dll</HintPath>
+      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.1.0.1\lib\MonoAndroid81\SDK.UI.Base.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
