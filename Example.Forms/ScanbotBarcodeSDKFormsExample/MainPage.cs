@@ -166,10 +166,15 @@ namespace ScanbotBarcodeSDKFormsExample
         {
             var configuration = new BarcodeScannerConfiguration();
             configuration.AcceptedFormats = BarcodeTypes.Instance.AcceptedTypes;
+            configuration.FinderHeight = 1;
+            configuration.FinderWidth = 1;
+            configuration.SuccessBeepEnabled = true;
+            //configuration.FinderTextHint = "Custom hint text...";
+            // see further configs...
 
             if (withImage)
             {
-                configuration.BarcodeImageGenerationType = BarcodeImageGenerationType.CapturedImage;
+                configuration.BarcodeImageGenerationType = BarcodeImageGenerationType.FromVideoFrame;
             }
             else
             {
