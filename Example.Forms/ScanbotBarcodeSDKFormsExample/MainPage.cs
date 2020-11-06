@@ -166,9 +166,9 @@ namespace ScanbotBarcodeSDKFormsExample
         {
             var configuration = new BarcodeScannerConfiguration();
             configuration.AcceptedFormats = BarcodeTypes.Instance.AcceptedTypes;
-            configuration.FinderHeight = 1;
-            configuration.FinderWidth = 1;
             configuration.SuccessBeepEnabled = true;
+            //configuration.FinderWidth = 300;
+            //configuration.FinderHeight = 200;
             //configuration.FinderTextHint = "Custom hint text...";
             // see further configs...
 
