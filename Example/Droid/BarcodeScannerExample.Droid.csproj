@@ -10,7 +10,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>BarcodeScannerExample.Droid</RootNamespace>
     <AssemblyName>BarcodeScannerExample.Droid</AssemblyName>
-    <TargetFrameworkVersion>v10.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
@@ -38,14 +38,13 @@
     <WarningLevel>4</WarningLevel>
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+    <NoStdLib>false</NoStdLib>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
-
-    
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
@@ -148,11 +147,11 @@
     <PackageReference Include="ScanbotBarcodeSDK.Xamarin">
       <Version>2.0.0-beta1</Version>
     </PackageReference>
-    <PackageReference Include="Scanbot.Xamarin.ImagePicker">
-      <Version>0.0.1-rc5</Version>
-    </PackageReference>
     <PackageReference Include="Xamarin.AndroidX.ConstraintLayout">
       <Version>2.0.4</Version>
+    </PackageReference>
+    <PackageReference Include="Scanbot.Xamarin.ImagePicker">
+      <Version>0.0.1-rc5</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="..\BarcodeScannerExample\BarcodeScannerExample.projitems" Label="Shared" Condition="Exists('..\BarcodeScannerExample\BarcodeScannerExample.projitems')" />

@@ -154,6 +154,7 @@ namespace BarcodeScannerExample.iOS
         {
             var configuration = SBSDKUIMachineCodeScannerConfiguration.DefaultConfiguration;
             configuration.UiConfiguration.FinderAspectRatio = new SBSDKAspectRatio(1, 0.5);
+
             if (withImage)
             {
                 configuration.BehaviorConfiguration.BarcodeImageGenerationType =

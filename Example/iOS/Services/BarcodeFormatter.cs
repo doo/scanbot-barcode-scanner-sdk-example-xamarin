@@ -69,7 +69,6 @@ namespace BarcodeScannerExample.iOS
                             result += $"\n{note}\n";
                         }
                     }
-                    
                     if (subheading.Prescriptions.Length > 0)
                     {
                         foreach (var prescription in subheading.Prescriptions)
