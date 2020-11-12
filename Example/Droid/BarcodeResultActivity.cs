@@ -3,8 +3,8 @@ using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.OS;
-using Android.Support.V7.App;
 using Android.Widget;
+using AndroidX.AppCompat.App;
 using IO.Scanbot.Sdk.Barcode.Entity;
 
 namespace BarcodeScannerExample.Droid
@@ -18,7 +18,7 @@ namespace BarcodeScannerExample.Droid
 
             SetContentView(Resource.Layout.barcode_result);
 
-            var toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
+            var toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
 
             string imagePath = null;
@@ -70,6 +70,11 @@ namespace BarcodeScannerExample.Droid
         {
             var parent = FindViewById<LinearLayout>(Resource.Id.recognisedItems);
 
+            if (result == null)
+            {
+                return;
+            }
+
             foreach (var item in result.BarcodeItems)
             {
                 var child = LayoutInflater.Inflate(Resource.Layout.barcode_item, parent, false);
@@ -86,10 +91,11 @@ namespace BarcodeScannerExample.Droid
                 
                 barFormat.Text = "Format: " + item.BarcodeFormat.Name();
 
-                if (item.BarcodeDocumentFormat != null && item.BarcodeDocumentFormat.DocumentFormat != null)
+                if (item.FormattedData != null)
                 {
-                    docFormat.Text = item.BarcodeDocumentFormat?.DocumentFormat;
-                } else
+                    docFormat.Text = item.FormattedData.ToString();
+                }
+                else
                 {
                     docFormat.Text = "Document: –";
                 }

@@ -1,9 +1,9 @@
 ﻿using System;
 using Android.App;
 using Android.OS;
-using Android.Support.V7.App;
-using Android.Support.V7.Widget;
 using Android.Views;
+using AndroidX.AppCompat.App;
+using AndroidX.RecyclerView.Widget;
 
 namespace BarcodeScannerExample.Droid
 {

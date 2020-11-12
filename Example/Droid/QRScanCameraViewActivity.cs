@@ -1,26 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 using Android;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
-using Android.Support.V4.App;
-using Android.Support.V4.Content;
-using Android.Support.V4.View;
-using Android.Support.V7.App;
 using Android.Widget;
+using AndroidX.AppCompat.App;
+using AndroidX.Core.App;
+using AndroidX.Core.Content;
+using AndroidX.Core.View;
 using IO.Scanbot.Sdk.Barcode;
 using IO.Scanbot.Sdk.Barcode.Entity;
 using IO.Scanbot.Sdk.Barcode_scanner;
 using IO.Scanbot.Sdk.Camera;
-using Net.Doo.Snap.Camera;
 
 namespace BarcodeScannerExample.Droid
 {
     [Activity(Theme = "@style/AppTheme")]
-    public class QRScanCameraViewActivity : AppCompatActivity, ICameraOpenCallback, IPictureCallback
+    public class QRScanCameraViewActivity : AppCompatActivity, ICameraOpenCallback
     {
         ScanbotCameraView cameraView;
         ImageView resultView;
@@ -62,7 +60,10 @@ namespace BarcodeScannerExample.Droid
 
             var snappingcontroller = BarcodeAutoSnappingController.Attach(cameraView, handler);
             snappingcontroller.SetSensitivity(1f);
-            cameraView.AddPictureCallback(this);
+
+            var pictureDelegate = new PictureResultDelegate();
+            cameraView.AddPictureCallback(pictureDelegate);
+            pictureDelegate.PictureTaken += OnPictureTaken;
 
             FindViewById<Button>(Resource.Id.flash).Click += delegate
             {
@@ -104,10 +105,10 @@ namespace BarcodeScannerExample.Droid
             }, 300);
         }
 
-        public void OnPictureTaken(byte[] p0, int p1)
+        public void OnPictureTaken(object sender, PictureTakenEventArgs e)
         {
-            var image = p0;
-            var orientation = p1;
+            var image = e.Image;
+            var orientation = e.Orientation;
 
             var bitmap = BitmapFactory.DecodeByteArray(image, 0, orientation);
 
@@ -135,7 +136,7 @@ namespace BarcodeScannerExample.Droid
         }
     }
 
-    class BarcodeResultDelegate : BarcodeDetectorFrameHandler.BarcodeResultHandler
+    class BarcodeResultDelegate : BarcodeDetectorFrameHandler.BarcodeDetectorResultHandler
     {
         public EventHandler<BarcodeEventArgs> Success;
 
@@ -150,6 +151,28 @@ namespace BarcodeScannerExample.Droid
             }
 
             return false;
+        }
+    }
+
+    public class PictureTakenEventArgs : EventArgs
+    {
+        public byte[] Image { get; private set; }
+        public int Orientation { get; private set; }
+
+        public PictureTakenEventArgs(byte[] image, int orientation)
+        {
+            Image = image;
+            Orientation = orientation;
+        }
+    }
+
+    class PictureResultDelegate : PictureCallback
+    {
+        public EventHandler<PictureTakenEventArgs> PictureTaken;
+
+        public override void OnPictureTaken(byte[] image, int imageOrientation)
+        {
+            PictureTaken?.Invoke(this, new PictureTakenEventArgs(image, imageOrientation));
         }
     }
 }

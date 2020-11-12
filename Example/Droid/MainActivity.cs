@@ -6,13 +6,11 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Android.Provider;
 using IO.Scanbot.Sdk.Barcode.Entity;
 using IO.Scanbot.Sdk.Barcode_scanner;
 using IO.Scanbot.Sdk.UI.Barcode_scanner.View.Barcode;
 using IO.Scanbot.Sdk.UI.View.Barcode;
 using IO.Scanbot.Sdk.UI.View.Barcode.Configuration;
-using System.Collections.Generic;
 
 namespace BarcodeScannerExample.Droid
 {
@@ -152,11 +150,11 @@ namespace BarcodeScannerExample.Droid
             if (requestCode == BARCODE_DEFAULT_UI_REQUEST_CODE)
             {
                 var barcode = (BarcodeScanningResult)data.GetParcelableExtra(
-                    BaseBarcodeScannerActivity.ScannedBarcodeExtra);
+                    BarcodeScannerActivity.ScannedBarcodeExtra);
                 var imagePath = data.GetStringExtra(
-                    BaseBarcodeScannerActivity.ScannedBarcodeImagePathExtra);
+                    BarcodeScannerActivity.ScannedBarcodeImagePathExtra);
                 var previewPath = data.GetStringExtra(
-                    BaseBarcodeScannerActivity.ScannedBarcodePreviewFramePathExtra);
+                    BarcodeScannerActivity.ScannedBarcodePreviewFramePathExtra);
 
                 BarcodeResultBundle.Instance = new BarcodeResultBundle
                 {

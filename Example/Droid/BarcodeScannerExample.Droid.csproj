@@ -148,6 +148,12 @@
     <PackageReference Include="ScanbotBarcodeSDK.Xamarin">
       <Version>2.0.0-beta1</Version>
     </PackageReference>
+    <PackageReference Include="Scanbot.Xamarin.ImagePicker">
+      <Version>0.0.1-rc5</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.AndroidX.ConstraintLayout">
+      <Version>2.0.4</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="..\BarcodeScannerExample\BarcodeScannerExample.projitems" Label="Shared" Condition="Exists('..\BarcodeScannerExample\BarcodeScannerExample.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

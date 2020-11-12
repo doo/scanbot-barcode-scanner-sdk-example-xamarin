@@ -2,9 +2,9 @@
 using System.Text;
 using Android.App;
 using Android.OS;
-using Android.Support.Constraints;
-using Android.Support.V7.App;
 using Android.Widget;
+using AndroidX.AppCompat.App;
+using AndroidX.ConstraintLayout.Widget;
 using IO.Scanbot.Barcodescanner.Model.BoardingPass;
 using IO.Scanbot.Barcodescanner.Model.DEMedicalPlan;
 using IO.Scanbot.Barcodescanner.Model.DisabilityCertificate;
@@ -22,7 +22,7 @@ namespace BarcodeScannerExample.Droid
             base.OnCreate(savedInstanceState);
 
             SetContentView(Resource.Layout.detailed_item_data);
-            var toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
+            var toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
 
             var item = BarcodeResultBundle.SelectedBarcodeItem;
@@ -34,19 +34,20 @@ namespace BarcodeScannerExample.Droid
             container.FindViewById<TextView>(Resource.Id.barcodeFormat)
                 .Text = item.BarcodeFormat.Name();
             container.FindViewById<TextView>(Resource.Id.docFormat)
-                .Text = item.BarcodeDocumentFormat?.DocumentFormat;
+                .Text = item.FormattedData?.ToString();
             container.FindViewById<TextView>(Resource.Id.description)
                 .Text = ParseFormat(item);
         }
 
         private string ParseFormat(BarcodeItem item)
         {
-            if (item.BarcodeDocumentFormat == null)
+            if (item.FormattedData == null)
             {
                 return item.Text;
             }
 
-            var format = item.BarcodeDocumentFormat;
+            // TODO this can't be right.
+            var format = item.FormattedData.ToString();
 
             var result = new StringBuilder();
             result.Append("\n");
