@@ -153,9 +153,7 @@ namespace BarcodeScannerExample.iOS
         void OpenRTUUIBarcodeScanner(bool withImage)
         {
             var configuration = SBSDKUIMachineCodeScannerConfiguration.DefaultConfiguration;
-            configuration.UiConfiguration.FinderHeight = 0.5f;
-            configuration.UiConfiguration.FinderWidth = 1f;
-            
+            configuration.UiConfiguration.FinderAspectRatio = new SBSDKAspectRatio(1, 0.5);
             if (withImage)
             {
                 configuration.BehaviorConfiguration.BarcodeImageGenerationType =
