@@ -23,6 +23,8 @@ namespace BarcodeScannerExample.iOS
 
             scannerController = new SBSDKBarcodeScannerViewController(this, View);
 
+            scannerController.AcceptedBarcodeTypes = BarcodeTypes.Instance.AcceptedTypes.ToArray();
+
             receiver = new ClassicScannerReceiver();
             scannerController.Delegate = receiver;
             receiver.ResultReceived += OnScanResultReceived;
