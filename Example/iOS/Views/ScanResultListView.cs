@@ -62,7 +62,7 @@ namespace BarcodeScannerExample.iOS
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
-            return 1;
+            return Items.Count;
         }
     }
 }
