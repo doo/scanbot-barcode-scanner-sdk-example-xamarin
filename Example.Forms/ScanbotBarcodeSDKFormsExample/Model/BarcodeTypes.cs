@@ -18,6 +18,7 @@ namespace ScanbotBarcodeSDKFormsExample
                 var result = new List<BarcodeFormat>();
                 foreach (var item in List)
                 {
+
                     if (item.Value)
                     {
                         result.Add(item.Key);
@@ -39,7 +40,8 @@ namespace ScanbotBarcodeSDKFormsExample
         private BarcodeTypes()
         {
             var original = All;
-            original.Remove(BarcodeFormat.MsiPlessey); // MsiPlessey is not supported on Android yet!
+            // Unknown shouldn't be used as an input parameter
+            original.Remove(BarcodeFormat.Unknown);
 
             foreach (var item in original)
             {

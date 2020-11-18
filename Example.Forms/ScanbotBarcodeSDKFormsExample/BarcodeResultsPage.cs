@@ -127,7 +127,8 @@ namespace ScanbotBarcodeSDKFormsExample
                     VerticalOptions = LayoutOptions.FillAndExpand,
                     VerticalTextAlignment = TextAlignment.Center,
                     Margin = new Thickness(10, 0, 0, 0),
-                    TextColor = Color.Black
+                    TextColor = Color.Black,
+                    BackgroundColor = Color.White
                 };
 
                 ContentLabel = new Label
@@ -136,7 +137,8 @@ namespace ScanbotBarcodeSDKFormsExample
                     VerticalOptions = LayoutOptions.FillAndExpand,
                     VerticalTextAlignment = TextAlignment.Center,
                     Margin = new Thickness(10, 0, 0, 0),
-                    TextColor = Color.DarkGray
+                    TextColor = Color.DarkGray,
+                    BackgroundColor = Color.White
                 };
 
                 StackLayout labelContainer = new StackLayout
@@ -144,6 +146,7 @@ namespace ScanbotBarcodeSDKFormsExample
                     Orientation = StackOrientation.Vertical,
                     HorizontalOptions = LayoutOptions.StartAndExpand,
                     VerticalOptions = LayoutOptions.FillAndExpand,
+                    BackgroundColor = Color.White,
                     Children = { TypeLabel, ContentLabel }
                 };
 
@@ -152,6 +155,7 @@ namespace ScanbotBarcodeSDKFormsExample
                     HorizontalOptions = LayoutOptions.FillAndExpand,
                     VerticalOptions = LayoutOptions.FillAndExpand,
                     Orientation = StackOrientation.Horizontal,
+                    BackgroundColor = Color.White,
                     Margin = new Thickness(0, 0, 10, 0),
                     Children = { ImageView, labelContainer }
                 };

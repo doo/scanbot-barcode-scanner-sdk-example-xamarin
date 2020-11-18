@@ -55,6 +55,7 @@ namespace BarcodeScannerExample.iOS
         {
             return true;
         }
+
     }
 
     public class BarcodeResultReceiver : SBSDKUIBarcodeScannerViewControllerDelegate

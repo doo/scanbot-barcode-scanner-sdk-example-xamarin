@@ -46,5 +46,7 @@
 	<false/>
 	<key>CFBundleIdentifier</key>
 	<string>io.scanbot.example.sdk.barcode.xamarin</string>
+	<key>CFBundleDisplayName</key>
+	<string>Scanbot BarcodeScanner SDK Example app</string>
 </dict>
 </plist>

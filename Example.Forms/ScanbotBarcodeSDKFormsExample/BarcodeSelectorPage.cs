@@ -15,7 +15,7 @@ namespace ScanbotBarcodeSDKFormsExample
             list.ItemTemplate = new DataTemplate(typeof(BarcodeFormatCell));
             list.ItemsSource = BarcodeTypes.Instance.List;
             list.RowHeight = 50;
-
+            list.BackgroundColor = Color.White;
             Content = list;
         }
     }

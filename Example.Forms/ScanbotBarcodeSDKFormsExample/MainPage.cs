@@ -50,7 +50,8 @@ namespace ScanbotBarcodeSDKFormsExample
                     Text = title,
                     VerticalTextAlignment = TextAlignment.Center,
                     Margin = new Thickness(10, 0, 0, 0),
-                    FontSize = 12
+                    FontSize = 12,
+                    TextColor = Color.Black
                 }
             };
 

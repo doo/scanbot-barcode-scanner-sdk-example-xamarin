@@ -69,14 +69,13 @@ namespace BarcodeScannerExample.iOS
                             result += $"\n{note}\n";
                         }
                     }
-                                        
                     if (subheading.Prescriptions.Length > 0)
                     {
-                        foreach (var receipe in subheading.Prescriptions)
+                        foreach (var prescription in subheading.Prescriptions)
                         {
-                            foreach (var receipeField in receipe.Fields)
+                            foreach (var prescriptionField in prescription.Fields)
                             {
-                                result += $"\n{receipeField.TypeHumanReadableString}: {receipeField.Value}";
+                                result += $"\n{prescriptionField.TypeHumanReadableString}: {prescriptionField.Value}";
                             }
                             result += "\n------";
                         }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
+using AndroidX.RecyclerView.Widget;
 using IO.Scanbot.Sdk.Barcode.Entity;
 
 namespace BarcodeScannerExample.Droid
