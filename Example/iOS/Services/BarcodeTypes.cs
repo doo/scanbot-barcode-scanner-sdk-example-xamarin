@@ -36,6 +36,8 @@ namespace BarcodeScannerExample.iOS
         private BarcodeTypes()
         {
             var original = SBSDKBarcodeType.AllTypes.ToList();
+            // remove MsiPlessey - beta, not recommended for production use yet.
+            original.Remove(SBSDKBarcodeType.MSIPlessey);
 
             foreach (var item in original)
             {

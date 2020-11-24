@@ -13,6 +13,8 @@ namespace BarcodeScannerExample.iOS
 
         public UIButton RTUUIImageButton { get; private set; }
 
+        public UIButton RTUUIBatchButton { get; private set; }
+
         public UIButton LibraryButton { get; private set; }
 
         public UIButton CodeTypesButton { get; private set; }
@@ -32,6 +34,8 @@ namespace BarcodeScannerExample.iOS
             RTUUIButton = CreateButton("READY-TO-USE UI");
 
             RTUUIImageButton = CreateButton("RTU UI – WITH BARCODE IMAGE");
+
+            RTUUIBatchButton = CreateButton("RTU UI – BATCH MODE");
 
             LibraryButton = CreateButton("PICK IMAGE FROM LIBRARY");
 

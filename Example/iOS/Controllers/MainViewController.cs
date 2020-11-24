@@ -29,6 +29,7 @@ namespace BarcodeScannerExample.iOS
             ContentView.ClassicButton.TouchUpInside += OnClassicButtonClick;
             ContentView.RTUUIButton.TouchUpInside += OnRTUUIButtonClick;
             ContentView.RTUUIImageButton.TouchUpInside += OnRTUUIImageButtonClick;
+            ContentView.RTUUIBatchButton.TouchUpInside += OnRTUUIBatchButtonClick;
             ContentView.LibraryButton.TouchUpInside += OnLibraryButtonClick;
             ContentView.CodeTypesButton.TouchUpInside += OnCodeTypeButtonClick;
             ContentView.StorageClearButton.TouchUpInside += OnClearStorageButtonClick;
@@ -97,6 +98,15 @@ namespace BarcodeScannerExample.iOS
             OpenRTUUIBarcodeScanner(true);
         }
 
+        private void OnRTUUIBatchButtonClick(object sender, EventArgs e)
+        {
+            if (!Alert.CheckLicense(this))
+            {
+                return;
+            }
+            OpenRTUUIBatchBarcodeScanner();
+        }
+
         private async void OnLibraryButtonClick(object sender, EventArgs e)
         {
             if (!Alert.CheckLicense(this))
@@ -153,7 +163,7 @@ namespace BarcodeScannerExample.iOS
         void OpenRTUUIBarcodeScanner(bool withImage)
         {
             var configuration = SBSDKUIMachineCodeScannerConfiguration.DefaultConfiguration;
-            configuration.UiConfiguration.FinderAspectRatio = new SBSDKAspectRatio(1, 0.5);
+            configuration.UiConfiguration.FinderAspectRatio = new SBSDKAspectRatio(1.0, 0.5);
 
             if (withImage)
             {
@@ -167,6 +177,16 @@ namespace BarcodeScannerExample.iOS
             SBSDKUIBarcodeScannerViewController.PresentOn(
                 this, BarcodeTypes.Instance.AcceptedTypes.ToArray(), configuration, receiver
             );
+        }
+
+        void OpenRTUUIBatchBarcodeScanner()
+        {
+            var configuration = SBSDKUIBarcodesBatchScannerConfiguration.DefaultConfiguration;
+            configuration.UiConfiguration.FinderAspectRatio = new SBSDKAspectRatio(1.0, 1.0);
+
+            SBSDKUIBarcodesBatchScannerViewController.PresentOn(
+                this, BarcodeTypes.Instance.AcceptedTypes.ToArray(), configuration, null);
+
         }
     }
 }
