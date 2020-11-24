@@ -36,6 +36,9 @@ namespace BarcodeScannerExample.Droid
         private BarcodeTypes()
         {
             var original = BarcodeFormat.Values().ToList();
+            // remove MsiPlessey - beta, not recommended for production use yet.
+            original.Remove(BarcodeFormat.MsiPlessey);
+
             foreach (var item in original)
             {
                 List.Add(item, true);

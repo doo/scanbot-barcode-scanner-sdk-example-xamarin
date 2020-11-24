@@ -10,7 +10,13 @@ namespace BarcodeScannerExample.Droid
 {
     public class BarcodeTypesAdapter : RecyclerView.Adapter
     {
-        public List<BarcodeFormat> Items = BarcodeFormat.Values().ToList();
+        public static List<BarcodeFormat> Items = BarcodeFormat.Values().ToList();
+
+        static BarcodeTypesAdapter()
+        {
+            // remove MsiPlessey - beta, not recommended for production use yet.
+            Items.Remove(BarcodeFormat.MsiPlessey);
+        }
 
         public override int ItemCount => Items.Count;
 

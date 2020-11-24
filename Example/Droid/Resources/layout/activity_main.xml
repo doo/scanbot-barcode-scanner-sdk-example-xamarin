@@ -106,6 +106,21 @@
                 android:background="#50000000" />
 
             <TextView
+                android:id="@+id/rtu_ui_batch"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="16dp"
+                style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
+                android:text="RTU UI batch mode"
+                android:textColor="@color/primary_material_light" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#50000000" />
+
+            <TextView
                 android:id="@+id/rtu_ui_import"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"

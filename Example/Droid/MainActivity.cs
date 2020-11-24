@@ -9,8 +9,11 @@ using Android.Widget;
 using IO.Scanbot.Sdk.Barcode.Entity;
 using IO.Scanbot.Sdk.Barcode_scanner;
 using IO.Scanbot.Sdk.UI.Barcode_scanner.View.Barcode;
+using IO.Scanbot.Sdk.UI.Barcode_scanner.View.Barcode.Batch;
 using IO.Scanbot.Sdk.UI.View.Barcode;
 using IO.Scanbot.Sdk.UI.View.Barcode.Configuration;
+using IO.Scanbot.Sdk.UI.View.Barcode.Batch;
+using IO.Scanbot.Sdk.UI.View.Barcode.Batch.Configuration;
 
 namespace BarcodeScannerExample.Droid
 {
@@ -22,6 +25,7 @@ namespace BarcodeScannerExample.Droid
         ScanbotBarcodeScannerSDK SDK => new ScanbotBarcodeScannerSDK(this);
         
         const int BARCODE_DEFAULT_UI_REQUEST_CODE = 910;
+        const int BATCH_BARCODE_DEFAULT_UI_REQUEST_CODE = 911;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -31,6 +35,7 @@ namespace BarcodeScannerExample.Droid
             FindViewById<TextView>(Resource.Id.qr_demo).Click += OnQRClick;
             FindViewById<TextView>(Resource.Id.rtu_ui).Click += OnRTUUIClick;
             FindViewById<TextView>(Resource.Id.rtu_ui_image).Click += OnRTUUIImageClick;
+            FindViewById<TextView>(Resource.Id.rtu_ui_batch).Click += OnRTUUIBatchClick;
             FindViewById<TextView>(Resource.Id.rtu_ui_import).Click += OnImportClick;
             FindViewById<TextView>(Resource.Id.settings).Click += OnSettingsClick;
             FindViewById<TextView>(Resource.Id.clear_storage).Click += OnClearStorageClick;
@@ -63,6 +68,15 @@ namespace BarcodeScannerExample.Droid
                 return;
             }
             StartBarcodeScannerActivity(BarcodeImageGenerationType.VideoFrame);
+        }
+
+        private void OnRTUUIBatchClick(object sender, EventArgs e)
+        {
+            if (!Alert.CheckLicense(this, SDK))
+            {
+                return;
+            }
+            StartBatchBarcodeScannerActivity();
         }
 
         private async void OnImportClick(object sender, EventArgs e)
@@ -130,6 +144,16 @@ namespace BarcodeScannerExample.Droid
             StartActivityForResult(intent, BARCODE_DEFAULT_UI_REQUEST_CODE);
         }
 
+        void StartBatchBarcodeScannerActivity()
+        {
+            var configuration = new BatchBarcodeScannerConfiguration();
+            var list = BarcodeTypes.Instance.AcceptedTypes;
+            configuration.SetBarcodeFormatsFilter(list);
+            configuration.SetFinderAspectRatio(new IO.Scanbot.Sdk.UI.Camera.FinderAspectRatio(1.0, 1.0));
+            var intent = BatchBarcodeScannerActivity.NewIntent(this, configuration, null);
+            StartActivityForResult(intent, BATCH_BARCODE_DEFAULT_UI_REQUEST_CODE);
+        }
+
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
@@ -149,7 +173,7 @@ namespace BarcodeScannerExample.Droid
 
             if (requestCode == BARCODE_DEFAULT_UI_REQUEST_CODE)
             {
-                var barcode = (BarcodeScanningResult)data.GetParcelableExtra(
+                var barcodeResults = (BarcodeScanningResult)data.GetParcelableExtra(
                     BarcodeScannerActivity.ScannedBarcodeExtra);
                 var imagePath = data.GetStringExtra(
                     BarcodeScannerActivity.ScannedBarcodeImagePathExtra);
@@ -158,9 +182,21 @@ namespace BarcodeScannerExample.Droid
 
                 BarcodeResultBundle.Instance = new BarcodeResultBundle
                 {
-                    ScanningResult = barcode,
+                    ScanningResult = barcodeResults,
                     ImagePath = imagePath,
                     PreviewPath = previewPath
+                };
+
+                StartActivity(new Intent(this, typeof(BarcodeResultActivity)));
+            }
+            else if (requestCode == BATCH_BARCODE_DEFAULT_UI_REQUEST_CODE)
+            {
+                var barcodeResults = (BarcodeScanningResult)data.GetParcelableExtra(
+                    BarcodeScannerActivity.ScannedBarcodeExtra);
+
+                BarcodeResultBundle.Instance = new BarcodeResultBundle
+                {
+                    ScanningResult = barcodeResults,
                 };
 
                 StartActivity(new Intent(this, typeof(BarcodeResultActivity)));
