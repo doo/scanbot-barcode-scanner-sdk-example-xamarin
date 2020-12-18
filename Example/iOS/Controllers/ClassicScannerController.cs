@@ -22,7 +22,7 @@ namespace BarcodeScannerExample.iOS
             Title = "CLASSICAL COMPONENT";
 
             scannerController = new SBSDKBarcodeScannerViewController(this, View);
-
+            
             scannerController.AcceptedBarcodeTypes = BarcodeTypes.Instance.AcceptedTypes.ToArray();
 
             receiver = new ClassicScannerReceiver();
@@ -33,6 +33,8 @@ namespace BarcodeScannerExample.iOS
             
             Flash = new FlashButton();
             View.AddSubview(Flash);
+            View.BackgroundColor = UIColor.Black;
+
             nfloat size = 55;
             nfloat padding = 10;
             Flash.Frame = new CGRect(padding, padding, size, size);
