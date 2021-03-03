@@ -1,4 +1,4 @@
-## Scanbot Barcode Scanner SDK Xamarin Examples
+# Scanbot Barcode Scanner SDK Xamarin Examples
 
 These example apps demonstrate how to integrate the Scanbot Barcode Scanner SDK for Android and iOS with Xamarin and Xamarin.Forms.
 
