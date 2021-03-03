@@ -1,6 +1,6 @@
 # Scanbot Barcode Scanner SDK Xamarin Examples
 
-These example apps show how to integrate the Scanbot Barcode Scanner SDK for Android and iOS with Xamarin and Xamarin.Forms.
+These example demonstrates how to integrate the Scanbot Barcode Scanner SDK for Android and iOS with Xamarin and Xamarin.Forms.
 
 
 ## What is Scanbot Barcode Scanner SDK?
@@ -29,4 +29,4 @@ The Scanbot Barcode Scanner SDK will run without a license for one minute per se
 After the trial period is over all SDK functions as well as the UI components (like Barcode Scanner UI) will stop working.
 You have to restart the app to get another trial period.
 
-To get an unrestricted "no-strings-attached" 30 day trial license, please submit the [Trial License Form](https://scanbot.io/en/sdk/demo/trial) on our website.
+To get an unrestricted, "no-strings-attached" 30-day trial license, please submit the [Trial License Form](https://scanbot.io/en/sdk/demo/trial) on our website.
