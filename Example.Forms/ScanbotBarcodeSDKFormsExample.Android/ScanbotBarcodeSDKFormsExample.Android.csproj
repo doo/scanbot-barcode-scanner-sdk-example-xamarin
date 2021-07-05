@@ -55,7 +55,7 @@
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="4.8.0.1687" />
     <PackageReference Include="ScanbotBarcodeSDK.Xamarin.Forms">
-      <Version>2.0.0</Version>
+      <Version>3.0.0-beta3</Version>
     </PackageReference>
     <PackageReference Include="Scanbot.Xamarin.Forms.ImagePicker">
       <Version>0.0.1-rc6</Version>
