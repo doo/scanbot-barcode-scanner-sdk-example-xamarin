@@ -52,7 +52,7 @@ namespace BarcodeScannerExample.Droid
                 response.SetSaveCameraPreviewFrame(true);
                 response.SetBarcodeFormats(BarcodeTypes.Instance.AcceptedTypes);
             }));
-
+            
             handler = BarcodeDetectorFrameHandler.Attach(cameraView, detector);
             handler.SetDetectionInterval(1000);
 
