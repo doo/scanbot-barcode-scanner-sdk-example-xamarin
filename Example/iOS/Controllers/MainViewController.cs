@@ -105,12 +105,13 @@ namespace BarcodeScannerExample.iOS
             }
             UIImage image = await Scanbot.ImagePicker.iOS.ImagePicker.Instance.Pick();
 
-            var scanner = new SBSDKBarcodeScanner(BarcodeTypes.Instance.AcceptedTypes.ToArray());
+            if (image != null) { 
+                var scanner = new SBSDKBarcodeScanner(BarcodeTypes.Instance.AcceptedTypes.ToArray());
+                SBSDKBarcodeScannerResult[] result = scanner.DetectBarCodesOnImage(image);
 
-            SBSDKBarcodeScannerResult[] result = scanner.DetectBarCodesOnImage(image);
-
-            var controller = new ScanResultListController(image, result);
-            NavigationController.PushViewController(controller, true);
+                var controller = new ScanResultListController(image, result);
+                NavigationController.PushViewController(controller, true);
+            }
         }
 
         private void OnCodeTypeButtonClick(object sender, EventArgs e)
