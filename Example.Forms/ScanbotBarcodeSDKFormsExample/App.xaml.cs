@@ -6,7 +6,16 @@ namespace ScanbotBarcodeSDKFormsExample
 {
     public partial class App : Application
     {
-        public const string Key = null;
+        /*
+         * TODO Add the license key here.
+         * Please note: The Scanbot SDK will run without a license key for one minute per session!
+         * After the trial period has expired all Scanbot SDK functions as well as the UI components will stop working
+         * or may be terminated. You have to restart the app to get another trial period.
+         * You can get an unrestricted, "no-strings-attached" 30-day trial license key for free.
+         * Please submit the trial license form (https://scanbot.io/en/sdk/demo/trial) on our website by using
+         * the app identifier "io.scanbot.example.sdk.barcode.xamarin.forms" of this example app or of your app.
+         */
+        private const string LICENSE_KEY = null;
 
         public App()
         {
@@ -21,7 +30,7 @@ namespace ScanbotBarcodeSDKFormsExample
 
             SBSDK.Initialize(new ScanbotBarcodeSDK.Forms.InitializationOptions
             {
-                LicenseKey = Key,
+                LicenseKey = LICENSE_KEY,
                 LoggingEnabled = true,
                 ErrorHandler = (status, feature) =>
                 {
