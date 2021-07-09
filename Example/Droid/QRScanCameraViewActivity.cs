@@ -47,16 +47,18 @@ namespace BarcodeScannerExample.Droid
 
             var SDK = new ScanbotBarcodeScannerSDK(this);
             var detector = SDK.BarcodeDetector();
-            detector.SetBarcodeFormatsFilter(BarcodeTypes.Instance.AcceptedTypes);
-
+            
+            detector.ModifyConfig(new Function1Impl<BarcodeScannerConfigBuilder>((response) => {
+                response.SetSaveCameraPreviewFrame(true);
+                response.SetBarcodeFormats(BarcodeTypes.Instance.AcceptedTypes);
+            }));
+            
             handler = BarcodeDetectorFrameHandler.Attach(cameraView, detector);
             handler.SetDetectionInterval(1000);
 
             var resultHandler = new BarcodeResultDelegate();
             handler.AddResultHandler(resultHandler);
             resultHandler.Success += OnBarcodeResult;
-
-            handler.SaveCameraPreviewFrame(true);
 
             var snappingcontroller = BarcodeAutoSnappingController.Attach(cameraView, handler);
             snappingcontroller.SetSensitivity(1f);
