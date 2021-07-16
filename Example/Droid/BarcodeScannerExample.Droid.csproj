@@ -149,7 +149,7 @@
       <Version>0.0.1-rc6</Version>
     </PackageReference>
     <PackageReference Include="ScanbotBarcodeSDK.Xamarin">
-      <Version>3.0.0-beta3</Version>
+      <Version>3.0.0-rc4</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="..\BarcodeScannerExample\BarcodeScannerExample.projitems" Label="Shared" Condition="Exists('..\BarcodeScannerExample\BarcodeScannerExample.projitems')" />
