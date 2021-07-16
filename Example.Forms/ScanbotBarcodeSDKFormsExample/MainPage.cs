@@ -100,6 +100,7 @@ namespace ScanbotBarcodeSDKFormsExample
             return async (sender, e) =>
             {
                 var config = new BatchBarcodeScannerConfiguration();
+                config.AcceptedFormats = BarcodeTypes.Instance.AcceptedTypes;
                 var result = await SBSDK.Scanner.OpenBatch(config);
                 if (result.Status == OperationResult.Ok)
                 {
