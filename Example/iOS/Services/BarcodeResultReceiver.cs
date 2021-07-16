@@ -102,4 +102,16 @@ namespace BarcodeScannerExample.iOS
 
         }
     }
+
+    class BatchResultReceiver : SBSDKUIBarcodesBatchScannerViewControllerDelegate
+    {
+        public EventHandler<ScannerEventArgs> ResultsReceived;
+
+        public override void DidDetect(
+            SBSDKUIBarcodesBatchScannerViewController viewController,
+            SBSDKUIBarcodeMappedResult[] barcodeResults)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

@@ -9,6 +9,7 @@ namespace BarcodeScannerExample.iOS
         public MainView ContentView { get; set; }
 
         BarcodeResultReceiver receiver;
+        BatchResultReceiver batchReceiver;
 
         public override void ViewDidLoad()
         {
@@ -20,6 +21,7 @@ namespace BarcodeScannerExample.iOS
             Title = "BARCODE SCANNER";
 
             receiver = new BarcodeResultReceiver();
+            batchReceiver = new BatchResultReceiver();
         }
 
         public override void ViewWillAppear(bool animated)
@@ -29,6 +31,7 @@ namespace BarcodeScannerExample.iOS
             ContentView.ClassicButton.TouchUpInside += OnClassicButtonClick;
             ContentView.RTUUIButton.TouchUpInside += OnRTUUIButtonClick;
             ContentView.RTUUIImageButton.TouchUpInside += OnRTUUIImageButtonClick;
+            ContentView.BatchButton.TouchUpInside += OnBatchButtonClick;
             ContentView.LibraryButton.TouchUpInside += OnLibraryButtonClick;
             ContentView.CodeTypesButton.TouchUpInside += OnCodeTypeButtonClick;
             ContentView.StorageClearButton.TouchUpInside += OnClearStorageButtonClick;
@@ -42,6 +45,7 @@ namespace BarcodeScannerExample.iOS
             ContentView.ClassicButton.TouchUpInside -= OnClassicButtonClick;
             ContentView.RTUUIButton.TouchUpInside -= OnRTUUIButtonClick;
             ContentView.RTUUIImageButton.TouchUpInside -= OnRTUUIImageButtonClick;
+            ContentView.BatchButton.TouchUpInside -= OnBatchButtonClick;
             ContentView.LibraryButton.TouchUpInside -= OnLibraryButtonClick;
             ContentView.CodeTypesButton.TouchUpInside -= OnCodeTypeButtonClick;
             ContentView.StorageClearButton.TouchUpInside -= OnClearStorageButtonClick;
@@ -95,6 +99,21 @@ namespace BarcodeScannerExample.iOS
                 return;
             }
             OpenRTUUIBarcodeScanner(true);
+        }
+
+        private void OnBatchButtonClick(object sender, EventArgs e)
+        {
+            if (!Alert.CheckLicense(this))
+            {
+                return;
+            }
+
+            var config = SBSDKUIBarcodesBatchScannerConfiguration.DefaultConfiguration;
+            var types = BarcodeTypes.Instance.AcceptedTypes.ToArray();
+            var controller = SBSDKUIBarcodesBatchScannerViewController
+                .CreateNewWithAcceptedMachineCodeTypes(types, config, null);
+            //NavigationController.PushViewController(controller, true);
+            SBSDKUIBarcodesBatchScannerViewController.PresentOn(this, types, config, batchReceiver);
         }
 
         private async void OnLibraryButtonClick(object sender, EventArgs e)
