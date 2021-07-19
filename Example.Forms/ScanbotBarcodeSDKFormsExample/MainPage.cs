@@ -31,6 +31,7 @@ namespace ScanbotBarcodeSDKFormsExample
             {
                 CreateCell("READY-TO-USE UI", RTUUIClicked()),
                 CreateCell("RTU UI WITH BARCODE IMAGE", RTUUIWithImageClicked()),
+                CreateCell("BATCH BARCODE SCANNER", BatchClicked()),
                 CreateCell("PICK IMAGE FROM LIBRARY", ImportButtonClicked()),
                 CreateCell("SET ACCEPTED BARCODE TYPES", BarcodeButtonClicked()),
                 CreateCell("CLEAR IMAGE STORAGE", StorageCleanupClicked()),
@@ -90,6 +91,20 @@ namespace ScanbotBarcodeSDKFormsExample
                 if (result.Status == OperationResult.Ok)
                 {
                     await Navigation.PushAsync(new BarcodeResultsPage(result.Image, result.Barcodes));
+                }
+            };
+        }
+
+        EventHandler BatchClicked()
+        {
+            return async (sender, e) =>
+            {
+                var config = new BatchBarcodeScannerConfiguration();
+                config.AcceptedFormats = BarcodeTypes.Instance.AcceptedTypes;
+                var result = await SBSDK.Scanner.OpenBatch(config);
+                if (result.Status == OperationResult.Ok)
+                {
+                    await Navigation.PushAsync(new BarcodeResultsPage(result.Barcodes));
                 }
             };
         }

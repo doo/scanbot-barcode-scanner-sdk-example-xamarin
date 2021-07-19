@@ -64,7 +64,7 @@ namespace BarcodeScannerExample.iOS
 
         public EventHandler<ScannerEventArgs> ResultsReceived;
 
-        public override void QrBarcodeDetectionViewController(
+        public override void DidDetect(
             SBSDKUIBarcodeScannerViewController viewController, SBSDKBarcodeScannerResult[] barcodeResults)
         {
             Invoke(viewController, barcodeResults, null, null);
@@ -72,7 +72,7 @@ namespace BarcodeScannerExample.iOS
 
         ScannerEventArgs args;
 
-        public override void QrBarcodeDetectionViewController(
+        public override void DidCaptureBarcodeImage(
             SBSDKUIBarcodeScannerViewController viewController, UIImage barcodeImage, NSUrl imageURL)
         {
             args.Controller = viewController;
