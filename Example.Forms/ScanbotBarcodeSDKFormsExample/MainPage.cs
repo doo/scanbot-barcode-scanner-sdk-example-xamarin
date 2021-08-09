@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ScanbotBarcodeSDK.Forms;
 using Xamarin.Forms;
 
@@ -120,8 +121,17 @@ namespace ScanbotBarcodeSDKFormsExample
                 ImageSource source = await Scanbot.ImagePicker.Forms.ImagePicker.Instance.Pick();
                 if (source != null)
                 {
-                    var barcodes = await SBSDK.Operations.DetectBarcodesFrom(source);
-                    await Navigation.PushAsync(new BarcodeResultsPage(source, barcodes));
+                    List<Barcode> codes = null;
+                    try
+                    {
+                        codes = await SBSDK.Operations.DetectBarcodesFrom(source);
+                    }
+                    catch (Exception exception)
+                    {
+                        Console.WriteLine("No barcodes found: " + exception.Message);
+                        codes = new List<Barcode>();
+                    }
+                    await Navigation.PushAsync(new BarcodeResultsPage(source, codes));
                 }
             };
         }
