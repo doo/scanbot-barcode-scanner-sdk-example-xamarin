@@ -16,13 +16,6 @@
         android:layout_gravity="center_vertical|center_horizontal"
         android:background="@drawable/container_bg" />
 
-    <TextView
-        android:id="@+id/snapped_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|left"
-        android:contentDescription="snapped_message" />
-
     <Button
         android:id="@+id/flash"
         android:layout_width="wrap_content"
@@ -30,11 +23,21 @@
         android:layout_gravity="top|right"
         android:text="Flash" />
 
-    <ImageView
-        android:id="@+id/result"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+    <TextView
+        android:id="@+id/barcode_counter"
+        android:text="Scanned Barcodes:  "
+        android:layout_width="wrap_content"
+        android:padding="20dp"
+        android:textColor="#ffffff"
+        android:background="#0000ff"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|left"/>
+
+    <Button
+        android:id="@+id/finish_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
-        android:contentDescription="snap_result"/>
+        android:text="Finish" />
 
 </FrameLayout>

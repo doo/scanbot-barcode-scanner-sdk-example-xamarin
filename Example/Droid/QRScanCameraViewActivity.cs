@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Android;
 using Android.App;
-using Android.Content;
 using Android.Content.PM;
-using Android.Graphics;
 using Android.OS;
 using Android.Widget;
 using AndroidX.AppCompat.App;
@@ -21,9 +20,13 @@ namespace BarcodeScannerExample.Droid
     public class QRScanCameraViewActivity : AppCompatActivity, ICameraOpenCallback
     {
         ScanbotCameraView cameraView;
-        ImageView resultView;
 
         BarcodeDetectorFrameHandler handler;
+
+        List<BarcodeScanningResult> scannedBarcodes = new List<BarcodeScanningResult>();
+
+        TextView barcodeCounter;
+
 
         const int REQUEST_PERMISSION_CODE = 200;
         public string[] Permissions
@@ -41,7 +44,6 @@ namespace BarcodeScannerExample.Droid
             SetContentView(Resource.Layout.qr_camera_view);
 
             cameraView = FindViewById<ScanbotCameraView>(Resource.Id.camera);
-            resultView = FindViewById<ImageView>(Resource.Id.result);
 
             cameraView.SetCameraOpenCallback(this);
 
@@ -49,36 +51,44 @@ namespace BarcodeScannerExample.Droid
             var detector = SDK.BarcodeDetector();
             
             detector.ModifyConfig(new Function1Impl<BarcodeScannerConfigBuilder>((response) => {
-                response.SetSaveCameraPreviewFrame(true);
+                // set accepted barcode types
                 response.SetBarcodeFormats(BarcodeTypes.Instance.AcceptedTypes);
             }));
             
             handler = BarcodeDetectorFrameHandler.Attach(cameraView, detector);
-            handler.SetDetectionInterval(1000);
+            // define a suitable interval for your use case
+            handler.SetDetectionInterval(500);
 
             var resultHandler = new BarcodeResultDelegate();
             handler.AddResultHandler(resultHandler);
             resultHandler.Success += OnBarcodeResult;
 
-            var snappingcontroller = BarcodeAutoSnappingController.Attach(cameraView, handler);
-            snappingcontroller.SetSensitivity(1f);
-
-            var pictureDelegate = new PictureResultDelegate();
-            cameraView.AddPictureCallback(pictureDelegate);
-            pictureDelegate.PictureTaken += OnPictureTaken;
+            barcodeCounter = FindViewById<TextView>(Resource.Id.barcode_counter);
 
             FindViewById<Button>(Resource.Id.flash).Click += delegate
             {
                 flashEnabled = !flashEnabled;
                 cameraView.UseFlash(flashEnabled);
             };
+
+            FindViewById<Button>(Resource.Id.finish_button).Click += delegate
+            {
+                // close ther scanner (finish Activity).
+                // share/pass "scannedBarcodes" to use in your further workflow.
+                Finish();
+            };
         }
 
         private void OnBarcodeResult(object sender, BarcodeEventArgs e)
         {
-            BarcodeResultBundle.Instance = new BarcodeResultBundle(e.Result);
-            StartActivity(new Intent(this, typeof(BarcodeResultActivity)));
-            Finish();
+            // collect scanned barcode results in a list
+            scannedBarcodes.Add(e.Result);
+
+            // update the barcode counter label
+            barcodeCounter.Post(delegate
+            {
+                barcodeCounter.Text = "Scanned Barcodes: " + scannedBarcodes.Count;
+            });
         }
 
         protected override void OnResume()
@@ -106,26 +116,6 @@ namespace BarcodeScannerExample.Droid
                 cameraView.ContinuousFocus();
             }, 300);
         }
-
-        public void OnPictureTaken(object sender, PictureTakenEventArgs e)
-        {
-            var image = e.Image;
-            var orientation = e.Orientation;
-
-            var bitmap = BitmapFactory.DecodeByteArray(image, 0, orientation);
-
-            var matrix = new Matrix();
-            matrix.SetRotate(orientation, bitmap.Width / 2, bitmap.Height / 2);
-
-            var result = Bitmap.CreateBitmap(bitmap, 0, 0, bitmap.Width, bitmap.Height, matrix, false);
-
-            resultView.Post(delegate
-            {
-                resultView.SetImageBitmap(result);
-                cameraView.ContinuousFocus();
-                cameraView.StartPreview();
-            });
-        }
     }
 
     class BarcodeEventArgs : EventArgs
@@ -149,32 +139,11 @@ namespace BarcodeScannerExample.Droid
             {
                 var value = (BarcodeScanningResult)success.Value;
                 Success?.Invoke(this, new BarcodeEventArgs(success.Value));
-                return true;
             }
 
+            // return FALSE for continuous barcode scanning!
             return false;
         }
     }
 
-    public class PictureTakenEventArgs : EventArgs
-    {
-        public byte[] Image { get; private set; }
-        public int Orientation { get; private set; }
-
-        public PictureTakenEventArgs(byte[] image, int orientation)
-        {
-            Image = image;
-            Orientation = orientation;
-        }
-    }
-
-    class PictureResultDelegate : PictureCallback
-    {
-        public EventHandler<PictureTakenEventArgs> PictureTaken;
-
-        public override void OnPictureTaken(byte[] image, int imageOrientation)
-        {
-            PictureTaken?.Invoke(this, new PictureTakenEventArgs(image, imageOrientation));
-        }
-    }
 }
