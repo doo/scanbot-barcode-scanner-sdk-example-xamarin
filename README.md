@@ -21,7 +21,7 @@ Latest version of [Microsoft Visual Studio](https://visualstudio.microsoft.com/x
 ## Documentation
 For more details about the Scanbot Barcode Scanner SDK for Xamarin please see this [documentation](https://scanbotsdk.github.io/documentation/barcode-scanner-sdk/xamarin/).
 
-
+ 
 ## Please note
 
 The Scanbot Barcode Scanner SDK will run without a license for one minute per session!
