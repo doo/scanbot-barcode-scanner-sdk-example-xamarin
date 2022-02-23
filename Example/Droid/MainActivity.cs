@@ -11,6 +11,7 @@ using IO.Scanbot.Sdk.Barcode_scanner;
 using IO.Scanbot.Sdk.UI.Barcode_scanner.View.Barcode;
 using IO.Scanbot.Sdk.UI.View.Barcode;
 using IO.Scanbot.Sdk.UI.View.Barcode.Configuration;
+using IO.Scanbot.Sdk.UI.View.Base;
 
 namespace BarcodeScannerExample.Droid
 {
@@ -73,7 +74,7 @@ namespace BarcodeScannerExample.Droid
             }
             Bitmap bitmap = await Scanbot.ImagePicker.Droid.ImagePicker.Instance.Pick();
 
-            var result = SDK.BarcodeDetector().DetectFromBitmap(bitmap, 0);
+            var result = SDK.CreateBarcodeDetector().DetectFromBitmap(bitmap, 0);
 
             BarcodeResultBundle.Instance = new BarcodeResultBundle
             {
@@ -100,7 +101,7 @@ namespace BarcodeScannerExample.Droid
             {
                 return;
             }
-            SDK.BarcodeFileStorage().CleanupBarcodeImagesDirectory();
+            SDK.CreateBarcodeFileStorage().CleanupBarcodeImagesDirectory();
             Alert.Toast(this, "Cleared image storage");
         }
 
@@ -149,7 +150,7 @@ namespace BarcodeScannerExample.Droid
             if (requestCode == BARCODE_DEFAULT_UI_REQUEST_CODE)
             {
                 var barcode = (BarcodeScanningResult)data.GetParcelableExtra(
-                    BarcodeScannerActivity.ScannedBarcodeExtra);
+                    RtuConstants.ExtraKeyRtuResult);
                 var imagePath = data.GetStringExtra(
                     BarcodeScannerActivity.ScannedBarcodeImagePathExtra);
                 var previewPath = data.GetStringExtra(
