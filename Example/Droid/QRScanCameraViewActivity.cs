@@ -46,7 +46,7 @@ namespace BarcodeScannerExample.Droid
             cameraView.SetCameraOpenCallback(this);
 
             var SDK = new ScanbotBarcodeScannerSDK(this);
-            var detector = SDK.BarcodeDetector();
+            var detector = SDK.CreateBarcodeDetector();
             
             detector.ModifyConfig(new Function1Impl<BarcodeScannerConfigBuilder>((response) => {
                 response.SetSaveCameraPreviewFrame(true);
@@ -172,9 +172,9 @@ namespace BarcodeScannerExample.Droid
     {
         public EventHandler<PictureTakenEventArgs> PictureTaken;
 
-        public override void OnPictureTaken(byte[] image, int imageOrientation)
+        public override void OnPictureTaken(byte[] image, CaptureInfo captureInfo)
         {
-            PictureTaken?.Invoke(this, new PictureTakenEventArgs(image, imageOrientation));
+            PictureTaken?.Invoke(this, new PictureTakenEventArgs(image, captureInfo.ImageOrientation));
         }
     }
 }

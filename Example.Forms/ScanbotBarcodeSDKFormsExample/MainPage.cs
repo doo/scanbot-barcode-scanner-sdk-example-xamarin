@@ -180,9 +180,11 @@ namespace ScanbotBarcodeSDKFormsExample
 
         BarcodeScannerConfiguration GetScannerConfiguration(bool withImage)
         {
-            var configuration = new BarcodeScannerConfiguration();
-            configuration.AcceptedFormats = BarcodeTypes.Instance.AcceptedTypes;
-            configuration.SuccessBeepEnabled = true;
+            var configuration = new BarcodeScannerConfiguration
+            {
+                AcceptedFormats = BarcodeTypes.Instance.AcceptedTypes,
+                SuccessBeepEnabled = true
+            };
             //configuration.FinderWidth = 300;
             //configuration.FinderHeight = 200;
             //configuration.FinderTextHint = "Custom hint text...";
