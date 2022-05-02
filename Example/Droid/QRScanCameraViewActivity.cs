@@ -14,13 +14,16 @@ using IO.Scanbot.Sdk.Barcode;
 using IO.Scanbot.Sdk.Barcode.Entity;
 using IO.Scanbot.Sdk.Barcode_scanner;
 using IO.Scanbot.Sdk.Camera;
+using IO.Scanbot.Sdk.UI.Camera;
 
 namespace BarcodeScannerExample.Droid
 {
     [Activity(Theme = "@style/AppTheme")]
     public class QRScanCameraViewActivity : AppCompatActivity, ICameraOpenCallback
     {
-        ScanbotCameraView cameraView;
+        ScanbotCameraXView cameraView;
+        CameraModule cameraModule = CameraModule.Back;
+
         ImageView resultView;
 
         BarcodeDetectorFrameHandler handler;
@@ -40,9 +43,11 @@ namespace BarcodeScannerExample.Droid
 
             SetContentView(Resource.Layout.qr_camera_view);
 
-            cameraView = FindViewById<ScanbotCameraView>(Resource.Id.camera);
+            cameraView = FindViewById<ScanbotCameraXView>(Resource.Id.camera);
             resultView = FindViewById<ImageView>(Resource.Id.result);
 
+            cameraView.SetCameraModule(cameraModule);
+            cameraView.SetPreviewMode(CameraPreviewMode.FitIn);
             cameraView.SetCameraOpenCallback(this);
 
             var SDK = new ScanbotBarcodeScannerSDK(this);
@@ -72,6 +77,13 @@ namespace BarcodeScannerExample.Droid
                 flashEnabled = !flashEnabled;
                 cameraView.UseFlash(flashEnabled);
             };
+
+            FindViewById<Button>(Resource.Id.cam_switch).Click += delegate
+            {
+                cameraModule = cameraModule == CameraModule.Back ? CameraModule.FrontMirrored : CameraModule.Back;
+                cameraView.SetCameraModule(cameraModule);
+                cameraView.RestartPreview();
+            };
         }
 
         private void OnBarcodeResult(object sender, BarcodeEventArgs e)
@@ -84,7 +96,7 @@ namespace BarcodeScannerExample.Droid
         protected override void OnResume()
         {
             base.OnResume();
-            cameraView.OnResume();
+
             var status = ContextCompat.CheckSelfPermission(this, Permissions[0]);
             if (status != Permission.Granted)
             {
@@ -95,7 +107,6 @@ namespace BarcodeScannerExample.Droid
         protected override void OnPause()
         {
             base.OnPause();
-            cameraView.OnPause();
         }
 
         public void OnCameraOpened()

@@ -7,7 +7,7 @@ using AndroidX.AppCompat.App;
 using AndroidX.ConstraintLayout.Widget;
 using IO.Scanbot.Barcodescanner.Model.BoardingPass;
 using IO.Scanbot.Barcodescanner.Model.DEMedicalPlan;
-using IO.Scanbot.Barcodescanner.Model.DisabilityCertificate;
+using IO.Scanbot.Barcodescanner.Model.MedicalCertificate;
 using IO.Scanbot.Barcodescanner.Model.SEPA;
 using IO.Scanbot.Barcodescanner.Model.VCard;
 using IO.Scanbot.Sdk.Barcode.Entity;
@@ -98,11 +98,11 @@ namespace BarcodeScannerExample.Droid
                 }
                 result.Append("\n");
             }
-            else if (format is DisabilityCertificateDocument)
+            else if (format is MedicalCertificateDocument)
             {
                 result.Append("Disability Certificate Document").Append("\n");
 
-                foreach (DisabilityCertificateDocumentField field in ((DisabilityCertificateDocument)format).Fields)
+                foreach (MedicalCertificateDocumentField field in ((MedicalCertificateDocument)format).Fields)
                 {
                     result.Append(field.Type.Name()).Append(": ").Append(field.Value).Append("\n");
                 }
