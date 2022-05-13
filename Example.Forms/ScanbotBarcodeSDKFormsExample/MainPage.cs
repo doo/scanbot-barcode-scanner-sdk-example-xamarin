@@ -37,6 +37,10 @@ namespace ScanbotBarcodeSDKFormsExample
                 CreateCell("CLEAR IMAGE STORAGE", StorageCleanupClicked()),
                 CreateCell("VIEW LICENSE INFO", ViewLicenseInfoClicked())
             });
+            table.Root.Add(new TableSection("QA TESTING")
+            {
+                CreateCell("PARSE BARCODE DOCUMENT", ParseBarcodeDocumentClicked())
+            });
 
             Content = Container;
             Content.BackgroundColor = Color.White;
@@ -60,6 +64,38 @@ namespace ScanbotBarcodeSDKFormsExample
 
             return cell;
         }
+
+        // --- QA TEST ---
+        EventHandler ParseBarcodeDocumentClicked() {
+            return async (sender, e) =>
+            {
+                if (!Utils.CheckLicense(this))
+                {
+                    return;
+                }
+
+                string barcodeText = await DisplayPromptAsync("Barcode Document Parser", "Insert the barcode text:");
+                if (barcodeText == null) {
+                    return;
+                }
+
+                BarcodeFormattedResult result = await SBSDK.Operations.ParseBarcodeDocument(barcodeText);
+
+                string message = "";
+                if (result != null && result.ParsedSuccessful)
+                {
+                    message = "Parsed successfully!\n";
+                    message += $"Document Type: {result.DocumentFormat.Value}";
+                }
+                else
+                {
+                    message = "Cannot perform parsing on the given barcode";
+                }
+
+                Utils.Alert(this, "Result", message);
+            };
+        }
+        // ---------------
 
         EventHandler RTUUIClicked()
         {
