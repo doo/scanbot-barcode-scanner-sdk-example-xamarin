@@ -20,8 +20,8 @@ namespace BarcodeScannerExample.iOS
                 GetPDF417(format as SBSDKIDCardPDF417DocumentFormat);
             if (format is SBSDKBoardingPassDocumentFormat)
                 GetBoardingPass(format as SBSDKBoardingPassDocumentFormat);
-            if (format is SBSDKDisabilityCertificateDocumentFormat)
-                GetDC(format as SBSDKDisabilityCertificateDocumentFormat);
+            if (format is SBSDKMedicalCertificateDocumentFormat)
+                GetDC(format as SBSDKMedicalCertificateDocumentFormat);
             if (format is SBSDKSEPADocumentFormat)
                 GetSEPA(format as SBSDKSEPADocumentFormat);
 
@@ -199,7 +199,7 @@ namespace BarcodeScannerExample.iOS
             return result;
         }
 
-        string GetDC(SBSDKDisabilityCertificateDocumentFormat document)
+        string GetDC(SBSDKMedicalCertificateDocumentFormat document)
         {
             var result = "\n\n\nDetected DC form bar code:\n";
             if (document.Fields.Length > 0)

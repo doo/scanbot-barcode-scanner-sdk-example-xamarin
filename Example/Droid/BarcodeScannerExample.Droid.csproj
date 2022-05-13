@@ -54,12 +54,14 @@
     <Compile Include="BarcodeResultActivity.cs" />
     <Compile Include="Model\BarcodeResultBundle.cs" />
     <Compile Include="DetailedItemDataActivity.cs" />
-    <Compile Include="QRScanCameraViewActivity.cs" />
     <Compile Include="BarcodeTypesActivity.cs" />
     <Compile Include="BarcodeTypesAdapter.cs" />
     <Compile Include="Model\BarcodeTypes.cs" />
     <Compile Include="Utils\Alert.cs" />
     <Compile Include="Utils\Function1Impl.cs" />
+    <Compile Include="Activities\DemoBarcodeCameraViewActivity.cs" />
+    <Compile Include="Common\BarcodeScannerDelegates.cs" />
+    <Compile Include="Activities\DemoBarcodeCameraXViewActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -101,7 +103,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\qr_camera_view.xml">
+    <AndroidResource Include="Resources\layout\barcode_camera_activity.xml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
@@ -137,19 +139,25 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\barcode_camerax_activity.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\layout\" />
     <Folder Include="Resources\values\" />
     <Folder Include="Model\" />
     <Folder Include="Utils\" />
+    <Folder Include="Activities\" />
+    <Folder Include="Common\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Scanbot.Xamarin.ImagePicker">
       <Version>0.0.1-rc6</Version>
     </PackageReference>
     <PackageReference Include="ScanbotBarcodeSDK.Xamarin">
-      <Version>3.2.0-beta1</Version>
+      <Version>3.2.0-beta3</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="..\BarcodeScannerExample\BarcodeScannerExample.projitems" Label="Shared" Condition="Exists('..\BarcodeScannerExample\BarcodeScannerExample.projitems')" />
