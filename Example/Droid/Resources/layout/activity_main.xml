@@ -86,10 +86,12 @@
 			<TextView
 				android:id="@+id/barcode_camera_demo"
 				android:layout_width="match_parent"
-				android:layout_height="56dp"
+				android:layout_height="wrap_content"
 				android:gravity="center_vertical"
 				android:text="Barcode Camera View"
-				android:layout_marginLeft="16dp"
+				android:paddingHorizontal="16dp"
+                android:paddingVertical="20dp"
+                android:layout_margin="0dp"
 				style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
 				android:textColor="@color/primary_material_light" />
 
@@ -101,10 +103,11 @@
 			<TextView
 				android:id="@+id/barcode_camerax_demo"
 				android:layout_width="match_parent"
-				android:layout_height="56dp"
+				android:layout_height="wrap_content"
 				android:gravity="center_vertical"
 				android:text="Barcode Camera View (Camera X)"
-				android:layout_marginLeft="16dp"
+				android:paddingHorizontal="16dp"
+                android:paddingVertical="20dp"
 				style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
 				android:textColor="@color/primary_material_light" />
 
@@ -123,9 +126,10 @@
             <TextView
                 android:id="@+id/rtu_ui"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:layout_marginLeft="16dp"
+				android:paddingHorizontal="16dp"
+                android:paddingVertical="20dp"
                 style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
                 android:text="Barcode Scanner"
                 android:textColor="@color/primary_material_light" />
@@ -138,11 +142,28 @@
             <TextView
                 android:id="@+id/rtu_ui_image"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:layout_marginLeft="16dp"
+				android:paddingHorizontal="16dp"
+                android:paddingVertical="20dp"
                 style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
                 android:text="Barcode Scanner with Image"
+                android:textColor="@color/primary_material_light" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#50000000" />
+
+            <TextView
+                android:id="@+id/batch_rtu_ui"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+				android:paddingHorizontal="16dp"
+                android:paddingVertical="20dp"
+                style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
+                android:text="Batch Barcode Scanner"
                 android:textColor="@color/primary_material_light" />
 
             <TextView
@@ -154,15 +175,17 @@
                 android:background="@color/scanbotRed"
                 android:gravity="center_vertical"
                 android:layout_gravity="left"
-                android:padding="16dp"
+				android:paddingHorizontal="16dp"
+                android:paddingVertical="20dp"
             />
 
             <TextView
                 android:id="@+id/rtu_ui_import"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:layout_marginLeft="16dp"
+				android:paddingHorizontal="16dp"
+                android:paddingVertical="20dp"
                 style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
                 android:text="Detect Barcode on Image"
                 android:textColor="@color/primary_material_light" />
@@ -175,9 +198,10 @@
             <TextView
                 android:id="@+id/clear_storage"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:layout_marginLeft="16dp"
+				android:paddingHorizontal="16dp"
+                android:paddingVertical="20dp"
                 style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
                 android:text="Clear image storage"
                 android:textColor="@color/primary_material_light" />
@@ -190,9 +214,10 @@
             <TextView
                 android:id="@+id/license_info"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:layout_marginLeft="16dp"
+				android:paddingHorizontal="16dp"
+                android:paddingVertical="20dp"
                 style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
                 android:text="View license info"
                 android:textColor="@color/primary_material_light" />
@@ -206,15 +231,17 @@
                 android:background="@color/scanbotRed"
                 android:gravity="center_vertical"
                 android:layout_gravity="left"
-                android:padding="16dp"
+				android:paddingHorizontal="16dp"
+                android:paddingVertical="20dp"
             />
 
             <TextView
                 android:id="@+id/settings"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:layout_marginLeft="16dp"
+				android:paddingHorizontal="16dp"
+                android:paddingVertical="20dp"
                 style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
                 android:text="Set accepted barcodes"
                 android:textColor="@color/primary_material_light" />

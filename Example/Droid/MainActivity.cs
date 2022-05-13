@@ -9,6 +9,8 @@ using Android.Widget;
 using IO.Scanbot.Sdk.Barcode.Entity;
 using IO.Scanbot.Sdk.Barcode_scanner;
 using IO.Scanbot.Sdk.UI.Barcode_scanner.View.Barcode;
+using IO.Scanbot.Sdk.UI.Barcode_scanner.View.Barcode.Batch;
+using IO.Scanbot.Sdk.UI.View.Barcode.Batch.Configuration;
 using IO.Scanbot.Sdk.UI.View.Barcode.Configuration;
 using IO.Scanbot.Sdk.UI.View.Base;
 
@@ -34,6 +36,7 @@ namespace BarcodeScannerExample.Droid
             FindViewById<TextView>(Resource.Id.barcode_camerax_demo).Click += OnBarcodeCameraXDemoClick;
             FindViewById<TextView>(Resource.Id.rtu_ui).Click += OnRTUUIClick;
             FindViewById<TextView>(Resource.Id.rtu_ui_image).Click += OnRTUUIImageClick;
+            FindViewById<TextView>(Resource.Id.batch_rtu_ui).Click += OnBatchRTUUIClick;
             FindViewById<TextView>(Resource.Id.rtu_ui_import).Click += OnImportClick;
             FindViewById<TextView>(Resource.Id.settings).Click += OnSettingsClick;
             FindViewById<TextView>(Resource.Id.clear_storage).Click += OnClearStorageClick;
@@ -76,6 +79,15 @@ namespace BarcodeScannerExample.Droid
                 return;
             }
             StartBarcodeScannerActivity(BarcodeImageGenerationType.VideoFrame);
+        }
+
+        private void OnBatchRTUUIClick(object sender, EventArgs e)
+        {
+            if (!Alert.CheckLicense(this, SDK))
+            {
+                return;
+            }
+            StartBatchBarcodeScannerActivity();
         }
 
         private async void OnImportClick(object sender, EventArgs e)
@@ -144,6 +156,15 @@ namespace BarcodeScannerExample.Droid
             configuration.SetBarcodeImageGenerationType(type);
 
             var intent = BarcodeScannerActivity.NewIntent(this, configuration);
+            StartActivityForResult(intent, BARCODE_DEFAULT_UI_REQUEST_CODE);
+        }
+
+        void StartBatchBarcodeScannerActivity()
+        {
+            var configuration = new BatchBarcodeScannerConfiguration();
+            var list = BarcodeTypes.Instance.AcceptedTypes;
+            configuration.SetBarcodeFormatsFilter(list);
+            var intent = BatchBarcodeScannerActivity.NewIntent(this, configuration, null);
             StartActivityForResult(intent, BARCODE_DEFAULT_UI_REQUEST_CODE);
         }
 
