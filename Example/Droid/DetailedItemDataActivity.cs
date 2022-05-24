@@ -100,7 +100,7 @@ namespace BarcodeScannerExample.Droid
             }
             else if (format is MedicalCertificateDocument)
             {
-                result.Append("Disability Certificate Document").Append("\n");
+                result.Append("Medical Certificate Document").Append("\n");
 
                 foreach (MedicalCertificateDocumentField field in ((MedicalCertificateDocument)format).Fields)
                 {
