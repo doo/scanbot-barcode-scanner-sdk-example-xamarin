@@ -39,7 +39,8 @@ namespace ScanbotBarcodeSDKFormsExample
             });
             table.Root.Add(new TableSection("QA TESTING")
             {
-                CreateCell("PARSE BARCODE DOCUMENT", ParseBarcodeDocumentClicked())
+                CreateCell("PARSE BARCODE DOCUMENT", ParseBarcodeDocumentClicked()),
+                CreateCell("PARSE BARCODE DOCUMENT (PREVIOUS)", SingleLineParseBarcodeDocumentClicked())
             });
 
             Content = Container;
@@ -74,8 +75,18 @@ namespace ScanbotBarcodeSDKFormsExample
                     return;
                 }
 
+                await Navigation.PushAsync(new BarcodeDocumentParserPage());
+
+
+            };
+        }
+
+        EventHandler SingleLineParseBarcodeDocumentClicked() {
+            return async (sender, e) =>
+            {
                 string barcodeText = await DisplayPromptAsync("Barcode Document Parser", "Insert the barcode text:");
-                if (barcodeText == null) {
+                if (barcodeText == null)
+                {
                     return;
                 }
 

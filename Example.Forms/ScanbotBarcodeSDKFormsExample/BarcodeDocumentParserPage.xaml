@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ScanbotBarcodeSDKFormsExample.BarcodeDocumentParserPage">
+    <ContentPage.Content>
+        <StackLayout
+            Orientation="Vertical"
+            Padding="24"
+            Spacing="24">
+            <Editor
+                x:Name="textEditor"
+                AutoSize="TextChanges"
+                BackgroundColor="LightGray"
+                Placeholder="Paste the barcode text here"
+                HeightRequest="400"/>
+            <Button Text="PARSE" x:Name="parseButton"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
+
