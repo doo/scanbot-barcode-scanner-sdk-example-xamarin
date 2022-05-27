@@ -79,13 +79,13 @@
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
     <Reference Include="ScanbotBarcodeSDK.iOS">
-      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.3.2.0-beta4-local2\lib\Xamarin.iOS10\ScanbotBarcodeSDK.iOS.dll</HintPath>
+      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.3.2.0-beta4\lib\Xamarin.iOS10\ScanbotBarcodeSDK.iOS.dll</HintPath>
     </Reference>
     <Reference Include="ScanbotBarcodeSDK.Xamarin">
-      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.3.2.0-beta4-local2\lib\Xamarin.iOS10\ScanbotBarcodeSDK.Xamarin.dll</HintPath>
+      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.3.2.0-beta4\lib\Xamarin.iOS10\ScanbotBarcodeSDK.Xamarin.dll</HintPath>
     </Reference>
     <Reference Include="ScanbotBarcodeSDK.Xamarin.iOS">
-      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.3.2.0-beta4-local2\lib\Xamarin.iOS10\ScanbotBarcodeSDK.Xamarin.iOS.dll</HintPath>
+      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.3.2.0-beta4\lib\Xamarin.iOS10\ScanbotBarcodeSDK.Xamarin.iOS.dll</HintPath>
     </Reference>
     <Reference Include="Scanbot.ImagePicker.iOS">
       <HintPath>..\packages\Scanbot.Xamarin.ImagePicker.0.0.1-rc6\lib\Xamarin.iOS10\Scanbot.ImagePicker.iOS.dll</HintPath>
