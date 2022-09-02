@@ -32,14 +32,6 @@ namespace NativeBarcodeSDKRenderer.Droid
             base.OnCreate();
 
             operations = new ScanbotOperations();
-
-            Log.Debug(LOG_TAG, "Initializing Scanbot SDK...");
-            var initializer = new ScanbotBarcodeScannerSDKInitializer();
-            initializer.WithLogging(true, enableNativeLogging: false);
-            initializer.UseCameraXRtuUi(false);
-            initializer.License(this, ScanbotSDKConfiguration.LICENSE_KEY);
-            initializer.Initialize(this);
-
             operations.ClearStorageDirectory();
         }
     }

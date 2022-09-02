@@ -15,7 +15,7 @@ namespace NativeBarcodeSDKRenderer.Droid
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
+            ScanbotBarcodeSDK.Forms.Droid.DependencyManager.Register();
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 

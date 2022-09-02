@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Foundation;
+using NativeBarcodeSDKRenderer.Common;
+using ScanbotBarcodeSDK.iOS;
 using UIKit;
 
 namespace NativeBarcodeSDKRenderer.iOS
@@ -22,9 +24,11 @@ namespace NativeBarcodeSDKRenderer.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            // Most important line, else the Forms objects won't work.
+            ScanbotBarcodeSDK.Forms.iOS.DependencyManager.Register();
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
-
+            Xamarin.Essentials.Platform.Init(() => Window.RootViewController);
             return base.FinishedLaunching(app, options);
         }
     }
