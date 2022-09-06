@@ -148,7 +148,7 @@ namespace NativeBarcodeSDKRenderer
             safeInsets.Bottom = 0;
             Padding = safeInsets;
 
-            // In iOS the cameraView doesn't stops scanning so below button is kind of useless.
+            // In iOS the cameraView doesn't support pausing so we hide the button.
             buttonsLayout.IsVisible = false;
         }
 
