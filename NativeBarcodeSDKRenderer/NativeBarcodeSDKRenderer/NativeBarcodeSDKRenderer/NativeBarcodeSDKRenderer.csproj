@@ -19,6 +19,7 @@
     <None Remove="Common\" />
     <None Remove="Views\" />
     <None Remove="ScanbotBarcodeSDK.Xamarin.Forms" />
+    <None Remove="ScanbotBarcodeSDK.Xamarin" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Common\" />
