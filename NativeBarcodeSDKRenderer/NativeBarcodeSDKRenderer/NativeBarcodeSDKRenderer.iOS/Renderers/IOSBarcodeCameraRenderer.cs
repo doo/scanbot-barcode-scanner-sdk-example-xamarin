@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using CoreGraphics;
-using Foundation;
 using NativeBarcodeSDKRenderer.iOS.Renderers;
 using NativeBarcodeSDKRenderer.Views;
 using ScanbotBarcodeSDK.Forms;
@@ -78,7 +77,15 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
 
         public override bool ShouldDetectBarcodes(SBSDKBarcodeScannerViewController controller)
         {
-            return true;
+            if (ScanbotSDK.IsLicenseValid)
+            {
+                return true;
+            }
+            else
+            {
+                (UIApplication.SharedApplication.Delegate as AppDelegate)?.ShowAlert("License Expired!", "Ok");
+                return false;
+            }
         }
     }
 
