@@ -81,7 +81,7 @@ namespace NativeBarcodeSDKRenderer
             }
             else
             {
-                if (ScanbotSDKConfiguration.LICENSE_KEY.Equals(""))
+                if (string.IsNullOrWhiteSpace(ScanbotSDKConfiguration.LICENSE_KEY))
                 {
                     await ShowTrialLicenseAlert();
                 }

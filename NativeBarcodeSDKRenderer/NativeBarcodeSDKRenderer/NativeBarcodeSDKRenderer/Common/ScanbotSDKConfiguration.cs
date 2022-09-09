@@ -9,7 +9,7 @@ namespace NativeBarcodeSDKRenderer.Common
         public const bool IS_DEBUG = false;
 #endif
 
-        public const string LICENSE_KEY = "";
+        public const string LICENSE_KEY = null;
     }
 }
 
