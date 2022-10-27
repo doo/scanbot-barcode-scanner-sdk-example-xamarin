@@ -9,7 +9,8 @@ using Android.Widget;
 using IO.Scanbot.Sdk.Barcode.Entity;
 using IO.Scanbot.Sdk.Barcode_scanner;
 using IO.Scanbot.Sdk.UI.Barcode_scanner.View.Barcode;
-using IO.Scanbot.Sdk.UI.View.Barcode;
+using IO.Scanbot.Sdk.UI.Barcode_scanner.View.Barcode.Batch;
+using IO.Scanbot.Sdk.UI.View.Barcode.Batch.Configuration;
 using IO.Scanbot.Sdk.UI.View.Barcode.Configuration;
 using IO.Scanbot.Sdk.UI.View.Base;
 
@@ -20,31 +21,45 @@ namespace BarcodeScannerExample.Droid
     {
         View WarningView => FindViewById<View>(Resource.Id.warning_view);
 
-        ScanbotBarcodeScannerSDK SDK => new ScanbotBarcodeScannerSDK(this);
+        public static ScanbotBarcodeScannerSDK SDK;
         
         const int BARCODE_DEFAULT_UI_REQUEST_CODE = 910;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            SDK = new ScanbotBarcodeScannerSDK(this);
+
             SetContentView(Resource.Layout.activity_main);
 
-            FindViewById<TextView>(Resource.Id.qr_demo).Click += OnQRClick;
+            FindViewById<TextView>(Resource.Id.barcode_camera_demo).Click += OnBarcodeCameraDemoClick;
+            FindViewById<TextView>(Resource.Id.barcode_camerax_demo).Click += OnBarcodeCameraXDemoClick;
             FindViewById<TextView>(Resource.Id.rtu_ui).Click += OnRTUUIClick;
             FindViewById<TextView>(Resource.Id.rtu_ui_image).Click += OnRTUUIImageClick;
+            FindViewById<TextView>(Resource.Id.batch_rtu_ui).Click += OnBatchRTUUIClick;
             FindViewById<TextView>(Resource.Id.rtu_ui_import).Click += OnImportClick;
             FindViewById<TextView>(Resource.Id.settings).Click += OnSettingsClick;
             FindViewById<TextView>(Resource.Id.clear_storage).Click += OnClearStorageClick;
             FindViewById<TextView>(Resource.Id.license_info).Click += OnLicenseInfoClick;
         }
 
-        private void OnQRClick(object sender, EventArgs e)
+        private void OnBarcodeCameraDemoClick(object sender, EventArgs e)
         {
             if (!Alert.CheckLicense(this, SDK))
             {
                 return;
             }
-            var intent = new Intent(this, typeof(QRScanCameraViewActivity));
+            var intent = new Intent(this, typeof(DemoBarcodeCameraViewActivity));
+            StartActivity(intent);
+        }
+
+        private void OnBarcodeCameraXDemoClick(object sender, EventArgs e)
+        {
+            if (!Alert.CheckLicense(this, SDK))
+            {
+                return;
+            }
+            var intent = new Intent(this, typeof(DemoBarcodeCameraXViewActivity));
             StartActivity(intent);
         }
 
@@ -64,6 +79,15 @@ namespace BarcodeScannerExample.Droid
                 return;
             }
             StartBarcodeScannerActivity(BarcodeImageGenerationType.VideoFrame);
+        }
+
+        private void OnBatchRTUUIClick(object sender, EventArgs e)
+        {
+            if (!Alert.CheckLicense(this, SDK))
+            {
+                return;
+            }
+            StartBatchBarcodeScannerActivity();
         }
 
         private async void OnImportClick(object sender, EventArgs e)
@@ -114,14 +138,14 @@ namespace BarcodeScannerExample.Droid
         {
             var status = SDK.LicenseInfo.Status;
             var date = SDK.LicenseInfo.ExpirationDate;
-
-            var message = $"License is {status}";
+            var validity = SDK.LicenseInfo.IsValid ? "The license is valid." : "The license is NOT valid";
+            var message = validity + $"\n\n- Status: {status}";
             if (date != null)
             {
-                message += $" until {date.ToString()}";
+                message += $"\n- Valid until: {date}";
             }
 
-            Alert.Toast(this, message);
+            Alert.ShowInfoDialog(this, "License Info", message);
         }
 
         void StartBarcodeScannerActivity(BarcodeImageGenerationType type)
@@ -132,6 +156,15 @@ namespace BarcodeScannerExample.Droid
             configuration.SetBarcodeImageGenerationType(type);
 
             var intent = BarcodeScannerActivity.NewIntent(this, configuration);
+            StartActivityForResult(intent, BARCODE_DEFAULT_UI_REQUEST_CODE);
+        }
+
+        void StartBatchBarcodeScannerActivity()
+        {
+            var configuration = new BatchBarcodeScannerConfiguration();
+            var list = BarcodeTypes.Instance.AcceptedTypes;
+            configuration.SetBarcodeFormatsFilter(list);
+            var intent = BatchBarcodeScannerActivity.NewIntent(this, configuration, null);
             StartActivityForResult(intent, BARCODE_DEFAULT_UI_REQUEST_CODE);
         }
 
@@ -175,16 +208,19 @@ namespace BarcodeScannerExample.Droid
         protected override void OnResume()
         {
             base.OnResume();
+            UpdateLicenseStatusWarning();
+        }
 
-            if (SDK.LicenseInfo.IsValid)
-            {
-                WarningView.Visibility = ViewStates.Gone;
-            }
-            else
+        private void UpdateLicenseStatusWarning()
+        {
+            if (SDK.LicenseInfo.Status == IO.Scanbot.Sap.Status.StatusTrial)
             {
                 WarningView.Visibility = ViewStates.Visible;
             }
-
+            else
+            {
+                WarningView.Visibility = ViewStates.Gone;
+            }
         }
     }
 }

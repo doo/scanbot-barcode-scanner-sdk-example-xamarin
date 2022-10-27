@@ -10,7 +10,9 @@ namespace BarcodeScannerExample.Droid
 {
     public class BarcodeTypesAdapter : RecyclerView.Adapter
     {
-        public List<BarcodeFormat> Items = BarcodeFormat.Values().ToList();
+        public List<BarcodeFormat> Items = BarcodeFormat.Values()
+            .Where((item) => item != BarcodeFormat.Unknown)
+            .ToList();
 
         public override int ItemCount => Items.Count;
 
