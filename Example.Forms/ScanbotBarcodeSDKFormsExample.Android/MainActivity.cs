@@ -18,7 +18,7 @@ namespace ScanbotBarcodeSDKFormsExample.Droid
 
             base.OnCreate(savedInstanceState);
 
-            ScanbotBarcodeSDK.Forms.Droid.DependencyManager.Register();
+            ScanbotBarcodeSDK.Forms.Droid.DependencyManager.Register(this);
             Scanbot.ImagePicker.Forms.Droid.DependencyManager.Register();
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
