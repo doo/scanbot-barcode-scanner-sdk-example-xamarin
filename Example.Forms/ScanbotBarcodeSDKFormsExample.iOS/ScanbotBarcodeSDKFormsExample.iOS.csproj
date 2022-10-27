@@ -122,13 +122,13 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2401" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.3" />
     <PackageReference Include="ScanbotBarcodeSDK.Xamarin.Forms">
       <Version>3.2.1-beta2</Version>
     </PackageReference>
     <PackageReference Include="Scanbot.Xamarin.Forms.ImagePicker">
-      <Version>0.0.1-rc6</Version>
+      <Version>0.0.1-rc7</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

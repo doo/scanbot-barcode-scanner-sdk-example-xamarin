@@ -58,10 +58,10 @@
       <Version>3.2.1-beta2</Version>
     </PackageReference>
     <PackageReference Include="Scanbot.Xamarin.Forms.ImagePicker">
-      <Version>0.0.1-rc6</Version>
+      <Version>0.0.1-rc7</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Essentials">
-      <Version>1.6.1</Version>
+      <Version>1.7.3</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

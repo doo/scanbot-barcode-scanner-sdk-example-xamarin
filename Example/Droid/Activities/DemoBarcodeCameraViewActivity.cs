@@ -18,7 +18,7 @@ using IO.Scanbot.Sdk.Camera;
 namespace BarcodeScannerExample.Droid
 {
     [Activity(Theme = "@style/AppTheme")]
-    public class QRScanCameraViewActivity : AppCompatActivity, ICameraOpenCallback
+    public class DemoBarcodeCameraViewActivity : AppCompatActivity, ICameraOpenCallback
     {
         ScanbotCameraView cameraView;
         ImageView resultView;
@@ -38,7 +38,7 @@ namespace BarcodeScannerExample.Droid
             SupportRequestWindowFeature(WindowCompat.FeatureActionBarOverlay);
             base.OnCreate(savedInstanceState);
 
-            SetContentView(Resource.Layout.qr_camera_view);
+            SetContentView(Resource.Layout.barcode_camera_activity);
 
             cameraView = FindViewById<ScanbotCameraView>(Resource.Id.camera);
             resultView = FindViewById<ImageView>(Resource.Id.result);
@@ -128,53 +128,4 @@ namespace BarcodeScannerExample.Droid
         }
     }
 
-    class BarcodeEventArgs : EventArgs
-    {
-        public BarcodeScanningResult Result { get; private set; }
-
-        public BarcodeEventArgs(Java.Lang.Object value)
-        {
-            Result = (BarcodeScanningResult)value;
-        }
-    }
-
-    class BarcodeResultDelegate : BarcodeDetectorFrameHandler.BarcodeDetectorResultHandler
-    {
-        public EventHandler<BarcodeEventArgs> Success;
-
-        public override bool Handle(FrameHandlerResult p0)
-        {
-            var success = (FrameHandlerResult.Success)p0;
-            if (success != null && success.Value != null)
-            {
-                var value = (BarcodeScanningResult)success.Value;
-                Success?.Invoke(this, new BarcodeEventArgs(success.Value));
-                return true;
-            }
-
-            return false;
-        }
-    }
-
-    public class PictureTakenEventArgs : EventArgs
-    {
-        public byte[] Image { get; private set; }
-        public int Orientation { get; private set; }
-
-        public PictureTakenEventArgs(byte[] image, int orientation)
-        {
-            Image = image;
-            Orientation = orientation;
-        }
-    }
-
-    class PictureResultDelegate : PictureCallback
-    {
-        public EventHandler<PictureTakenEventArgs> PictureTaken;
-
-        public override void OnPictureTaken(byte[] image, CaptureInfo captureInfo)
-        {
-            PictureTaken?.Invoke(this, new PictureTakenEventArgs(image, captureInfo.ImageOrientation));
-        }
-    }
 }
