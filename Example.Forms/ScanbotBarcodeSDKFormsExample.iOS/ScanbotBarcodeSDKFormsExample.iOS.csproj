@@ -125,7 +125,7 @@
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2515" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
     <PackageReference Include="ScanbotBarcodeSDK.Xamarin.Forms">
-      <Version>3.2.1-beta4</Version>
+      <Version>3.2.1</Version>
     </PackageReference>
     <PackageReference Include="Scanbot.Xamarin.Forms.ImagePicker">
       <Version>0.0.1-rc7</Version>

@@ -1,4 +1,4 @@
-Open Source libraries used in the Scanbot Barcode Scanner SDK for iOS version 3.2.0:
+Open Source libraries used in the Scanbot Barcode Scanner SDK for iOS version 3.2.1:
 
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
@@ -1968,7 +1968,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ------------------------------------------------------------------------------------------------------------------------
 
-Open Source Libraries used in the Scanbot Barcode Scanner SDK for Android Version 3.2.0:
+Open Source Libraries used in the Scanbot Barcode Scanner SDK for Android Version 3.2.1:
 
 Apache Commons Codec
 
