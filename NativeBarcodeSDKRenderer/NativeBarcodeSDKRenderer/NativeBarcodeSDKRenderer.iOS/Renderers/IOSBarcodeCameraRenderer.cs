@@ -70,7 +70,7 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
         public delegate void OnDetectHandler(SBSDKBarcodeScannerResult[] codes);
         public OnDetectHandler OnDetect;
 
-        public override void DidDetectBarcodes(SBSDKBarcodeScannerViewController controller, SBSDKBarcodeScannerResult[] codes)
+        public override void DidDetectBarcodes(SBSDKBarcodeScannerViewController controller, SBSDKBarcodeScannerResult[] codes, UIImage image)
         {
             OnDetect?.Invoke(codes);
         }
