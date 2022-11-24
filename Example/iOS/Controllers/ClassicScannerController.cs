@@ -28,8 +28,6 @@ namespace BarcodeScannerExample.iOS
             receiver = new ClassicScannerReceiver();
             scannerController.Delegate = receiver;
             receiver.ResultReceived += OnScanResultReceived;
-
-            scannerController.BarcodeAccumulatedFramesCount = 15;
             
             Flash = new FlashButton();
             View.AddSubview(Flash);

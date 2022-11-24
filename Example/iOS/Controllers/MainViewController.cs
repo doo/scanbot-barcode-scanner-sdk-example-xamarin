@@ -131,7 +131,7 @@ namespace BarcodeScannerExample.iOS
             {
                 return;
             }
-            SBSDKUIBarcodeImageStorage.CleanUpStorage();
+            SBSDKUIBarcodeImageStorage.DefaultStorage.RemoveAll();
             Alert.Show(this, "Success", "Image storage cleared");
         }
 
@@ -161,12 +161,14 @@ namespace BarcodeScannerExample.iOS
                 configuration.BehaviorConfiguration.BarcodeImageGenerationType =
                     SBSDKBarcodeImageGenerationType.CapturedImage;
             }
-            
+
+            configuration.BehaviorConfiguration.AcceptedMachineCodeTypes = BarcodeTypes.Instance.AcceptedTypes.ToArray();
+
             receiver.WaitForImage = withImage;
             receiver.ResultsReceived += OnScanResultReceived;
 
             SBSDKUIBarcodeScannerViewController.PresentOn(
-                this, BarcodeTypes.Instance.AcceptedTypes.ToArray(), configuration, receiver
+                this, configuration, receiver
             );
         }
     }
