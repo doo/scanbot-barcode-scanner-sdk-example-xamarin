@@ -30,9 +30,9 @@ namespace ScanbotBarcodeSDKFormsExample
             table.Root = new TableRoot();
             table.Root.Add(new TableSection("EXAMPLES")
             {
-                CreateCell("READY-TO-USE UI", RTUUIClicked()),
+                CreateCell("RTU UI - BARCODE SCANNER", RTUUIClicked()),
                 CreateCell("RTU UI WITH BARCODE IMAGE", RTUUIWithImageClicked()),
-                CreateCell("BATCH BARCODE SCANNER", BatchClicked()),
+                CreateCell("RTU UI - BATCH BARCODE SCANNER", BatchClicked()),
                 CreateCell("PICK IMAGE FROM LIBRARY", ImportButtonClicked()),
                 CreateCell("SET ACCEPTED BARCODE TYPES", BarcodeButtonClicked()),
                 CreateCell("CLEAR IMAGE STORAGE", StorageCleanupClicked()),
