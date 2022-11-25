@@ -1,12 +1,29 @@
 ﻿using System;
+using System.Collections.Generic;
 using ScanbotBarcodeSDK.iOS;
 using UIKit;
 
 namespace BarcodeScannerExample.iOS
 {
-    public class MainViewController : UIViewController
+    /// <summary>
+    /// BatchBarcode Interaction interface
+    /// </summary>
+    interface IBatchBarcodeDelegateInteraction
+    {
+        /// <summary>
+        /// Gets the viewController instance
+        /// </summary>
+        UIViewController ViewController { get; }
+    }
+
+    public class MainViewController : UIViewController, IBatchBarcodeDelegateInteraction
     {
         public MainView ContentView { get; set; }
+
+        /// <summary>
+        /// Interface implementation - returns the current instance
+        /// </summary>
+        public UIViewController ViewController => this;
 
         BarcodeResultReceiver receiver;
 
@@ -33,6 +50,7 @@ namespace BarcodeScannerExample.iOS
             ContentView.CodeTypesButton.TouchUpInside += OnCodeTypeButtonClick;
             ContentView.StorageClearButton.TouchUpInside += OnClearStorageButtonClick;
             ContentView.LicenseInfoButton.TouchUpInside += OnLicenseInfoButtonClick;
+            ContentView.RTUUIBatchBarcodeButton.TouchUpInside += OnRTUBatchBarcodeClicked;
         }
 
         public override void ViewWillDisappear(bool animated)
@@ -46,6 +64,7 @@ namespace BarcodeScannerExample.iOS
             ContentView.CodeTypesButton.TouchUpInside -= OnCodeTypeButtonClick;
             ContentView.StorageClearButton.TouchUpInside -= OnClearStorageButtonClick;
             ContentView.LicenseInfoButton.TouchUpInside -= OnLicenseInfoButtonClick;
+            ContentView.RTUUIBatchBarcodeButton.TouchUpInside -= OnRTUBatchBarcodeClicked;
         }
 
         private void OnScanResultReceived(object sender, ScannerEventArgs e)
@@ -170,6 +189,104 @@ namespace BarcodeScannerExample.iOS
             SBSDKUIBarcodeScannerViewController.PresentOn(
                 this, configuration, receiver
             );
+        }
+
+        private void RTUUIClicked()
+        {
+            BarcodeResultReceiver receiver = new BarcodeResultReceiver();
+            var uiConfiguration = new SBSDKUIBarcodeScannerUIConfiguration();
+            var textConfiguration = new SBSDKUIBarcodeScannerTextConfiguration();
+            var behaviourConfiguration = new SBSDKUIBarcodeScannerBehaviorConfiguration();
+            var cameraConfiguration = new SBSDKUICameraConfiguration();
+            var selectionOverlayConfiguration = new SBSDKUIBarcodeSelectionOverlayConfiguration();
+
+            var configuration = new SBSDKUIBarcodeScannerConfiguration(uiConfiguration, textConfiguration, behaviourConfiguration, cameraConfiguration, selectionOverlayConfiguration);
+
+            behaviourConfiguration.AcceptedMachineCodeTypes = BarcodeTypes.Instance.AcceptedTypes.ToArray();
+            behaviourConfiguration.BarcodeImageGenerationType = SBSDKBarcodeImageGenerationType.CapturedImage;
+            receiver.WaitForImage = behaviourConfiguration.BarcodeImageGenerationType == SBSDKBarcodeImageGenerationType.CapturedImage;
+
+            // On result received handler
+            receiver.ResultsReceived += (sender, scannerEventArgs) => 
+            {
+                if (scannerEventArgs.IsEmpty)
+                {
+                    Console.WriteLine("Result is empty, returning");
+                    return;
+                }
+
+                scannerEventArgs.Controller.DismissViewController(false, null);
+                receiver.ResultsReceived -= OnScanResultReceived;
+
+                SBSDKBarcodeScannerResult[] codes = null;
+                if (scannerEventArgs.Codes != null)
+                {
+                    codes = scannerEventArgs.Codes.ToArray();
+                }
+            };
+
+            SBSDKUIBarcodeScannerViewController.PresentOn((UIViewController)this, configuration, receiver);
+
+        }
+
+        /// <summary>
+        /// Batch Barcode Scanner clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        private void OnRTUBatchBarcodeClicked(object sender, EventArgs e)
+        {
+            if (!Alert.CheckLicense(this))
+            {
+                return;
+            }
+            var batchBarcode = new BatchBarcodeDelegate(this);
+            batchBarcode.OpenBatchBarcodeScannerView();
+        }
+    }
+
+    internal class BatchBarcodeDelegate : SBSDKUIBarcodesBatchScannerViewControllerDelegate
+    {
+        IBatchBarcodeDelegateInteraction _interaction;
+        /// <summary>
+        /// BatchBarcodeDelegate Constructor
+        /// </summary>
+        /// <param name="interaction"></param>
+        internal BatchBarcodeDelegate(IBatchBarcodeDelegateInteraction interaction)
+        {
+            _interaction = interaction;
+        }
+
+        /// <summary>
+        /// Opens the BatchBarcodeScannerView
+        /// </summary>
+        internal void OpenBatchBarcodeScannerView()
+        {
+            var configuration = SBSDKUIBarcodesBatchScannerConfiguration.DefaultConfiguration;
+            configuration.UiConfiguration.FinderAspectRatio = new SBSDKAspectRatio(1, 0.5);
+
+            configuration.BehaviorConfiguration.AcceptedMachineCodeTypes = BarcodeTypes.Instance.AcceptedTypes.ToArray();
+
+            if (_interaction?.ViewController != null)
+            {
+                SBSDKUIBarcodesBatchScannerViewController.PresentOn(
+                    _interaction?.ViewController, configuration, this
+                );
+            }
+        }
+
+        /// <summary>
+        /// On ViewResults button click on BatchBarcodeScannerView
+        /// Navigates to the result page.
+        /// </summary>
+        /// <param name="viewController"></param>
+        /// <param name="barcodeResults"></param>
+        public override void DidDetect(SBSDKUIBarcodesBatchScannerViewController viewController, SBSDKUIBarcodeMappedResult[] barcodeResults)
+        {
+            var resultViewController = new BatchBarcodeResultViewController();
+            resultViewController.NavigateData(new List<SBSDKUIBarcodeMappedResult>(barcodeResults));
+            _interaction?.ViewController?.NavigationController?.PushViewController(resultViewController, true);
         }
     }
 }
