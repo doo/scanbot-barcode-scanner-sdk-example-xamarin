@@ -42,7 +42,7 @@ namespace BarcodeScannerExample.iOS
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            
+
             ContentView.ClassicButton.TouchUpInside += OnClassicButtonClick;
             ContentView.RTUUIButton.TouchUpInside += OnRTUUIButtonClick;
             ContentView.RTUUIImageButton.TouchUpInside += OnRTUUIImageButtonClick;
@@ -124,7 +124,8 @@ namespace BarcodeScannerExample.iOS
             }
             UIImage image = await Scanbot.ImagePicker.iOS.ImagePicker.Instance.Pick();
 
-            if (image != null) { 
+            if (image != null)
+            {
                 var scanner = new SBSDKBarcodeScanner(BarcodeTypes.Instance.AcceptedTypes.ToArray());
                 SBSDKBarcodeScannerResult[] result = scanner.DetectBarCodesOnImage(image);
 
@@ -207,7 +208,7 @@ namespace BarcodeScannerExample.iOS
             receiver.WaitForImage = behaviourConfiguration.BarcodeImageGenerationType == SBSDKBarcodeImageGenerationType.CapturedImage;
 
             // On result received handler
-            receiver.ResultsReceived += (sender, scannerEventArgs) => 
+            receiver.ResultsReceived += (sender, scannerEventArgs) =>
             {
                 if (scannerEventArgs.IsEmpty)
                 {

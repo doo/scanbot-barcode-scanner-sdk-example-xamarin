@@ -31,11 +31,11 @@ namespace BarcodeScannerExample.iOS
 
             ClassicButton = CreateButton("CLASSIC COMPONENT");
 
-            RTUUIButton = CreateButton("READY-TO-USE UI");
+            RTUUIButton = CreateButton("RTU UI - BARCODE SCANNER");
 
             RTUUIImageButton = CreateButton("RTU UI – WITH BARCODE IMAGE");
 
-            RTUUIBatchBarcodeButton = CreateButton("RTU UI - BATCH BARCODE");
+            RTUUIBatchBarcodeButton = CreateButton("RTU UI - BATCH BARCODE SCANNER");
 
             LibraryButton = CreateButton("PICK IMAGE FROM LIBRARY");
 
