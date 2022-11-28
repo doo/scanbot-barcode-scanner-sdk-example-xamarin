@@ -100,9 +100,10 @@ namespace ScanbotBarcodeSDKFormsExample
         {
             return async (sender, e) =>
             {
-                var config = new BatchBarcodeScannerConfiguration();
-                config.AcceptedFormats = BarcodeTypes.Instance.AcceptedTypes;
-                var result = await SBSDK.Scanner.OpenBatch(config);
+                var configuration = new BatchBarcodeScannerConfiguration();
+                configuration.AcceptedFormats = BarcodeTypes.Instance.AcceptedTypes;
+                configuration.OverlayConfiguration = new SelectionOverlayConfiguration(Color.Yellow, Color.Yellow, Color.Black, Color.Pink, Color.Red, Color.PeachPuff);
+                var result = await SBSDK.Scanner.OpenBatch(configuration);
                 if (result.Status == OperationResult.Ok)
                 {
                     await Navigation.PushAsync(new BarcodeResultsPage(result.Barcodes));
@@ -193,12 +194,11 @@ namespace ScanbotBarcodeSDKFormsExample
             var configuration = new BarcodeScannerConfiguration
             {
                 AcceptedFormats = BarcodeTypes.Instance.AcceptedTypes,
-                SuccessBeepEnabled = true
+                SuccessBeepEnabled = true,
+                
             };
-            //configuration.FinderWidth = 300;
-            //configuration.FinderHeight = 200;
-            //configuration.FinderTextHint = "Custom hint text...";
-            // see further configs...
+
+            configuration.OverlayConfiguration = new SelectionOverlayConfiguration(Color.Yellow, Color.Yellow, Color.Black, Color.Pink, Color.Red, Color.PeachPuff);
 
             if (withImage)
             {
