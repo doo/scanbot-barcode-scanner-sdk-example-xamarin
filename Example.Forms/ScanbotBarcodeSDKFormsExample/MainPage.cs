@@ -102,7 +102,7 @@ namespace ScanbotBarcodeSDKFormsExample
             {
                 var configuration = new BatchBarcodeScannerConfiguration();
                 configuration.AcceptedFormats = BarcodeTypes.Instance.AcceptedTypes;
-                configuration.OverlayConfiguration = new SelectionOverlayConfiguration(Color.Yellow, Color.Yellow, Color.Black, Color.Pink, Color.Red, Color.PeachPuff);
+                configuration.OverlayConfiguration = new SelectionOverlayConfiguration(Color.Yellow, Color.Yellow, Color.Black);
                 var result = await SBSDK.Scanner.OpenBatch(configuration);
                 if (result.Status == OperationResult.Ok)
                 {
