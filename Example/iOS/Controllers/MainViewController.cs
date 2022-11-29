@@ -170,11 +170,25 @@ namespace BarcodeScannerExample.iOS
             Alert.Show(this, "Status", message);
         }
 
-
+        /// <summary>
+        /// Open the Barcode scanner RTU UI.
+        /// </summary>
+        /// <param name="withImage"></param>
         void OpenRTUUIBarcodeScanner(bool withImage)
         {
-            var configuration = SBSDKUIBarcodeScannerConfiguration.DefaultConfiguration;
-            configuration.UiConfiguration.FinderAspectRatio = new SBSDKAspectRatio(1, 0.5);
+            var uiConfiguration = new SBSDKUIBarcodeScannerUIConfiguration();
+            var textConfiguration = new SBSDKUIBarcodeScannerTextConfiguration();
+            var behaviourConfiguration = new SBSDKUIBarcodeScannerBehaviorConfiguration();
+            var cameraConfiguration = new SBSDKUICameraConfiguration();
+            var selectionOverlayConfiguration = new SBSDKUIBarcodeSelectionOverlayConfiguration();
+            selectionOverlayConfiguration.OverlayEnabled = true;
+            selectionOverlayConfiguration.TextColor = UIColor.Yellow;
+            selectionOverlayConfiguration.PolygonColor = UIColor.Yellow;
+            selectionOverlayConfiguration.TextContainerColor = UIColor.Black;
+
+            var configuration = new SBSDKUIBarcodeScannerConfiguration(uiConfiguration, textConfiguration, behaviourConfiguration, cameraConfiguration, selectionOverlayConfiguration);
+
+            behaviourConfiguration.AcceptedMachineCodeTypes = BarcodeTypes.Instance.AcceptedTypes.ToArray();
 
             if (withImage)
             {
@@ -182,49 +196,12 @@ namespace BarcodeScannerExample.iOS
                     SBSDKBarcodeImageGenerationType.CapturedImage;
             }
 
-            configuration.BehaviorConfiguration.AcceptedMachineCodeTypes = BarcodeTypes.Instance.AcceptedTypes.ToArray();
+            configuration.UiConfiguration.FinderAspectRatio = new SBSDKAspectRatio(1, 1);
 
-            receiver.WaitForImage = withImage;
-            receiver.ResultsReceived += OnScanResultReceived;
-
-            SBSDKUIBarcodeScannerViewController.PresentOn(
-                this, configuration, receiver
-            );
-        }
-
-        private void RTUUIClicked()
-        {
-            BarcodeResultReceiver receiver = new BarcodeResultReceiver();
-            var uiConfiguration = new SBSDKUIBarcodeScannerUIConfiguration();
-            var textConfiguration = new SBSDKUIBarcodeScannerTextConfiguration();
-            var behaviourConfiguration = new SBSDKUIBarcodeScannerBehaviorConfiguration();
-            var cameraConfiguration = new SBSDKUICameraConfiguration();
-            var selectionOverlayConfiguration = new SBSDKUIBarcodeSelectionOverlayConfiguration();
-
-            var configuration = new SBSDKUIBarcodeScannerConfiguration(uiConfiguration, textConfiguration, behaviourConfiguration, cameraConfiguration, selectionOverlayConfiguration);
-
-            behaviourConfiguration.AcceptedMachineCodeTypes = BarcodeTypes.Instance.AcceptedTypes.ToArray();
-            behaviourConfiguration.BarcodeImageGenerationType = SBSDKBarcodeImageGenerationType.CapturedImage;
             receiver.WaitForImage = behaviourConfiguration.BarcodeImageGenerationType == SBSDKBarcodeImageGenerationType.CapturedImage;
 
             // On result received handler
-            receiver.ResultsReceived += (sender, scannerEventArgs) =>
-            {
-                if (scannerEventArgs.IsEmpty)
-                {
-                    Console.WriteLine("Result is empty, returning");
-                    return;
-                }
-
-                scannerEventArgs.Controller.DismissViewController(false, null);
-                receiver.ResultsReceived -= OnScanResultReceived;
-
-                SBSDKBarcodeScannerResult[] codes = null;
-                if (scannerEventArgs.Codes != null)
-                {
-                    codes = scannerEventArgs.Codes.ToArray();
-                }
-            };
+            receiver.ResultsReceived += OnScanResultReceived;
 
             SBSDKUIBarcodeScannerViewController.PresentOn((UIViewController)this, configuration, receiver);
 
@@ -243,10 +220,33 @@ namespace BarcodeScannerExample.iOS
                 return;
             }
             var batchBarcode = new BatchBarcodeDelegate(this);
-            batchBarcode.OpenBatchBarcodeScannerView();
+            // You can also use the DefaultConfiguration property directly, but then you cannot set the selectionOverlayConfig as it is read only in that case.
+            var selectionOverlayConfiguration = new SBSDKUIBarcodeSelectionOverlayConfiguration();
+            var uiConfiguration = new SBSDKUIBarcodesBatchScannerUIConfiguration();
+            var textConfiguration = new SBSDKUIBarcodesBatchScannerTextConfiguration();
+            var behaviourConfiguration = new SBSDKUIBarcodesBatchScannerBehaviorConfiguration();
+            var cameraConfiguration = new SBSDKUICameraConfiguration();
+
+            selectionOverlayConfiguration.OverlayEnabled = true;
+            selectionOverlayConfiguration.TextColor = UIColor.Yellow;
+            selectionOverlayConfiguration.PolygonColor = UIColor.Yellow;
+            selectionOverlayConfiguration.TextContainerColor = UIColor.Black;
+            selectionOverlayConfiguration.HighlightedPolygonColor = UIColor.Gray;
+            selectionOverlayConfiguration.HighlightedTextColor = UIColor.Purple;
+            selectionOverlayConfiguration.HighlightedTextContainerColor = UIColor.Gray;
+
+            var configuration = new SBSDKUIBarcodesBatchScannerConfiguration(uiConfiguration, textConfiguration, behaviourConfiguration, cameraConfiguration, selectionOverlayConfiguration);
+
+            configuration.UiConfiguration.FinderAspectRatio = new SBSDKAspectRatio(1, 0.5);
+            configuration.BehaviorConfiguration.AcceptedMachineCodeTypes = BarcodeTypes.Instance.AcceptedTypes.ToArray();
+
+            batchBarcode.OpenBatchBarcodeScannerView(configuration);
         }
     }
 
+    /// <summary>
+    /// Batch Barcode Delegate implementation.
+    /// </summary>
     internal class BatchBarcodeDelegate : SBSDKUIBarcodesBatchScannerViewControllerDelegate
     {
         IBatchBarcodeDelegateInteraction _interaction;
@@ -262,13 +262,8 @@ namespace BarcodeScannerExample.iOS
         /// <summary>
         /// Opens the BatchBarcodeScannerView
         /// </summary>
-        internal void OpenBatchBarcodeScannerView()
+        internal void OpenBatchBarcodeScannerView(SBSDKUIBarcodesBatchScannerConfiguration configuration)
         {
-            var configuration = SBSDKUIBarcodesBatchScannerConfiguration.DefaultConfiguration;
-            configuration.UiConfiguration.FinderAspectRatio = new SBSDKAspectRatio(1, 0.5);
-
-            configuration.BehaviorConfiguration.AcceptedMachineCodeTypes = BarcodeTypes.Instance.AcceptedTypes.ToArray();
-
             if (_interaction?.ViewController != null)
             {
                 SBSDKUIBarcodesBatchScannerViewController.PresentOn(
