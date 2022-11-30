@@ -14,6 +14,7 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
 {
     class IOSBarcodeCameraRenderer : ViewRenderer<BarcodeCameraView, IOSBarcodeCameraView>
     {
+        private bool isInitialized = false;
 
         private IOSBarcodeCameraView cameraView;
         private UIViewController CurrentViewController
@@ -42,17 +43,10 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
             double width = e.NewElement.WidthRequest;
             double height = e.NewElement.HeightRequest;
 
-            cameraView = new IOSBarcodeCameraView(CurrentViewController, new CGRect(x, y, width, height));
+            cameraView = new IOSBarcodeCameraView(new CGRect(x, y, width, height));
             SetNativeControl(cameraView);
-            cameraView.Initialize();
-
+            
             base.OnElementChanged(e);
-
-            if (Control == null) { return; }
-
-            cameraView.ScannerDelegate.OnDetect = HandleBarcodeScannerResults;
-
-            barcodeScannerResultHandler = Element.OnBarcodeScanResult;
         }
 
         private void HandleBarcodeScannerResults(SBSDKBarcodeScannerResult[] codes)
@@ -61,6 +55,19 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
             {
                 Barcodes = codes.ToFormsBarcodes()
             });
+        }
+
+        public override void LayoutSubviews()
+        {
+            base.LayoutSubviews();
+            if (Control == null) { return; }
+
+            if (CurrentViewController.ChildViewControllers.First() is PageRenderer pageRendererVc) {
+                cameraView.Initialize(pageRendererVc);
+                cameraView.ScannerDelegate.OnDetect = HandleBarcodeScannerResults;
+                barcodeScannerResultHandler = Element.OnBarcodeScanResult;
+                isInitialized = true;
+            }
         }
     }
 
@@ -95,14 +102,9 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
         public SBSDKBarcodeScannerViewController Controller { get; private set; }
         public BarcodeScannerDelegate ScannerDelegate { get; private set; }
 
-        private UIViewController parentViewController;
+        public IOSBarcodeCameraView(CGRect frame) : base(frame) {}
 
-        public IOSBarcodeCameraView(UIViewController parentViewController, CGRect frame) : base(frame)
-        {
-            this.parentViewController = parentViewController;
-        }
-
-        public void Initialize() {
+        public void Initialize(UIViewController parentViewController) {
             Controller = new SBSDKBarcodeScannerViewController(parentViewController, this);
             ScannerDelegate = new BarcodeScannerDelegate();
             Controller.Delegate = ScannerDelegate;
