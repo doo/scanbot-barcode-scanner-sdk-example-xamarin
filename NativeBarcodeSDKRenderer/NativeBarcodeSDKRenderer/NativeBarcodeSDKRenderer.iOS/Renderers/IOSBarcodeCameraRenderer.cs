@@ -44,6 +44,7 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
 
             cameraView = new IOSBarcodeCameraView(CurrentViewController, new CGRect(x, y, width, height));
             SetNativeControl(cameraView);
+            cameraView.Initialize();
 
             base.OnElementChanged(e);
 
@@ -94,9 +95,15 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
         public SBSDKBarcodeScannerViewController Controller { get; private set; }
         public BarcodeScannerDelegate ScannerDelegate { get; private set; }
 
-        public IOSBarcodeCameraView(UIViewController parent, CGRect frame) : base(frame)
+        private UIViewController parentViewController;
+
+        public IOSBarcodeCameraView(UIViewController parentViewController, CGRect frame) : base(frame)
         {
-            Controller = new SBSDKBarcodeScannerViewController(parent, this);
+            this.parentViewController = parentViewController;
+        }
+
+        public void Initialize() {
+            Controller = new SBSDKBarcodeScannerViewController(parentViewController, this);
             ScannerDelegate = new BarcodeScannerDelegate();
             Controller.Delegate = ScannerDelegate;
         }
