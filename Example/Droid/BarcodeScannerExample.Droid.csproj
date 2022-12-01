@@ -10,7 +10,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>BarcodeScannerExample.Droid</RootNamespace>
     <AssemblyName>BarcodeScannerExample.Droid</AssemblyName>
-    <TargetFrameworkVersion>v11.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v12.0</TargetFrameworkVersion>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
@@ -157,7 +157,7 @@
       <Version>0.0.1-rc6</Version>
     </PackageReference>
     <PackageReference Include="ScanbotBarcodeSDK.Xamarin">
-      <Version>3.2.1</Version>
+      <Version>3.3.0</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="..\BarcodeScannerExample\BarcodeScannerExample.projitems" Label="Shared" Condition="Exists('..\BarcodeScannerExample\BarcodeScannerExample.projitems')" />

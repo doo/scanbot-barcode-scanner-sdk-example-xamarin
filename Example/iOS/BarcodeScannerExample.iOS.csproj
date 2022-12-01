@@ -78,17 +78,17 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
-    <Reference Include="ScanbotBarcodeSDK.iOS">
-      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.3.2.0-beta6\lib\Xamarin.iOS10\ScanbotBarcodeSDK.iOS.dll</HintPath>
-    </Reference>
-    <Reference Include="ScanbotBarcodeSDK.Xamarin">
-      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.3.2.0-beta6\lib\Xamarin.iOS10\ScanbotBarcodeSDK.Xamarin.dll</HintPath>
-    </Reference>
-    <Reference Include="ScanbotBarcodeSDK.Xamarin.iOS">
-      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.3.2.0-beta6\lib\Xamarin.iOS10\ScanbotBarcodeSDK.Xamarin.iOS.dll</HintPath>
-    </Reference>
     <Reference Include="Scanbot.ImagePicker.iOS">
       <HintPath>..\packages\Scanbot.Xamarin.ImagePicker.0.0.1-rc6\lib\Xamarin.iOS10\Scanbot.ImagePicker.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="ScanbotBarcodeSDK.iOS">
+      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.3.3.0\lib\Xamarin.iOS10\ScanbotBarcodeSDK.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="ScanbotBarcodeSDK.Xamarin">
+      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.3.3.0\lib\Xamarin.iOS10\ScanbotBarcodeSDK.Xamarin.dll</HintPath>
+    </Reference>
+    <Reference Include="ScanbotBarcodeSDK.Xamarin.iOS">
+      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.3.3.0\lib\Xamarin.iOS10\ScanbotBarcodeSDK.Xamarin.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +137,7 @@
     <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Utils\Alert.cs" />
     <Compile Include="Views\Subviews\FlashButton.cs" />
+    <Compile Include="Controllers\BatchBarcodeResultViewController.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\flash_on_white.png" />

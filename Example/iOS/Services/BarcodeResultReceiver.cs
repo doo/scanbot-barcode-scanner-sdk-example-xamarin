@@ -40,7 +40,7 @@ namespace BarcodeScannerExample.iOS
         public EventHandler<ScannerEventArgs> ResultReceived;
 
         public override void DidDetectBarcodes(
-            SBSDKBarcodeScannerViewController controller, SBSDKBarcodeScannerResult[] codes)
+            SBSDKBarcodeScannerViewController controller, SBSDKBarcodeScannerResult[] codes, UIImage image)
         {
             ResultReceived?.Invoke(this, new ScannerEventArgs(codes.ToList(), null, null));
         }
