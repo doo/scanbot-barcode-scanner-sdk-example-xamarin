@@ -58,7 +58,7 @@
       <Version>0.0.1-rc7</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Essentials">
-      <Version>1.7.3</Version>
+      <Version>1.7.4</Version>
     </PackageReference>
     <PackageReference Include="ScanbotBarcodeSDK.Xamarin.Forms">
       <Version>3.3.0</Version>
