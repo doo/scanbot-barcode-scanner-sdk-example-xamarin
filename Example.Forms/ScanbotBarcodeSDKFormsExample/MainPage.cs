@@ -99,7 +99,7 @@ namespace ScanbotBarcodeSDKFormsExample
                     await Navigation.PushAsync(new BarcodeResultsPage(result.Image, result.Barcodes));
                 }
             };
-        }
+        }   
 
         EventHandler BatchClicked()
         {
@@ -131,7 +131,16 @@ namespace ScanbotBarcodeSDKFormsExample
                     List<Barcode> codes = null;
                     try
                     {
-                        codes = await SBSDK.Operations.DetectBarcodesFrom(source);
+                        var configuration = new DetectBarcodesOnImageConfiguration
+                        {
+                            Source = source,
+                            AcceptedDocumentFormats = new List<BarcodeDocumentFormat>(),
+                            AcceptedFormats = BarcodeTypes.Instance.AcceptedTypes,
+                            CodeDensity = BarcodeDensity.High,
+                            EngineMode = EngineMode.NextGen,
+                            LowPowerMode = true
+                        };
+                        codes = await SBSDK.Operations.DetectBarcodesFrom(configuration);
                     }
                     catch (Exception exception)
                     {
