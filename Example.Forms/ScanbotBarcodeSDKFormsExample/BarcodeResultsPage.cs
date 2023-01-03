@@ -84,7 +84,7 @@ namespace ScanbotBarcodeSDKFormsExample
 
         async void DetectBarcodes(ImageSource source, Action callback = null)
         {
-            Barcodes = await SBSDK.Operations.DetectBarcodesFrom(source);
+            //Barcodes = await SBSDK.Operations.DetectBarcodesFrom(source);
             callback();
         }
 
