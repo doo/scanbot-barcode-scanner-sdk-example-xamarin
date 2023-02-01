@@ -146,7 +146,8 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
                 barcodeDetectorFrameHandler = BarcodeDetectorFrameHandler.Attach(cameraView, detector);
 
                 detector.ModifyConfig(new Function1Impl<BarcodeScannerConfigBuilder>((response) => {
-                    response.SetSaveCameraPreviewFrame(true);
+                    // make sure to disable capturing the full image from the preview frame
+                    response.SetSaveCameraPreviewFrame(false);
                 }));
 
                 if (barcodeDetectorFrameHandler is BarcodeDetectorFrameHandler handler)
