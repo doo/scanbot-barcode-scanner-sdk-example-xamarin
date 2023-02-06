@@ -186,10 +186,9 @@ namespace BarcodeScannerExample.iOS
             selectionOverlayConfiguration.PolygonColor = UIColor.Yellow;
             selectionOverlayConfiguration.TextContainerColor = UIColor.Black;
 
-            var configuration = new SBSDKUIBarcodeScannerConfiguration(uiConfiguration, textConfiguration, behaviourConfiguration, cameraConfiguration, selectionOverlayConfiguration);
-
             behaviourConfiguration.AcceptedMachineCodeTypes = BarcodeTypes.Instance.AcceptedTypes.ToArray();
-
+            behaviourConfiguration.AdditionalParameters = new SBSDKBarcodeAdditionalParameters { MinimumTextLength = 6 };
+            var configuration = new SBSDKUIBarcodeScannerConfiguration(uiConfiguration, textConfiguration, behaviourConfiguration, cameraConfiguration, selectionOverlayConfiguration);
             if (withImage)
             {
                 configuration.BehaviorConfiguration.BarcodeImageGenerationType =
