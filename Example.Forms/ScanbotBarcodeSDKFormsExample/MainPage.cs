@@ -131,16 +131,13 @@ namespace ScanbotBarcodeSDKFormsExample
                     List<Barcode> codes = null;
                     try
                     {
-                        var configuration = new DetectBarcodesOnImageConfiguration
-                        {
-                            Source = source,
-                            AcceptedDocumentFormats = new List<BarcodeDocumentFormat>(),
-                            AcceptedFormats = BarcodeTypes.Instance.AcceptedTypes,
-                            CodeDensity = BarcodeDensity.High,
-                            EngineMode = EngineMode.NextGen,
-                            LowPowerMode = true
-                        };
-                        codes = await SBSDK.Operations.DetectBarcodesFrom(configuration);
+                        var configuration = new DetectBarcodesOnImageConfiguration(source);
+                        configuration.AcceptedDocumentFormats = new List<BarcodeDocumentFormat>();
+                        configuration.AcceptedFormats = BarcodeTypes.Instance.AcceptedTypes;
+                        configuration.CodeDensity = BarcodeDensity.High;
+                        configuration.EngineMode = EngineMode.NextGen;
+                        configuration.LowPowerMode = true;
+                        codes = await SBSDK.Operations.DetectBarcodesFromImage(configuration);
                     }
                     catch (Exception exception)
                     {

@@ -98,6 +98,7 @@ namespace ScanbotBarcodeSDKFormsExample
             List = new ListView();
             List.ItemTemplate = new DataTemplate(typeof(BarcodeCell));
             List.RowHeight = ROWHEIGHT;
+            List.HasUnevenRows = true;
             List.ItemsSource = Barcodes;
         }
 
