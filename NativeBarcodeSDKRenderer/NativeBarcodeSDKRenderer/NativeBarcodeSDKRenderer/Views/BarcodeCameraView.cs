@@ -65,6 +65,21 @@ namespace NativeBarcodeSDKRenderer.Views
             // If we don't implement the delegate from our Page class, this method
             // will be called instead as a fallback mechanism.
         }
+
+        /// <summary>
+        /// Toggle Flash Binding property
+        /// </summary>
+        public static readonly BindableProperty ToggleFlashProperty =
+          BindableProperty.Create("ToggleFlash", typeof(bool), typeof(BarcodeCameraView), false);
+
+        /// <summary>
+        /// Toggle Flash property.
+        /// </summary>
+        public bool ToggleFlash
+        {
+            get { return (bool)GetValue(ToggleFlashProperty); }
+            set { SetValue(ToggleFlashProperty, value); }
+        }
     }
 }
 

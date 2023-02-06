@@ -23,6 +23,7 @@ using static NativeBarcodeSDKRenderer.Views.BarcodeCameraView;
 using NativeBarcodeSDKRenderer.Droid.Renderers;
 using IO.Scanbot.Sdk.Barcode_scanner;
 using ScanbotBarcodeSDK.Forms.Droid;
+using System.ComponentModel;
 
 /*
     This is the Android Custom Renderer that will provide the actual implementation for BarcodeCameraView.
@@ -50,7 +51,7 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
         protected FrameLayout cameraLayout;
         protected ScanbotCameraView cameraView;
         protected FinderOverlayView finderOverlayView;
-
+        public event PropertyChangedEventHandler PropertyChanged;
         private readonly int REQUEST_PERMISSION_CODE = 200;
 
         public AndroidBarcodeCameraRenderer(Context context) : base(context)
@@ -92,6 +93,27 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
             finderOverlayView.Visibility = ViewStates.Invisible;
         }
 
+        private bool _toggleFlash;
+        /// <summary>
+        /// Toggle Flash property for 
+        /// </summary>
+        public bool ToggleFlash
+        {
+            get
+            {
+                return _toggleFlash;
+            }
+            set
+            {
+                if (cameraView != null)
+                {
+                    _toggleFlash = value;
+                    cameraView.UseFlash(value);
+                    OnPropertyChanged("ToggleFlash");
+                }
+            }
+        }
+
         /*
             This is probably the most important method that belongs to a ViewRenderer.
             You must override this in order to actually implement the renderer.
@@ -131,6 +153,9 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
                 {
                     StopDetection();
                 };
+
+                Element.SetBinding(NativeBarcodeSDKRenderer.Views.BarcodeCameraView.ToggleFlashProperty, "ToggleFlash", BindingMode.TwoWay);
+                Element.BindingContext = this;
 
                 // Similarly, we have defined a delegate in our BarcodeCameraView implementation,
                 // so that we can trigger it whenever the Scanner will return a valid result.
@@ -225,6 +250,13 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
             {
                 ActivityCompat.RequestPermissions(activity, new string[] { Manifest.Permission.Camera }, REQUEST_PERMISSION_CODE);
             }
+        }
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 

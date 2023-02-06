@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using CoreAudioKit;
 using CoreGraphics;
@@ -36,6 +37,8 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
 
         public IOSBarcodeCameraRenderer() : base() { }
 
+        public bool Flash { get; set; }
+
         protected override void OnElementChanged(ElementChangedEventArgs<BarcodeCameraView> e)
         {
             if (CurrentViewController == null) { return; }
@@ -59,6 +62,10 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
                 {
                     cameraView.Stop();
                 };
+
+
+                Element.SetBinding(BarcodeCameraView.ToggleFlashProperty, "ToggleFlash", BindingMode.TwoWay);
+                Element.BindingContext = cameraView;
             }
 
             base.OnElementChanged(e);
@@ -157,10 +164,35 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
         }
     }
 
-    class IOSBarcodeCameraView : UIView
+    /// <summary>
+    /// Native iOS Barcode CameraView using iOS controller.
+    /// </summary>
+    class IOSBarcodeCameraView : UIView, System.ComponentModel.INotifyPropertyChanged
     {
         public SBSDKBarcodeScannerViewController Controller { get; private set; }
         public BarcodeScannerDelegate ScannerDelegate { get; private set; }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private bool _toggleFlash;
+        /// <summary>
+        /// Toggle Flash property for 
+        /// </summary>
+        public bool ToggleFlash
+        {
+            get
+            {
+                return _toggleFlash;
+            }
+            set
+            {
+                if (Controller != null)
+                {
+                    Controller.FlashLightEnabled = value;
+                    _toggleFlash = value;
+                    OnPropertyChanged("ToggleFlash");
+                }
+            }
+        }
 
         public IOSBarcodeCameraView(CGRect frame) : base(frame) { }
 
@@ -180,6 +212,13 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
         public void Start()
         {
             Controller.RecognitionEnabled = true;
+        }
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

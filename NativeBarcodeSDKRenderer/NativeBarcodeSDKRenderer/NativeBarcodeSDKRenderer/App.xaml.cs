@@ -20,7 +20,7 @@ namespace NativeBarcodeSDKRenderer
         public App ()
         {
             InitializeComponent();
-            MainPage = GetMainPage(applicationType: ApplicationType.TabbedPage);
+            MainPage = GetMainPage(applicationType: ApplicationType.NavigationPage);
 
             var options = new InitializationOptions
             {

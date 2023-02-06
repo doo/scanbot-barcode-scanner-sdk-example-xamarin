@@ -213,6 +213,24 @@ namespace NativeBarcodeSDKRenderer
             }
             return isAllowed;
         }
+
+        /// <summary>
+        /// Flash button clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void FlashButtonClicked(System.Object sender, System.EventArgs e)
+        {
+            cameraView.ToggleFlash = !cameraView.ToggleFlash;
+            if (cameraView.ToggleFlash)
+            {
+                imgButtonFlash.BackgroundColor = Color.Yellow;
+            }
+            else
+            {
+                imgButtonFlash.BackgroundColor = Color.Transparent;
+            }
+        }
     }
 }
 

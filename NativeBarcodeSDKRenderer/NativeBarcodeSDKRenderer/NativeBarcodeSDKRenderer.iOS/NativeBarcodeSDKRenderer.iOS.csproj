@@ -144,4 +144,7 @@
   <ItemGroup>
     <Folder Include="Renderers\" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\ui_scanning_flash_on.png" />
+  </ItemGroup>
 </Project>
