@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using CoreAudioKit;
 using CoreGraphics;
 using NativeBarcodeSDKRenderer.iOS.Renderers;
 using NativeBarcodeSDKRenderer.Views;
@@ -45,7 +47,20 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
 
             cameraView = new IOSBarcodeCameraView(new CGRect(x, y, width, height));
             SetNativeControl(cameraView);
-            
+
+            if (Control != null)
+            {
+                Element.StartDetectionHandler = (sender, args1) =>
+                {
+                    cameraView.Start();
+                };
+
+                Element.StopDetectionHandler = (sender, args2) =>
+                {
+                    cameraView.Stop();
+                };
+            }
+
             base.OnElementChanged(e);
         }
 
@@ -61,9 +76,54 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
         {
             base.LayoutSubviews();
             if (Control == null) { return; }
+            if (!isInitialized)
+            {
+                FindAndInitialiseView();
+            }
+        }
 
-            if (CurrentViewController.ChildViewControllers.First() is PageRenderer pageRendererVc) {
-                cameraView.Initialize(pageRendererVc);
+        /// <summary>
+        /// Find the View from Navigation heirarchy and initialise it.
+        /// </summary>
+        private void FindAndInitialiseView()
+        {
+            var viewController = CurrentViewController?.ChildViewControllers?.First();
+
+            // If application has a Navigation Controller
+            if (viewController is UINavigationController navigationController)
+            {
+                InitialiseView(navigationController.VisibleViewController);
+            }
+            else if (viewController is UITabBarController tabBarController)
+            {
+                // It is itself a Page renderer.
+                InitialiseView(tabBarController.SelectedViewController);
+            }
+            else
+            {   // If application has no Navigation Controller OR TabBarController
+                InitialiseView(viewController);
+            }
+        }
+
+        /// <summary>
+        /// Initialise the Camera View.
+        /// </summary>
+        /// <param name="pageRendererViewController"></param>
+        private void InitialiseView(UIViewController visibleViewController)
+        {
+            PageRenderer pageRendererViewController = null;
+            if (visibleViewController is PageRenderer) // In case of TabBedPage ViewController
+            {
+                pageRendererViewController = visibleViewController as PageRenderer;
+            }
+            else if (visibleViewController?.ChildViewControllers?.First() is PageRenderer) // Navigation/Single page
+            {
+                pageRendererViewController = visibleViewController.ChildViewControllers.First() as PageRenderer;
+            }
+
+            if (pageRendererViewController != null)
+            {
+                cameraView.Initialize(pageRendererViewController);
                 cameraView.ScannerDelegate.OnDetect = HandleBarcodeScannerResults;
                 barcodeScannerResultHandler = Element.OnBarcodeScanResult;
                 isInitialized = true;
@@ -102,12 +162,24 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
         public SBSDKBarcodeScannerViewController Controller { get; private set; }
         public BarcodeScannerDelegate ScannerDelegate { get; private set; }
 
-        public IOSBarcodeCameraView(CGRect frame) : base(frame) {}
+        public IOSBarcodeCameraView(CGRect frame) : base(frame) { }
 
-        public void Initialize(UIViewController parentViewController) {
+        public void Initialize(UIViewController parentViewController)
+        {
             Controller = new SBSDKBarcodeScannerViewController(parentViewController, this);
+            Controller.BarcodeImageGenerationType = SBSDKBarcodeImageGenerationType.None;
             ScannerDelegate = new BarcodeScannerDelegate();
             Controller.Delegate = ScannerDelegate;
+        }
+
+        public void Stop()
+        {
+            Controller.RecognitionEnabled = false;
+        }
+
+        public void Start()
+        {
+            Controller.RecognitionEnabled = true;
         }
     }
 }
