@@ -64,7 +64,7 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
                 };
 
 
-                Element.SetBinding(BarcodeCameraView.ToggleFlashProperty, "ToggleFlash", BindingMode.TwoWay);
+                Element.SetBinding(BarcodeCameraView.IsFlashEnabledProperty, "IsFlashEnabled", BindingMode.TwoWay);
                 Element.BindingContext = cameraView;
             }
 
@@ -89,9 +89,7 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
             }
         }
 
-        /// <summary>
-        /// Find the View from Navigation heirarchy and initialise it.
-        /// </summary>
+        // Find the View from Navigation heirarchy and initialise it.
         private void FindAndInitialiseView()
         {
             var viewController = CurrentViewController?.ChildViewControllers?.First();
@@ -112,10 +110,7 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
             }
         }
 
-        /// <summary>
         /// Initialise the Camera View.
-        /// </summary>
-        /// <param name="pageRendererViewController"></param>
         private void InitialiseView(UIViewController visibleViewController)
         {
             PageRenderer pageRendererViewController = null;
@@ -164,35 +159,33 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
         }
     }
 
-    /// <summary>
     /// Native iOS Barcode CameraView using iOS controller.
-    /// </summary>
     class IOSBarcodeCameraView : UIView, System.ComponentModel.INotifyPropertyChanged
     {
-        public SBSDKBarcodeScannerViewController Controller { get; private set; }
-        public BarcodeScannerDelegate ScannerDelegate { get; private set; }
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private bool _toggleFlash;
+        private bool _isFlashEnabled;
         /// <summary>
-        /// Toggle Flash property for 
+        /// Setting to 'true' enables the camera flash, 'false' disables it. 
         /// </summary>
-        public bool ToggleFlash
+        public bool IsFlashEnabled
         {
             get
             {
-                return _toggleFlash;
+                return _isFlashEnabled;
             }
             set
             {
                 if (Controller != null)
                 {
                     Controller.FlashLightEnabled = value;
-                    _toggleFlash = value;
-                    OnPropertyChanged("ToggleFlash");
+                    _isFlashEnabled = value;
+                    OnPropertyChanged("IsFlashEnabled");
                 }
             }
         }
+
+        public SBSDKBarcodeScannerViewController Controller { get; private set; }
+        public BarcodeScannerDelegate ScannerDelegate { get; private set; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public IOSBarcodeCameraView(CGRect frame) : base(frame) { }
 
@@ -216,9 +209,7 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
 
         protected void OnPropertyChanged(string propertyName)
         {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

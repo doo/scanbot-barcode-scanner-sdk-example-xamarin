@@ -11,8 +11,24 @@ namespace NativeBarcodeSDKRenderer.Views
        Renderers are platform specific and they are implemented in the relative native projects.
        Take a look at AndroidBarcodeCameraRenderer.cs to see how the implementation is done.
     */
+
     public class BarcodeCameraView : View
     {
+        /// <summary>
+        /// Toggle Flash Binding property
+        /// </summary>
+        public static readonly BindableProperty IsFlashEnabledProperty =
+          BindableProperty.Create("IsFlashEnabled", typeof(bool), typeof(BarcodeCameraView), false);
+
+        /// <summary>
+        /// Toggle Flash property.
+        /// </summary>
+        public bool IsFlashEnabled
+        {
+            get { return (bool)GetValue(IsFlashEnabledProperty); }
+            set { SetValue(IsFlashEnabledProperty, value); }
+        }
+
         // This is the delegate that will be used from our native controller to
         // notify us that the scanner has returned a valid result.
         // We can set this from our Page class to implement a custom behavior.
@@ -56,29 +72,11 @@ namespace NativeBarcodeSDKRenderer.Views
             OnBarcodeScanResult = HandleBarcodeScanResult;
         }
 
-        /// <summary>
         /// BarcodeResultBundle 
-        /// </summary>
-        /// <param name="result"></param>
         private void HandleBarcodeScanResult(BarcodeResultBundle result)
         {
             // If we don't implement the delegate from our Page class, this method
             // will be called instead as a fallback mechanism.
-        }
-
-        /// <summary>
-        /// Toggle Flash Binding property
-        /// </summary>
-        public static readonly BindableProperty ToggleFlashProperty =
-          BindableProperty.Create("ToggleFlash", typeof(bool), typeof(BarcodeCameraView), false);
-
-        /// <summary>
-        /// Toggle Flash property.
-        /// </summary>
-        public bool ToggleFlash
-        {
-            get { return (bool)GetValue(ToggleFlashProperty); }
-            set { SetValue(ToggleFlashProperty, value); }
         }
     }
 }

@@ -17,10 +17,17 @@ namespace NativeBarcodeSDKRenderer
 
     public partial class App : Application
     {
+
+        // JUST FOR DEBUG PURPOSES.
+        // Using this constant we can switch between different application
+        // structures (SinglePage, NavigationPage, TabbedPage) to make
+        // sure everything works under every circumstance.
+        const ApplicationType APPLICATION_TYPE = ApplicationType.SinglePage;
+
         public App ()
         {
             InitializeComponent();
-            MainPage = GetMainPage(applicationType: ApplicationType.NavigationPage);
+            MainPage = GetMainPage(applicationType: APPLICATION_TYPE);
 
             var options = new InitializationOptions
             {
@@ -74,15 +81,8 @@ namespace NativeBarcodeSDKRenderer
         }
     }
 
+    public class SecondPage : ContentPage { }
 
-    public class SecondPage : ContentPage
-    {
-
-    }
-
-    public class ThirdPage : ContentPage
-    {
-
-    }
+    public class ThirdPage : ContentPage { }
 }
 

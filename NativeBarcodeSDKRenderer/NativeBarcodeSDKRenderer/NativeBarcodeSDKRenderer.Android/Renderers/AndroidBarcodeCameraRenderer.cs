@@ -45,6 +45,27 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
     */
     class AndroidBarcodeCameraRenderer : ViewRenderer<NativeBarcodeSDKRenderer.Views.BarcodeCameraView, FrameLayout>, ICameraOpenCallback
     {
+        private bool _isFlashEnabled;
+        /// <summary>
+        /// Setting to 'true' enables the camera flash, 'false' disables it.
+        /// </summary>
+        public bool IsFlashEnabled
+        {
+            get
+            {
+                return _isFlashEnabled;
+            }
+            set
+            {
+                if (cameraView != null)
+                {
+                    _isFlashEnabled = value;
+                    cameraView.UseFlash(value);
+                    OnPropertyChanged("IsFlashEnabled");
+                }
+            }
+        }
+
         protected NativeBarcodeSDKRenderer.Views.BarcodeCameraView.BarcodeScannerResultHandler HandleScanResult;
         //protected DocumentAutoSnappingController autoSnappingController; // uncomment to turn on autosnapping
         protected BarcodeDetectorFrameHandler barcodeDetectorFrameHandler;
@@ -53,7 +74,7 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
         protected FinderOverlayView finderOverlayView;
         public event PropertyChangedEventHandler PropertyChanged;
         private readonly int REQUEST_PERMISSION_CODE = 200;
-
+       
         public AndroidBarcodeCameraRenderer(Context context) : base(context)
         {
             SetupViews(context);
@@ -61,7 +82,6 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
 
         private void SetupViews(Context context)
         {
-
             // We instantiate our views from the layout XML
             cameraLayout = (FrameLayout)LayoutInflater
                 .FromContext(context)
@@ -91,27 +111,6 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
         {
             barcodeDetectorFrameHandler.Enabled = false;
             finderOverlayView.Visibility = ViewStates.Invisible;
-        }
-
-        private bool _toggleFlash;
-        /// <summary>
-        /// Toggle Flash property for 
-        /// </summary>
-        public bool ToggleFlash
-        {
-            get
-            {
-                return _toggleFlash;
-            }
-            set
-            {
-                if (cameraView != null)
-                {
-                    _toggleFlash = value;
-                    cameraView.UseFlash(value);
-                    OnPropertyChanged("ToggleFlash");
-                }
-            }
         }
 
         /*
@@ -154,7 +153,7 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
                     StopDetection();
                 };
 
-                Element.SetBinding(NativeBarcodeSDKRenderer.Views.BarcodeCameraView.ToggleFlashProperty, "ToggleFlash", BindingMode.TwoWay);
+                Element.SetBinding(NativeBarcodeSDKRenderer.Views.BarcodeCameraView.IsFlashEnabledProperty, "IsFlashEnabled", BindingMode.TwoWay);
                 Element.BindingContext = this;
 
                 // Similarly, we have defined a delegate in our BarcodeCameraView implementation,

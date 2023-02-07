@@ -15,10 +15,9 @@ namespace NativeBarcodeSDKRenderer
 {
     public partial class MainPage : ContentPage
     {
-
         private bool isDetectionOn;
         /// <summary>
-        /// Is Detection is On or Off
+        /// Is Barcode scanning is On or Off.
         /// </summary>
         private bool IsDetectionOn
         {
@@ -105,12 +104,8 @@ namespace NativeBarcodeSDKRenderer
             }
         }
 
-        /// <summary>
-        /// Scanning Button click event
+        /// Scanning Button click event.
         /// Checks for Camera Permission, License and invokes scanning feature.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private async void OnScanButtonPressed(object sender, EventArgs e)
         {
             if (!await CameraPermissionAllowed())
@@ -149,10 +144,7 @@ namespace NativeBarcodeSDKRenderer
             Padding = safeInsets;
         }
 
-        /// <summary>
-        /// Toggle UI on the scanning On/Off.
-        /// </summary>
-        /// <param name="isDetectionOn"></param>
+        // Updates UI when the Barcode scanning is turned on/off.
         private void ToggleUIOnScanning(bool isDetectionOn)
         {
             if (isDetectionOn)
@@ -170,12 +162,7 @@ namespace NativeBarcodeSDKRenderer
             }
         }
 
-
-        /// <summary>
         /// Check for Camera permissions.
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
         private async Task<bool> CameraPermissionAllowed()
         {
             var isAllowed = false;
@@ -215,25 +202,22 @@ namespace NativeBarcodeSDKRenderer
             return isAllowed;
         }
 
-        /// <summary>
-        /// Flash button clicked.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        // ImageButton element clicked event. Handles Flash Light on/off.
         void FlashButtonClicked(System.Object sender, System.EventArgs e)
         {
             if (!IsDetectionOn)
                 return;
 
-            ToggleFlash(!cameraView.ToggleFlash);
+            ToggleFlash(!cameraView.IsFlashEnabled);
         }
 
         /// <summary>
-        /// Toggle the Flash button UI and property.
+        /// Toggles the Flash button UI relecting On/Off and the camera view IsFlashEnabled property.
         /// </summary>
+        /// <param name="isOn">Bool flag, if set to 'true' turns on the flash and 'false' to turn off the flash.</param>
         private void ToggleFlash(bool isOn)
         {
-            cameraView.ToggleFlash = isOn;
+            cameraView.IsFlashEnabled = isOn;
             if (isOn)
             {
                 imgButtonFlash.BackgroundColor = Color.Yellow;
