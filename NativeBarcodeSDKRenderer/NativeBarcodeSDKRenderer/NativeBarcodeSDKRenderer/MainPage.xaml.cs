@@ -166,6 +166,7 @@ namespace NativeBarcodeSDKRenderer
                 scanButton.Text = "START SCANNING";
                 resultsPreviewLayout.BackgroundColor = Color.FromHex("#d2d2d2");
                 cameraView.StopDetection();
+                ToggleFlash(false);
             }
         }
 
@@ -221,8 +222,19 @@ namespace NativeBarcodeSDKRenderer
         /// <param name="e"></param>
         void FlashButtonClicked(System.Object sender, System.EventArgs e)
         {
-            cameraView.ToggleFlash = !cameraView.ToggleFlash;
-            if (cameraView.ToggleFlash)
+            if (!IsDetectionOn)
+                return;
+
+            ToggleFlash(!cameraView.ToggleFlash);
+        }
+
+        /// <summary>
+        /// Toggle the Flash button UI and property.
+        /// </summary>
+        private void ToggleFlash(bool isOn)
+        {
+            cameraView.ToggleFlash = isOn;
+            if (isOn)
             {
                 imgButtonFlash.BackgroundColor = Color.Yellow;
             }
