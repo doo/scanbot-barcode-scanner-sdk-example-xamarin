@@ -5,7 +5,8 @@
              xmlns:local="clr-namespace:NativeBarcodeSDKRenderer.Views"
              ios:Page.UseSafeArea="true"
              BackgroundColor="#c8193c"
-             x:Class="NativeBarcodeSDKRenderer.MainPage">
+             x:Class="NativeBarcodeSDKRenderer.MainPage"
+             NavigationPage.HasNavigationBar="False">
 
     <StackLayout BackgroundColor="#e2e2e2" Spacing="0">
         <Frame BackgroundColor="#c8193c" Padding="16" CornerRadius="0" HasShadow="False">
@@ -27,9 +28,30 @@
 
         <StackLayout x:Name="buttonsLayout">
             <BoxView Style="{StaticResource Separator}"/>
-                <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand" Margin="16, 32, 16, 32">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="6*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+                <StackLayout Grid.Column="0"/>
+                <StackLayout Grid.Column="1" Orientation="Vertical" HorizontalOptions="CenterAndExpand" Margin="16, 32, 16, 32">
                     <Button x:Name="scanButton" Text="START SCANNING" CornerRadius="10" Padding="24, 16" BackgroundColor="#c8193c" TextColor="White"/>
                 </StackLayout>
+                <Grid Grid.Column="2">
+                    <ImageButton x:Name="imgButtonFlash"
+                                 CornerRadius="20"
+                                 Clicked="FlashButtonClicked"
+                                 Source="ui_scanning_flash_on"
+                                 WidthRequest="40"
+                                 HeightRequest="40"
+                                 Padding="3"
+                                 BackgroundColor="Transparent"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center"/>
+                </Grid>
+            </Grid>
             <BoxView Style="{StaticResource Separator}"/>
         </StackLayout>
         <StackLayout x:Name="resultsPreviewLayout" BackgroundColor="#d2d2d2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">

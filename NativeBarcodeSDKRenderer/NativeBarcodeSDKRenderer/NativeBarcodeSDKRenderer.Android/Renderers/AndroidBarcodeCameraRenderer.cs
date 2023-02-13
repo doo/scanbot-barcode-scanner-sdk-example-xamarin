@@ -23,6 +23,7 @@ using static NativeBarcodeSDKRenderer.Views.BarcodeCameraView;
 using NativeBarcodeSDKRenderer.Droid.Renderers;
 using IO.Scanbot.Sdk.Barcode_scanner;
 using ScanbotBarcodeSDK.Forms.Droid;
+using System.ComponentModel;
 
 /*
     This is the Android Custom Renderer that will provide the actual implementation for BarcodeCameraView.
@@ -44,15 +45,36 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
     */
     class AndroidBarcodeCameraRenderer : ViewRenderer<NativeBarcodeSDKRenderer.Views.BarcodeCameraView, FrameLayout>, ICameraOpenCallback
     {
+        private bool _isFlashEnabled;
+        /// <summary>
+        /// Setting to 'true' enables the camera flash, 'false' disables it.
+        /// </summary>
+        public bool IsFlashEnabled
+        {
+            get
+            {
+                return _isFlashEnabled;
+            }
+            set
+            {
+                if (cameraView != null)
+                {
+                    _isFlashEnabled = value;
+                    cameraView.UseFlash(value);
+                    OnPropertyChanged("IsFlashEnabled");
+                }
+            }
+        }
+
         protected NativeBarcodeSDKRenderer.Views.BarcodeCameraView.BarcodeScannerResultHandler HandleScanResult;
         //protected DocumentAutoSnappingController autoSnappingController; // uncomment to turn on autosnapping
         protected BarcodeDetectorFrameHandler barcodeDetectorFrameHandler;
         protected FrameLayout cameraLayout;
         protected ScanbotCameraView cameraView;
         protected FinderOverlayView finderOverlayView;
-
+        public event PropertyChangedEventHandler PropertyChanged;
         private readonly int REQUEST_PERMISSION_CODE = 200;
-
+       
         public AndroidBarcodeCameraRenderer(Context context) : base(context)
         {
             SetupViews(context);
@@ -60,7 +82,6 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
 
         private void SetupViews(Context context)
         {
-
             // We instantiate our views from the layout XML
             cameraLayout = (FrameLayout)LayoutInflater
                 .FromContext(context)
@@ -132,6 +153,9 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
                     StopDetection();
                 };
 
+                Element.SetBinding(NativeBarcodeSDKRenderer.Views.BarcodeCameraView.IsFlashEnabledProperty, "IsFlashEnabled", BindingMode.TwoWay);
+                Element.BindingContext = this;
+
                 // Similarly, we have defined a delegate in our BarcodeCameraView implementation,
                 // so that we can trigger it whenever the Scanner will return a valid result.
                 HandleScanResult = Element.OnBarcodeScanResult;
@@ -146,7 +170,7 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
                 barcodeDetectorFrameHandler = BarcodeDetectorFrameHandler.Attach(cameraView, detector);
 
                 detector.ModifyConfig(new Function1Impl<BarcodeScannerConfigBuilder>((response) => {
-                    response.SetSaveCameraPreviewFrame(true);
+                    response.SetSaveCameraPreviewFrame(false);
                 }));
 
                 if (barcodeDetectorFrameHandler is BarcodeDetectorFrameHandler handler)
@@ -225,6 +249,13 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
             {
                 ActivityCompat.RequestPermissions(activity, new string[] { Manifest.Permission.Camera }, REQUEST_PERMISSION_CODE);
             }
+        }
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 
