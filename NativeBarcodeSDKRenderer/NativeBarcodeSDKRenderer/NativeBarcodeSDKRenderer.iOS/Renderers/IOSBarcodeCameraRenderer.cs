@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.ComponentModel;
+using System.Linq;
+using CoreAudioKit;
 using CoreGraphics;
 using NativeBarcodeSDKRenderer.iOS.Renderers;
 using NativeBarcodeSDKRenderer.Views;
@@ -34,6 +37,8 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
 
         public IOSBarcodeCameraRenderer() : base() { }
 
+        public bool Flash { get; set; }
+
         protected override void OnElementChanged(ElementChangedEventArgs<BarcodeCameraView> e)
         {
             if (CurrentViewController == null) { return; }
@@ -45,7 +50,24 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
 
             cameraView = new IOSBarcodeCameraView(new CGRect(x, y, width, height));
             SetNativeControl(cameraView);
-            
+
+            if (Control != null)
+            {
+                Element.StartDetectionHandler = (sender, args1) =>
+                {
+                    cameraView.Start();
+                };
+
+                Element.StopDetectionHandler = (sender, args2) =>
+                {
+                    cameraView.Stop();
+                };
+
+
+                Element.SetBinding(BarcodeCameraView.IsFlashEnabledProperty, "IsFlashEnabled", BindingMode.TwoWay);
+                Element.BindingContext = cameraView;
+            }
+
             base.OnElementChanged(e);
         }
 
@@ -61,9 +83,49 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
         {
             base.LayoutSubviews();
             if (Control == null) { return; }
+            if (!isInitialized)
+            {
+                FindAndInitialiseView();
+            }
+        }
 
-            if (CurrentViewController.ChildViewControllers.First() is PageRenderer pageRendererVc) {
-                cameraView.Initialize(pageRendererVc);
+        // Find the View from Navigation heirarchy and initialise it.
+        private void FindAndInitialiseView()
+        {
+            var viewController = CurrentViewController?.ChildViewControllers?.First();
+
+            // If application has a Navigation Controller
+            if (viewController is UINavigationController navigationController)
+            {
+                InitialiseView(navigationController.VisibleViewController);
+            }
+            else if (viewController is UITabBarController tabBarController)
+            {
+                // It is itself a Page renderer.
+                InitialiseView(tabBarController.SelectedViewController);
+            }
+            else
+            {   // If application has no Navigation Controller OR TabBarController
+                InitialiseView(viewController);
+            }
+        }
+
+        /// Initialise the Camera View.
+        private void InitialiseView(UIViewController visibleViewController)
+        {
+            PageRenderer pageRendererViewController = null;
+            if (visibleViewController is PageRenderer) // In case of TabBedPage ViewController
+            {
+                pageRendererViewController = visibleViewController as PageRenderer;
+            }
+            else if (visibleViewController?.ChildViewControllers?.First() is PageRenderer) // Navigation/Single page
+            {
+                pageRendererViewController = visibleViewController.ChildViewControllers.First() as PageRenderer;
+            }
+
+            if (pageRendererViewController != null)
+            {
+                cameraView.Initialize(pageRendererViewController);
                 cameraView.ScannerDelegate.OnDetect = HandleBarcodeScannerResults;
                 barcodeScannerResultHandler = Element.OnBarcodeScanResult;
                 isInitialized = true;
@@ -97,17 +159,57 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
         }
     }
 
-    class IOSBarcodeCameraView : UIView
+    /// Native iOS Barcode CameraView using iOS controller.
+    class IOSBarcodeCameraView : UIView, System.ComponentModel.INotifyPropertyChanged
     {
+        private bool _isFlashEnabled;
+        /// <summary>
+        /// Setting to 'true' enables the camera flash, 'false' disables it. 
+        /// </summary>
+        public bool IsFlashEnabled
+        {
+            get
+            {
+                return _isFlashEnabled;
+            }
+            set
+            {
+                if (Controller != null)
+                {
+                    Controller.FlashLightEnabled = value;
+                    _isFlashEnabled = value;
+                    OnPropertyChanged("IsFlashEnabled");
+                }
+            }
+        }
+
         public SBSDKBarcodeScannerViewController Controller { get; private set; }
         public BarcodeScannerDelegate ScannerDelegate { get; private set; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public IOSBarcodeCameraView(CGRect frame) : base(frame) {}
+        public IOSBarcodeCameraView(CGRect frame) : base(frame) { }
 
-        public void Initialize(UIViewController parentViewController) {
+        public void Initialize(UIViewController parentViewController)
+        {
             Controller = new SBSDKBarcodeScannerViewController(parentViewController, this);
+            Controller.BarcodeImageGenerationType = SBSDKBarcodeImageGenerationType.None;
             ScannerDelegate = new BarcodeScannerDelegate();
             Controller.Delegate = ScannerDelegate;
+        }
+
+        public void Stop()
+        {
+            Controller.RecognitionEnabled = false;
+        }
+
+        public void Start()
+        {
+            Controller.RecognitionEnabled = true;
+        }
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

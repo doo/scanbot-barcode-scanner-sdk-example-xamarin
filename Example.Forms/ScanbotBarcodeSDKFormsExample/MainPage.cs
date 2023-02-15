@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using ScanbotBarcodeSDK.Forms;
 using Xamarin.Forms;
 
@@ -10,6 +11,8 @@ namespace ScanbotBarcodeSDKFormsExample
         StackLayout Container { get; set; }
 
         Image BarcodeImage { get; set; }
+
+        private bool ShouldTestCloseView = false;
 
         public MainPage()
         {
@@ -71,6 +74,7 @@ namespace ScanbotBarcodeSDKFormsExample
                     return;
                 }
                 var config = GetScannerConfiguration(false);
+                TestCloseView(false);
                 var result = await SBSDK.Scanner.Open(config);
                 if (result.Status == OperationResult.Ok)
                 {
@@ -88,13 +92,14 @@ namespace ScanbotBarcodeSDKFormsExample
                     return;
                 }
                 var config = GetScannerConfiguration(true);
+                TestCloseView(false);
                 BarcodeResultBundle result = await SBSDK.Scanner.Open(config);
                 if (result.Status == OperationResult.Ok)
                 {
                     await Navigation.PushAsync(new BarcodeResultsPage(result.Image, result.Barcodes));
                 }
             };
-        }
+        }   
 
         EventHandler BatchClicked()
         {
@@ -103,6 +108,7 @@ namespace ScanbotBarcodeSDKFormsExample
                 var configuration = new BatchBarcodeScannerConfiguration();
                 configuration.AcceptedFormats = BarcodeTypes.Instance.AcceptedTypes;
                 configuration.OverlayConfiguration = new SelectionOverlayConfiguration(Color.Yellow, Color.Yellow, Color.Black);
+                TestCloseView(true);
                 var result = await SBSDK.Scanner.OpenBatch(configuration);
                 if (result.Status == OperationResult.Ok)
                 {
@@ -125,7 +131,13 @@ namespace ScanbotBarcodeSDKFormsExample
                     List<Barcode> codes = null;
                     try
                     {
-                        codes = await SBSDK.Operations.DetectBarcodesFrom(source);
+                        var configuration = new DetectBarcodesOnImageConfiguration(source);
+                        configuration.AcceptedDocumentFormats = new List<BarcodeDocumentFormat>();
+                        configuration.AcceptedFormats = BarcodeTypes.Instance.AcceptedTypes;
+                        configuration.CodeDensity = BarcodeDensity.High;
+                        configuration.EngineMode = EngineMode.NextGen;
+                        configuration.LowPowerMode = true;
+                        codes = await SBSDK.Operations.DetectBarcodesFromImage(configuration);
                     }
                     catch (Exception exception)
                     {
@@ -210,6 +222,31 @@ namespace ScanbotBarcodeSDKFormsExample
             }
 
             return configuration;
+        }
+
+        /// <summary>
+        /// Test the force closing of Barcode scanning view.
+        /// </summary>
+        /// <param name="isBatchBarcode"></param>
+        /// <returns></returns>
+        private void TestCloseView(bool isBatchBarcode)
+        {
+            if (!ShouldTestCloseView) return;
+            Task.Run(async () =>
+            {
+                await Task.Delay(7000);
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
+                    if (isBatchBarcode)
+                    {
+                        SBSDK.Scanner.CloseBatchBarcodeScannerView();
+                    }
+                    else
+                    {
+                        SBSDK.Scanner.CloseBarcodeScannerView();
+                    }
+                });
+            });
         }
     }
 }

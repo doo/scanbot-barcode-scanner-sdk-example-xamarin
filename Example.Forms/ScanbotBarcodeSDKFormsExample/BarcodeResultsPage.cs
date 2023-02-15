@@ -84,7 +84,7 @@ namespace ScanbotBarcodeSDKFormsExample
 
         async void DetectBarcodes(ImageSource source, Action callback = null)
         {
-            Barcodes = await SBSDK.Operations.DetectBarcodesFrom(source);
+            //Barcodes = await SBSDK.Operations.DetectBarcodesFrom(source);
             callback();
         }
 
@@ -98,6 +98,7 @@ namespace ScanbotBarcodeSDKFormsExample
             List = new ListView();
             List.ItemTemplate = new DataTemplate(typeof(BarcodeCell));
             List.RowHeight = ROWHEIGHT;
+            List.HasUnevenRows = true;
             List.ItemsSource = Barcodes;
         }
 
