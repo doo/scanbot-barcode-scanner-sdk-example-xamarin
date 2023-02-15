@@ -177,7 +177,6 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
                 {
                     handler.SetDetectionInterval(0);
                     handler.AddResultHandler(new BarcodeDetectorResultHandler((result) => HandleFrameHandlerResult(result)));
-
                     // Uncomment to enable auto-snapping (eg. single barcode scan)
                     // var barcodeAutoSnappingController = BarcodeAutoSnappingController.Attach(cameraView, handler);
                     // barcodeAutoSnappingController.SetSensitivity(1f);
