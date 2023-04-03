@@ -15,6 +15,13 @@ The SDK for Xamarin is available as NuGet packages:
 - [ScanbotBarcodeSDK.Xamarin.Forms](https://www.nuget.org/packages/ScanbotBarcodeSDK.Xamarin.Forms)
 
 
+## Free Developer Support
+
+We provide free "no-strings-attached" developer support for the implementation & testing of the Scanbot SDK.
+If you encounter technical issues with integrating the Scanbot SDK or need advice on choosing the appropriate
+framework or features, please visit our [Support Page](https://docs.scanbot.io/support/).
+
+
 ## Requirements
 Latest version of [Microsoft Visual Studio](https://visualstudio.microsoft.com/xamarin/) with Xamarin Platform.
 
