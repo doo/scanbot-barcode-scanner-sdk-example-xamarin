@@ -1,9 +1,7 @@
 ﻿
-//using Native.Renderers.Example.Forms.Views;
 using IO.Scanbot.Sdk.Camera;
 using Android.Content;
 using Xamarin.Forms.Platform.Android;
-//using IO.Scanbot.Sdk.Contourdetector;
 using IO.Scanbot.Sdk.Barcode;
 using AndroidX.Core.Content;
 using Android;
@@ -12,18 +10,15 @@ using AndroidX.Core.App;
 using IO.Scanbot.Sdk.Barcode.Entity;
 using Android.Widget;
 using Xamarin.Forms;
-//using Native.Renderers.Example.Forms.Droid.Renderers;
-//using ScanbotSDK.Xamarin.Forms.Android;
 using Android.Views;
 using System.Collections.Generic;
 using IO.Scanbot.Sdk.UI.Camera;
-using IO.Scanbot.Sdk.UI.View.Barcode;
 using NativeBarcodeSDKRenderers.Droid.Renderers;
-using static NativeBarcodeSDKRenderer.Views.BarcodeCameraView;
 using NativeBarcodeSDKRenderer.Droid.Renderers;
 using IO.Scanbot.Sdk.Barcode_scanner;
 using ScanbotBarcodeSDK.Forms.Droid;
 using System.ComponentModel;
+using IO.Scanbot.Sdk.Barcode.UI;
 
 /*
     This is the Android Custom Renderer that will provide the actual implementation for BarcodeCameraView.
@@ -43,7 +38,7 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
        By extending 'ViewRenderer' we specify that we want our custom renderer to target 'BarcodeCameraView' and
        override it with our native view, which is a 'FrameLayout' in this case (see layout/barcode_camera_view.xml)
     */
-    class AndroidBarcodeCameraRenderer : ViewRenderer<NativeBarcodeSDKRenderer.Views.BarcodeCameraView, FrameLayout>, ICameraOpenCallback
+    class AndroidBarcodeCameraRenderer : ViewRenderer<NativeBarcodeSDKRenderer.Views.BarcodeCameraView, FrameLayout>, IBarcodeScannerViewCallback
     {
         private bool _isFlashEnabled;
         /// <summary>
@@ -60,21 +55,19 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
                 if (cameraView != null)
                 {
                     _isFlashEnabled = value;
-                    cameraView.UseFlash(value);
+                    cameraView?.ViewController?.UseFlash(value);
                     OnPropertyChanged("IsFlashEnabled");
                 }
             }
         }
 
         protected NativeBarcodeSDKRenderer.Views.BarcodeCameraView.BarcodeScannerResultHandler HandleScanResult;
-        //protected DocumentAutoSnappingController autoSnappingController; // uncomment to turn on autosnapping
-        protected BarcodeDetectorFrameHandler barcodeDetectorFrameHandler;
         protected FrameLayout cameraLayout;
-        protected ScanbotCameraView cameraView;
+        protected BarcodeScannerView cameraView;
         protected FinderOverlayView finderOverlayView;
         public event PropertyChangedEventHandler PropertyChanged;
         private readonly int REQUEST_PERMISSION_CODE = 200;
-       
+
         public AndroidBarcodeCameraRenderer(Context context) : base(context)
         {
             SetupViews(context);
@@ -88,8 +81,8 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
                 .Inflate(NativeBarcodeSDKRenderer.Droid.Resource.Layout.barcode_camera_view, null, false);
 
             // Here we retrieve the Camera View...
-            cameraView = cameraLayout.FindViewById<ScanbotCameraView>(NativeBarcodeSDKRenderer.Droid.Resource.Id.barcode_camera);
-
+            cameraView = cameraLayout.FindViewById<BarcodeScannerView>(NativeBarcodeSDKRenderer.Droid.Resource.Id.barcode_camera);
+            
             // ...and here we retrieve and configure the Finder Overlay View
             finderOverlayView = cameraLayout.FindViewById<FinderOverlayView>(NativeBarcodeSDKRenderer.Droid.Resource.Id.barcode_finder_overlay);
             finderOverlayView.SetFinderMinPadding(80);
@@ -101,15 +94,15 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
 
         private void StartDetection()
         {
-            cameraView.OnResume();
-            barcodeDetectorFrameHandler.Enabled = true;
-            finderOverlayView.Visibility = ViewStates.Visible;
+            cameraView?.ViewController.StartPreview();
+            cameraView?.ViewController?.OnResume();
+            finderOverlayView.Visibility = ViewStates.Invisible;
             CheckPermissions();
         }
 
         private void StopDetection()
         {
-            barcodeDetectorFrameHandler.Enabled = false;
+            cameraView?.ViewController.StopPreview();
             finderOverlayView.Visibility = ViewStates.Invisible;
         }
 
@@ -135,12 +128,12 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
                 // these native calls will be executed whenever those methods will be called.
                 Element.OnResumeHandler = (sender, e) =>
                 {
-                    cameraView.OnResume();
+                    cameraView?.ViewController?.OnResume();
                 };
 
                 Element.OnPauseHandler = (sender, e) =>
                 {
-                    cameraView.OnPause();
+                    cameraView?.ViewController?.OnPause();
                 };
 
                 Element.StartDetectionHandler = (sender, e) =>
@@ -160,79 +153,42 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
                 // so that we can trigger it whenever the Scanner will return a valid result.
                 HandleScanResult = Element.OnBarcodeScanResult;
 
-                // In this example we demonstrate how to lock the orientation of the UI (Activity)
-                // as well as the orientation of the taken picture to portrait.
-                cameraView.LockToPortrait(true);
-
                 // Here we create the BarcodeDetectorFrameHandler which will take care of detecting
                 // barcodes in your video frames
                 var detector = new ScanbotBarcodeScannerSDK(Context.GetActivity()).CreateBarcodeDetector();
-                barcodeDetectorFrameHandler = BarcodeDetectorFrameHandler.Attach(cameraView, detector);
 
-                detector.ModifyConfig(new Function1Impl<BarcodeScannerConfigBuilder>((response) => {
+                detector.ModifyConfig(new Function1Impl<BarcodeScannerConfigBuilder>((response) =>
+                {
                     response.SetSaveCameraPreviewFrame(false);
                 }));
 
-                if (barcodeDetectorFrameHandler is BarcodeDetectorFrameHandler handler)
+
+                cameraView.InitCamera(new CameraUiSettings(false));
+                cameraView.InitDetectionBehavior(detector, new BarcodeDetectorResultHandler(HandleFrameHandlerResult), this);
+
+                if (Element?.OverlayConfiguration?.Enabled == true)
                 {
-                    handler.SetDetectionInterval(0);
-                    handler.AddResultHandler(new BarcodeDetectorResultHandler((result) => HandleFrameHandlerResult(result)));
-                    // Uncomment to enable auto-snapping (eg. single barcode scan)
-                    // var barcodeAutoSnappingController = BarcodeAutoSnappingController.Attach(cameraView, handler);
-                    // barcodeAutoSnappingController.SetSensitivity(1f);
-                }
+                    cameraView.SelectionOverlayController.SetEnabled(Element.OverlayConfiguration.Enabled);
+                    cameraView.SelectionOverlayController.SetPolygonColor(Element.OverlayConfiguration.PolygonColor.ToArgb());
+                    cameraView.SelectionOverlayController.SetTextColor(Element.OverlayConfiguration.TextColor.ToArgb());
+                    cameraView.SelectionOverlayController.SetTextContainerColor(Element.OverlayConfiguration.TextContainerColor.ToArgb());
 
-                cameraView.SetCameraOpenCallback(this);
-            }
-        }
+                    if (Element.OverlayConfiguration.HighlightedPolygonColor != null)
+                    {
+                        cameraView.SelectionOverlayController.SetPolygonHighlightedColor(Element.OverlayConfiguration.HighlightedPolygonColor.ToArgb() ?? 0);
+                    }
 
-        void ICameraOpenCallback.OnCameraOpened()
-        {
-            cameraView.PostDelayed(() =>
-            {
-                // Disable auto-focus sound:
-                cameraView.SetAutoFocusSound(false);
+                    if (Element.OverlayConfiguration.HighlightedTextColor != null)
+                    {
+                        cameraView.SelectionOverlayController.SetTextHighlightedColor(Element.OverlayConfiguration.HighlightedTextColor.ToArgb() ?? 0);
+                    }
 
-                // Uncomment to disable shutter sound (supported since Android 4.2+):
-                // Please note that some devices may not allow disabling the camera shutter sound. 
-                // If the shutter sound state cannot be set to the desired value, this method will be ignored.
-                // cameraView.SetShutterSound(false);
-
-                // Enable ContinuousFocus mode:
-                cameraView.ContinuousFocus();
-            }, 500);
-        }
-
-        private bool HandleSuccess(BarcodeScanningResult result)
-        {
-            if (result == null) { return false; }
-
-            var outResult = new ScanbotBarcodeSDK.Forms.BarcodeResultBundle //ScanbotSDK.Xamarin.Forms.BarcodeScanningResult
-            {
-                Barcodes = result.BarcodeItems.ToFormsBarcodeList(),
-                Image = result.PreviewFrame.ToImageSource()
-            };
-
-            HandleScanResult?.Invoke(outResult);
-            return true;
-        }
-
-        private bool HandleFrameHandlerResult(FrameHandlerResult result)
-        {
-            if (result is FrameHandlerResult.Success success)
-            {
-                if (success.Value is BarcodeScanningResult barcodeResult)
-                {
-                    HandleSuccess(barcodeResult);
+                    if (Element.OverlayConfiguration.HighlightedTextContainerColor != null)
+                    {
+                        cameraView.SelectionOverlayController.SetTextContainerHighlightedColor(Element.OverlayConfiguration.HighlightedTextContainerColor.ToArgb() ?? 0);
+                    }
                 }
             }
-            else
-            {
-                cameraView.Post(() => Toast.MakeText(Context.GetActivity(), "License has expired!", ToastLength.Long).Show());
-                cameraView.RemoveFrameHandler(barcodeDetectorFrameHandler);
-            }
-
-            return false;
         }
 
         private void CheckPermissions()
@@ -256,6 +212,70 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #region BarcodeDetectorResultHandler
+
+        private bool HandleFrameHandlerResult(FrameHandlerResult result)
+        {
+            if (result is FrameHandlerResult.Success success)
+            {
+                if (success.Value is BarcodeScanningResult barcodeResult)
+                {
+                    HandleSuccess(barcodeResult);
+                }
+            }
+            else
+            {
+                cameraView.Post(() => Toast.MakeText(Context.GetActivity(), "License has expired!", ToastLength.Long).Show());
+            }
+
+            return false;
+        }
+
+        private bool HandleSuccess(BarcodeScanningResult result)
+        {
+            if (result == null) { return false; }
+
+            var overlayEnabled = Element.OverlayConfiguration?.Enabled ?? false;
+            if (overlayEnabled == false)
+            {
+                var outResult = new ScanbotBarcodeSDK.Forms.BarcodeResultBundle //ScanbotSDK.Xamarin.Forms.BarcodeScanningResult
+                {
+                    Barcodes = result.BarcodeItems.ToFormsBarcodeList(),
+                    Image = result.PreviewFrame.ToImageSource()
+                };
+
+                HandleScanResult?.Invoke(outResult);
+            }
+            return true;
+        }
+
+        #endregion
+
+        #region IBarcodeScannerViewCallback
+
+        public void OnSelectionOverlayBarcodeClicked(BarcodeItem barcodeItem)
+        {
+            var outResult = new ScanbotBarcodeSDK.Forms.BarcodeResultBundle //ScanbotSDK.Xamarin.Forms.BarcodeScanningResult
+            {
+                Barcodes = new List<ScanbotBarcodeSDK.Forms.Barcode>() { barcodeItem.ToFormsBarcode() },
+                Image = barcodeItem.Image.ToImageSource()
+            };
+
+            HandleScanResult?.Invoke(outResult);
+        }
+
+        public void OnCameraOpen()
+        {
+            cameraView.ViewController.UseFlash(IsFlashEnabled);
+        }
+
+        public void OnPictureTaken(byte[] image, CaptureInfo captureInfo)
+        {
+
+        }
+
+        #endregion
     }
 
     // Here we define a custom BarcodeDetectorResultHandler. Whenever a result is ready, the frame handler

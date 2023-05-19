@@ -48,6 +48,7 @@ namespace NativeBarcodeSDKRenderer
         /// </summary>
         private void SetupViews()
         {
+            cameraView.OverlayConfiguration = new SelectionOverlayConfiguration(Color.Yellow, Color.Yellow, Color.Black, Color.Red, Color.Red, Color.Black);
             cameraView.OnBarcodeScanResult = (result) =>
             {
                 string text = "";

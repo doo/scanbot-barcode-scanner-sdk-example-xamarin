@@ -8,6 +8,7 @@ using NativeBarcodeSDKRenderer.Views;
 using ScanbotBarcodeSDK.Forms;
 using ScanbotBarcodeSDK.Forms.iOS;
 using ScanbotBarcodeSDK.iOS;
+using StoreKit;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
@@ -66,6 +67,8 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
 
                 Element.SetBinding(BarcodeCameraView.IsFlashEnabledProperty, "IsFlashEnabled", BindingMode.TwoWay);
                 Element.BindingContext = cameraView;
+                // Selection overlay configuration
+                cameraView.SetOverlayConfiguration(Element.OverlayConfiguration);
             }
 
             base.OnElementChanged(e);
@@ -195,6 +198,35 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
             Controller.BarcodeImageGenerationType = SBSDKBarcodeImageGenerationType.None;
             ScannerDelegate = new BarcodeScannerDelegate();
             Controller.Delegate = ScannerDelegate;
+
+            
+        }
+
+        // Set the overlay configuration to native controller.
+        public void SetOverlayConfiguration(SelectionOverlayConfiguration overlayConfiguration)
+        {
+            if (overlayConfiguration?.Enabled == true)
+            {
+                Controller.SelectionOverlayEnabled = true;
+
+                Controller.SelectionPolygonColor = overlayConfiguration.PolygonColor.ToUIColor();
+                Controller.SelectionTextColor = overlayConfiguration.TextColor.ToUIColor();
+                Controller.SelectionTextContainerColor = overlayConfiguration.TextContainerColor.ToUIColor();
+                if (overlayConfiguration.HighlightedPolygonColor != null)
+                {
+                    Controller.SelectionHighlightedPolygonColor = overlayConfiguration.HighlightedPolygonColor?.ToUIColor();
+                }
+
+                if (overlayConfiguration.HighlightedTextColor != null)
+                {
+                    Controller.SelectionHighlightedTextColor = overlayConfiguration.HighlightedTextColor?.ToUIColor();
+                }
+
+                if (overlayConfiguration.HighlightedTextContainerColor != null)
+                {
+                    Controller.SelectionHighlightedTextContainerColor = overlayConfiguration.HighlightedTextContainerColor?.ToUIColor();
+                }
+            }
         }
 
         public void Stop()
