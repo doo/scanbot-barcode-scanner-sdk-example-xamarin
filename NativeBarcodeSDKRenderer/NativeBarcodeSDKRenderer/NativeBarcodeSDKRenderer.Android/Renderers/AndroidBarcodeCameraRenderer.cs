@@ -64,7 +64,6 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
         protected NativeBarcodeSDKRenderer.Views.BarcodeCameraView.BarcodeScannerResultHandler HandleScanResult;
         protected FrameLayout cameraLayout;
         protected BarcodeScannerView cameraView;
-        protected FinderOverlayView finderOverlayView;
         public event PropertyChangedEventHandler PropertyChanged;
         private readonly int REQUEST_PERMISSION_CODE = 200;
 
@@ -82,28 +81,18 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
 
             // Here we retrieve the Camera View...
             cameraView = cameraLayout.FindViewById<BarcodeScannerView>(NativeBarcodeSDKRenderer.Droid.Resource.Id.barcode_camera);
-            
-            // ...and here we retrieve and configure the Finder Overlay View
-            finderOverlayView = cameraLayout.FindViewById<FinderOverlayView>(NativeBarcodeSDKRenderer.Droid.Resource.Id.barcode_finder_overlay);
-            finderOverlayView.SetFinderMinPadding(80);
-            finderOverlayView.RequiredAspectRatios = new List<FinderAspectRatio>
-            {
-                new FinderAspectRatio(1, 1)
-            };
         }
 
         private void StartDetection()
         {
             cameraView?.ViewController.StartPreview();
             cameraView?.ViewController?.OnResume();
-            finderOverlayView.Visibility = ViewStates.Invisible;
             CheckPermissions();
         }
 
         private void StopDetection()
         {
             cameraView?.ViewController.StopPreview();
-            finderOverlayView.Visibility = ViewStates.Invisible;
         }
 
         /*
@@ -188,6 +177,9 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
                         cameraView.SelectionOverlayController.SetTextContainerHighlightedColor(Element.OverlayConfiguration.HighlightedTextContainerColor.ToArgb() ?? 0);
                     }
                 }
+
+                // Finder view controller disable.
+                cameraView?.FinderViewController?.SetFinderEnabled(false);
             }
         }
 
