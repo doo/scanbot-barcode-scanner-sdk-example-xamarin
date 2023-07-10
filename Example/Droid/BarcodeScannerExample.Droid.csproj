@@ -59,9 +59,9 @@
     <Compile Include="Model\BarcodeTypes.cs" />
     <Compile Include="Utils\Alert.cs" />
     <Compile Include="Utils\Function1Impl.cs" />
-    <Compile Include="Activities\DemoBarcodeCameraViewActivity.cs" />
     <Compile Include="Common\BarcodeScannerDelegates.cs" />
     <Compile Include="Activities\DemoBarcodeCameraXViewActivity.cs" />
+    <Compile Include="Activities\DemoBarcodeScannerViewActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -103,7 +103,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\barcode_camera_activity.xml">
+    <AndroidResource Include="Resources\layout\barcode_scanner_view_activity.xml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
@@ -157,7 +157,7 @@
       <Version>0.0.2-beta1</Version>
     </PackageReference>
     <PackageReference Include="ScanbotBarcodeSDK.Xamarin">
-      <Version>3.3.1</Version>
+      <Version>3.6.0-beta.1</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="..\BarcodeScannerExample\BarcodeScannerExample.projitems" Label="Shared" Condition="Exists('..\BarcodeScannerExample\BarcodeScannerExample.projitems')" />

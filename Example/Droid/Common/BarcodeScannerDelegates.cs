@@ -1,8 +1,10 @@
 ﻿using System;
+using IO.Scanbot.Sdk;
 using IO.Scanbot.Sdk.Barcode;
 using IO.Scanbot.Sdk.Barcode.Entity;
 using IO.Scanbot.Sdk.Barcode_scanner;
 using IO.Scanbot.Sdk.Camera;
+using static IO.Scanbot.Sdk.Camera.FrameHandlerResult;
 
 namespace BarcodeScannerExample.Droid
 {
@@ -16,24 +18,23 @@ namespace BarcodeScannerExample.Droid
         }
     }
 
-    class BarcodeResultDelegate : BarcodeDetectorFrameHandler.BarcodeDetectorResultHandler
+    class BarcodeResultDelegate : BarcodeDetectorResultHandlerWrapper
     {
         public EventHandler<BarcodeEventArgs> Success;
 
-        public override bool Handle(FrameHandlerResult p0)
+        public override bool HandleResult(BarcodeScanningResult result, SdkLicenseError error)
         {
-            if (!MainActivity.SDK.LicenseInfo.IsValid) {
+            if (!MainActivity.SDK.LicenseInfo.IsValid)
+            {
                 return false;
             }
-            var success = (FrameHandlerResult.Success)p0;
-            if (success != null && success.Value != null)
+            if (error != null || result == null)
             {
-                var value = (BarcodeScanningResult)success.Value;
-                Success?.Invoke(this, new BarcodeEventArgs(success.Value));
-                return true;
+                return false;
             }
 
-            return false;
+            Success?.Invoke(this, new BarcodeEventArgs(result));
+            return true;
         }
     }
 
