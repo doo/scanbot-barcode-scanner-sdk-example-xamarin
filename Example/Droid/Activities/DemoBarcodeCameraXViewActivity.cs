@@ -11,6 +11,7 @@ using AndroidX.Core.Content;
 using AndroidX.Core.View;
 using IO.Scanbot.Sdk.Barcode;
 using IO.Scanbot.Sdk.Barcode.Entity;
+using IO.Scanbot.Sdk.Barcode.UI;
 using IO.Scanbot.Sdk.Barcode_scanner;
 using IO.Scanbot.Sdk.Camera;
 using IO.Scanbot.Sdk.UI.Camera;
@@ -22,8 +23,6 @@ namespace BarcodeScannerExample.Droid
     {
         ScanbotCameraXView cameraView;
         ImageView resultView;
-
-        BarcodeDetectorFrameHandler handler;
 
         const int REQUEST_PERMISSION_CODE = 200;
         public string[] Permissions
@@ -46,21 +45,19 @@ namespace BarcodeScannerExample.Droid
             cameraView.SetCameraOpenCallback(this);
 
             var SDK = new ScanbotBarcodeScannerSDK(this);
-            var detector = SDK.CreateBarcodeDetector();
 
-            detector.ModifyConfig(new Function1Impl<BarcodeScannerConfigBuilder>((response) => {
+            var barcodeDetector = SDK.CreateBarcodeDetector();
+            barcodeDetector.ModifyConfig(new Function1Impl<BarcodeScannerConfigBuilder>((response) => {
                 response.SetSaveCameraPreviewFrame(true);
                 response.SetBarcodeFormats(BarcodeTypes.Instance.AcceptedTypes);
             }));
 
-            handler = BarcodeDetectorFrameHandler.Attach(cameraView, detector);
-            handler.SetDetectionInterval(1000);
-
             var resultHandler = new BarcodeResultDelegate();
-            handler.AddResultHandler(resultHandler);
             resultHandler.Success += OnBarcodeResult;
 
-            var snappingcontroller = BarcodeAutoSnappingController.Attach(cameraView, handler);
+            ScanbotCameraViewWrapper.InitDetectionBehavior(cameraView, barcodeDetector, resultHandler, new Java.Lang.Long(1000));
+
+            var snappingcontroller = BarcodeAutoSnappingController.Attach(cameraView, barcodeDetector);
             snappingcontroller.SetSensitivity(1f);
 
             var pictureDelegate = new PictureResultDelegate();
@@ -89,6 +86,7 @@ namespace BarcodeScannerExample.Droid
             {
                 ActivityCompat.RequestPermissions(this, Permissions, REQUEST_PERMISSION_CODE);
             }
+            
         }
 
         protected override void OnPause()
@@ -105,12 +103,17 @@ namespace BarcodeScannerExample.Droid
             }, 300);
         }
 
-        public void OnPictureTaken(object sender, PictureTakenEventArgs e)
+        public void OnPictureTaken(object sender, PictureTakenEventArgs args)
         {
-            var image = e.Image;
-            var orientation = e.Orientation;
+            var image = args.Image;
+            var orientation = args.Orientation;
 
-            var bitmap = BitmapFactory.DecodeByteArray(image, 0, orientation);
+            var bitmap = BitmapFactory.DecodeByteArray(image, 0, image.Length);
+
+            if (bitmap == null)
+            {
+                return;
+            }
 
             var matrix = new Matrix();
             matrix.SetRotate(orientation, bitmap.Width / 2, bitmap.Height / 2);
