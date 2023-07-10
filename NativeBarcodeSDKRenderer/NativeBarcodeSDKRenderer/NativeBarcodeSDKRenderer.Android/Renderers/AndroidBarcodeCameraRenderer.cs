@@ -24,6 +24,8 @@ using NativeBarcodeSDKRenderer.Droid.Renderers;
 using IO.Scanbot.Sdk.Barcode_scanner;
 using ScanbotBarcodeSDK.Forms.Droid;
 using System.ComponentModel;
+using IO.Scanbot.Sdk;
+using IO.Scanbot.Sdk.Barcode.UI;
 
 /*
     This is the Android Custom Renderer that will provide the actual implementation for BarcodeCameraView.
@@ -66,11 +68,11 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
             }
         }
 
-        protected NativeBarcodeSDKRenderer.Views.BarcodeCameraView.BarcodeScannerResultHandler HandleScanResult;
+        protected BarcodeScannerResultHandler HandleScanResult;
         //protected DocumentAutoSnappingController autoSnappingController; // uncomment to turn on autosnapping
-        protected BarcodeDetectorFrameHandler barcodeDetectorFrameHandler;
+        protected bool isEnabled = true;
         protected FrameLayout cameraLayout;
-        protected ScanbotCameraView cameraView;
+        protected ScanbotCameraXView cameraView;
         protected FinderOverlayView finderOverlayView;
         public event PropertyChangedEventHandler PropertyChanged;
         private readonly int REQUEST_PERMISSION_CODE = 200;
@@ -88,28 +90,27 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
                 .Inflate(NativeBarcodeSDKRenderer.Droid.Resource.Layout.barcode_camera_view, null, false);
 
             // Here we retrieve the Camera View...
-            cameraView = cameraLayout.FindViewById<ScanbotCameraView>(NativeBarcodeSDKRenderer.Droid.Resource.Id.barcode_camera);
+            cameraView = cameraLayout.FindViewById<ScanbotCameraXView>(NativeBarcodeSDKRenderer.Droid.Resource.Id.barcode_camera);
 
             // ...and here we retrieve and configure the Finder Overlay View
             finderOverlayView = cameraLayout.FindViewById<FinderOverlayView>(NativeBarcodeSDKRenderer.Droid.Resource.Id.barcode_finder_overlay);
             finderOverlayView.SetFinderMinPadding(80);
-            finderOverlayView.RequiredAspectRatios = new List<FinderAspectRatio>
+            finderOverlayView.RequiredAspectRatios = new List<AspectRatio>
             {
-                new FinderAspectRatio(1, 1)
+                new AspectRatio(1, 1)
             };
         }
 
         private void StartDetection()
         {
-            cameraView.OnResume();
-            barcodeDetectorFrameHandler.Enabled = true;
+            isEnabled = true;
             finderOverlayView.Visibility = ViewStates.Visible;
             CheckPermissions();
         }
 
         private void StopDetection()
         {
-            barcodeDetectorFrameHandler.Enabled = false;
+            isEnabled = false;
             finderOverlayView.Visibility = ViewStates.Invisible;
         }
 
@@ -132,17 +133,7 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
             {
                 // The Element object is the instance of BarcodeCameraView as defined in the Forms
                 // core project. We've defined some delegates there, and we'll bind to them here so that
-                // these native calls will be executed whenever those methods will be called.
-                Element.OnResumeHandler = (sender, e) =>
-                {
-                    cameraView.OnResume();
-                };
-
-                Element.OnPauseHandler = (sender, e) =>
-                {
-                    cameraView.OnPause();
-                };
-
+                // these native calls will be executed whenever those methods will be called
                 Element.StartDetectionHandler = (sender, e) =>
                 {
                     StartDetection();
@@ -153,7 +144,7 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
                     StopDetection();
                 };
 
-                Element.SetBinding(NativeBarcodeSDKRenderer.Views.BarcodeCameraView.IsFlashEnabledProperty, "IsFlashEnabled", BindingMode.TwoWay);
+                Element.SetBinding(IsFlashEnabledProperty, "IsFlashEnabled", BindingMode.TwoWay);
                 Element.BindingContext = this;
 
                 // Similarly, we have defined a delegate in our BarcodeCameraView implementation,
@@ -167,20 +158,12 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
                 // Here we create the BarcodeDetectorFrameHandler which will take care of detecting
                 // barcodes in your video frames
                 var detector = new ScanbotBarcodeScannerSDK(Context.GetActivity()).CreateBarcodeDetector();
-                barcodeDetectorFrameHandler = BarcodeDetectorFrameHandler.Attach(cameraView, detector);
-
                 detector.ModifyConfig(new Function1Impl<BarcodeScannerConfigBuilder>((response) => {
                     response.SetSaveCameraPreviewFrame(false);
                 }));
 
-                if (barcodeDetectorFrameHandler is BarcodeDetectorFrameHandler handler)
-                {
-                    handler.SetDetectionInterval(0);
-                    handler.AddResultHandler(new BarcodeDetectorResultHandler((result) => HandleFrameHandlerResult(result)));
-                    // Uncomment to enable auto-snapping (eg. single barcode scan)
-                    // var barcodeAutoSnappingController = BarcodeAutoSnappingController.Attach(cameraView, handler);
-                    // barcodeAutoSnappingController.SetSensitivity(1f);
-                }
+                ScanbotCameraViewWrapper.InitDetectionBehavior(cameraView, detector, new BarcodeDetectorResultHandler((result) => HandleFrameHandlerResult(result)), new Java.Lang.Long(0));
+
 
                 cameraView.SetCameraOpenCallback(this);
             }
@@ -190,13 +173,10 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
         {
             cameraView.PostDelayed(() =>
             {
-                // Disable auto-focus sound:
-                cameraView.SetAutoFocusSound(false);
-
                 // Uncomment to disable shutter sound (supported since Android 4.2+):
                 // Please note that some devices may not allow disabling the camera shutter sound. 
                 // If the shutter sound state cannot be set to the desired value, this method will be ignored.
-                // cameraView.SetShutterSound(false);
+                //cameraView.SetShutterSound(false);
 
                 // Enable ContinuousFocus mode:
                 cameraView.ContinuousFocus();
@@ -217,19 +197,16 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
             return true;
         }
 
-        private bool HandleFrameHandlerResult(FrameHandlerResult result)
+        private bool HandleFrameHandlerResult(BarcodeScanningResult result)
         {
-            if (result is FrameHandlerResult.Success success)
+            if (!isEnabled)
             {
-                if (success.Value is BarcodeScanningResult barcodeResult)
-                {
-                    HandleSuccess(barcodeResult);
-                }
+                return false;
             }
-            else
+
+            if (result != null)
             {
-                cameraView.Post(() => Toast.MakeText(Context.GetActivity(), "License has expired!", ToastLength.Long).Show());
-                cameraView.RemoveFrameHandler(barcodeDetectorFrameHandler);
+                HandleSuccess(result);
             }
 
             return false;
@@ -252,18 +229,16 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
 
         protected void OnPropertyChanged(string propertyName)
         {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 
     // Here we define a custom BarcodeDetectorResultHandler. Whenever a result is ready, the frame handler
     // will call the Handle method on this object. To make this more flexible, we allow to
     // specify a delegate through the constructor.
-    class BarcodeDetectorResultHandler : BarcodeDetectorFrameHandler.BarcodeDetectorResultHandler
+    class BarcodeDetectorResultHandler : BarcodeDetectorResultHandlerWrapper
     {
-        public delegate bool HandleResultFunction(FrameHandlerResult result);
+        public delegate bool HandleResultFunction(BarcodeScanningResult result);
         public readonly HandleResultFunction handleResultFunc;
 
         public BarcodeDetectorResultHandler(HandleResultFunction handleResultFunc)
@@ -271,10 +246,16 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
             this.handleResultFunc = handleResultFunc;
         }
 
-        public override bool Handle(FrameHandlerResult result)
+        public override bool HandleResult(BarcodeScanningResult result, SdkLicenseError error)
         {
+            if (error != null || result == null)
+            {
+                handleResultFunc(null);
+                return false;
+            }
+
             handleResultFunc(result);
-            return false;
+            return true;
         }
     }
 }
