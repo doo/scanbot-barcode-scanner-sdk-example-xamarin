@@ -207,10 +207,15 @@ namespace ScanbotBarcodeSDKFormsExample
             {
                 AcceptedFormats = BarcodeTypes.Instance.AcceptedTypes,
                 SuccessBeepEnabled = true,
-                
+                OverlayConfiguration = new SelectionOverlayConfiguration(
+                    polygon: Color.Yellow,
+                    text: Color.Yellow,
+                    textContainer: Color.Black,
+                    automaticSelectionEnabled: true,
+                    highlightedPolygonColor: Color.Pink,
+                    highlightedTextColor: Color.Red,
+                    highlightedTextContainerColor: Color.PeachPuff)
             };
-
-            configuration.OverlayConfiguration = new SelectionOverlayConfiguration(Color.Yellow, Color.Yellow, Color.Black, Color.Pink, Color.Red, Color.PeachPuff);
 
             if (withImage)
             {
