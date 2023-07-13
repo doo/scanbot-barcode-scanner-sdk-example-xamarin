@@ -105,9 +105,12 @@ namespace ScanbotBarcodeSDKFormsExample
         {
             return async (sender, e) =>
             {
-                var configuration = new BatchBarcodeScannerConfiguration();
-                configuration.AcceptedFormats = BarcodeTypes.Instance.AcceptedTypes;
-                configuration.OverlayConfiguration = new SelectionOverlayConfiguration(Color.Yellow, Color.Yellow, Color.Black);
+                var configuration = new BatchBarcodeScannerConfiguration
+                {
+                    AcceptedFormats = BarcodeTypes.Instance.AcceptedTypes,
+                    OverlayConfiguration = new SelectionOverlayConfiguration(Color.Yellow, Color.Yellow, Color.Black, automaticSelectionEnabled: true)
+                };
+
                 TestCloseView(true);
                 var result = await SBSDK.Scanner.OpenBatch(configuration);
                 if (result.Status == OperationResult.Ok)
