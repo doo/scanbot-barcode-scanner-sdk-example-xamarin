@@ -20,10 +20,10 @@ namespace BarcodeScannerExample.iOS
             base.ViewDidLoad();
 
             Title = "CLASSICAL COMPONENT";
-
-            scannerController = new SBSDKBarcodeScannerViewController(this, View);
-            
-            scannerController.AcceptedBarcodeTypes = BarcodeTypes.Instance.AcceptedTypes.ToArray();
+            scannerController = new SBSDKBarcodeScannerViewController(this, View)
+            {
+                AcceptedBarcodeTypes = BarcodeTypes.Instance.AcceptedTypes.ToArray()
+            };
 
             receiver = new ClassicScannerReceiver();
             scannerController.Delegate = receiver;

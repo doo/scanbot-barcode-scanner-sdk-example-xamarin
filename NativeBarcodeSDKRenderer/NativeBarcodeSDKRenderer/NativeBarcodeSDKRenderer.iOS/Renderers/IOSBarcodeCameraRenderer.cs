@@ -140,22 +140,9 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
         public delegate void OnDetectHandler(SBSDKBarcodeScannerResult[] codes);
         public OnDetectHandler OnDetect;
 
-        public override void DidDetectBarcodes(SBSDKBarcodeScannerViewController controller, SBSDKBarcodeScannerResult[] codes, UIImage image)
+        public override void DidDetectBarcodes(SBSDKBarcodeScannerViewController controller, SBSDKBarcodeScannerResult[] codes)
         {
             OnDetect?.Invoke(codes);
-        }
-
-        public override bool ShouldDetectBarcodes(SBSDKBarcodeScannerViewController controller)
-        {
-            if (ScanbotSDK.IsLicenseValid)
-            {
-                return true;
-            }
-            else
-            {
-                (UIApplication.SharedApplication.Delegate as AppDelegate)?.ShowAlert("License Expired!", "Ok");
-                return false;
-            }
         }
     }
 
