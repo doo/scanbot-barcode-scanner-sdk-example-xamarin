@@ -210,14 +210,22 @@ namespace ScanbotBarcodeSDKFormsExample
             {
                 AcceptedFormats = BarcodeTypes.Instance.AcceptedTypes,
                 SuccessBeepEnabled = true,
-                OverlayConfiguration = new SelectionOverlayConfiguration(
+                OverlayConfiguration = new SelectionOverlayConfiguration (
                     polygon: Color.Yellow,
                     text: Color.Yellow,
                     textContainer: Color.Black,
                     automaticSelectionEnabled: true,
                     highlightedPolygonColor: Color.Pink,
                     highlightedTextColor: Color.Red,
-                    highlightedTextContainerColor: Color.PeachPuff)
+                    highlightedTextContainerColor: Color.PeachPuff),
+                ConfirmationDialogConfiguration = new BarcodeConfirmationDialogConfiguration {
+                    ResultWithConfirmation = true,
+                    Title = "Barcode Results",
+                    Message = "The barcode results are shown below.",
+                    ConfirmButtonTitle = "Confirm!",
+                    RetryButtonTitle = "Try Again!",
+                    DialogTextFormat = BarcodeDialogFormat.TypeAndCode
+                }
             };
 
             if (withImage)

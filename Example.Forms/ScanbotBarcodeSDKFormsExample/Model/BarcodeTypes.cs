@@ -40,9 +40,7 @@ namespace ScanbotBarcodeSDKFormsExample
         private BarcodeTypes()
         {
             var original = All;
-            // Unknown shouldn't be used as an input parameter
-            original.Remove(BarcodeFormat.Unknown);
-
+           
             foreach (var item in original)
             {
                 List.Add(item, true);

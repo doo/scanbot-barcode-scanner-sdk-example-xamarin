@@ -1,5 +1,4 @@
 ﻿using Foundation;
-using ScanbotBarcodeSDK.iOS;
 using UIKit;
 
 namespace BarcodeScannerExample.iOS
@@ -15,7 +14,7 @@ namespace BarcodeScannerExample.iOS
 
         public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
         {
-            ScanbotSDK.SetLoggingEnabled(true);
+            ScanbotBarcodeSDK.iOS.Scanbot.SetLoggingEnabled(true);
             // TODO: Initialize SDK with correct license
             //ScanbotSDK.SetLicense("");
 

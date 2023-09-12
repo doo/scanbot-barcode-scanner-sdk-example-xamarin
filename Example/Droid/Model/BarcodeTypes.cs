@@ -38,9 +38,6 @@ namespace BarcodeScannerExample.Droid
             var original = BarcodeFormat.Values().ToList();
             foreach (var item in original)
             {
-                if (item == BarcodeFormat.Unknown) {
-                    continue;
-                }
                 List.Add(item, true);
             }
         }
