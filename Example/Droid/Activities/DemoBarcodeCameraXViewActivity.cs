@@ -47,7 +47,8 @@ namespace BarcodeScannerExample.Droid
             var SDK = new ScanbotBarcodeScannerSDK(this);
 
             var barcodeDetector = SDK.CreateBarcodeDetector();
-            barcodeDetector.ModifyConfig(new Function1Impl<BarcodeScannerConfigBuilder>((response) => {
+            barcodeDetector.ModifyConfig(new Function1Impl<BarcodeScannerConfigBuilder>((response) =>
+            {
                 response.SetSaveCameraPreviewFrame(true);
                 response.SetBarcodeFormats(BarcodeTypes.Instance.AcceptedTypes);
             }));
@@ -55,7 +56,10 @@ namespace BarcodeScannerExample.Droid
             var resultHandler = new BarcodeResultDelegate();
             resultHandler.Success += OnBarcodeResult;
 
-            ScanbotCameraViewWrapper.InitDetectionBehavior(cameraView, barcodeDetector, resultHandler, new Java.Lang.Long(1000));
+            var framehandler = new BarcodeDetectorFrameHandlerWrapper(barcodeDetector);
+            framehandler.AddResultHandler(resultHandler);
+            framehandler.SetDetectionInterval(1000);
+            IO.Scanbot.Sdk.UI.ScanbotCameraXViewWrapper.Attach(cameraView, framehandler);
 
             var snappingcontroller = BarcodeAutoSnappingController.Attach(cameraView, barcodeDetector);
             snappingcontroller.SetSensitivity(1f);
