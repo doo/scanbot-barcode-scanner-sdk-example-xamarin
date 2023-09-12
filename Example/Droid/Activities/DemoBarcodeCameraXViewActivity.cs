@@ -47,10 +47,10 @@ namespace BarcodeScannerExample.Droid
             var SDK = new ScanbotBarcodeScannerSDK(this);
 
             var barcodeDetector = SDK.CreateBarcodeDetector();
-            barcodeDetector.ModifyConfig(new Function1Impl<BarcodeScannerConfigBuilder>((response) =>
+            barcodeDetector.ModifyConfig(new Function1Impl<BarcodeScannerConfigBuilder>((configuration) =>
             {
-                response.SetSaveCameraPreviewFrame(true);
-                response.SetBarcodeFormats(BarcodeTypes.Instance.AcceptedTypes);
+                configuration.SetSaveCameraPreviewFrame(true);
+                configuration.SetBarcodeFormats(BarcodeTypes.Instance.AcceptedTypes);
             }));
 
             var resultHandler = new BarcodeResultDelegate();
