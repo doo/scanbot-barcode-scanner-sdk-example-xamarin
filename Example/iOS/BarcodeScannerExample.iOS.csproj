@@ -82,13 +82,13 @@
       <HintPath>..\packages\Scanbot.Xamarin.ImagePicker.0.0.2\lib\Xamarin.iOS10\Scanbot.ImagePicker.iOS.dll</HintPath>
     </Reference>
     <Reference Include="ScanbotBarcodeSDK.iOS">
-      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.4.0.0-beta.1\lib\Xamarin.iOS10\ScanbotBarcodeSDK.iOS.dll</HintPath>
+      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.4.0.0-beta.2\lib\Xamarin.iOS10\ScanbotBarcodeSDK.iOS.dll</HintPath>
     </Reference>
     <Reference Include="ScanbotBarcodeSDK.Xamarin">
-      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.4.0.0-beta.1\lib\Xamarin.iOS10\ScanbotBarcodeSDK.Xamarin.dll</HintPath>
+      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.4.0.0-beta.2\lib\Xamarin.iOS10\ScanbotBarcodeSDK.Xamarin.dll</HintPath>
     </Reference>
     <Reference Include="ScanbotBarcodeSDK.Xamarin.iOS">
-      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.4.0.0-beta.1\lib\Xamarin.iOS10\ScanbotBarcodeSDK.Xamarin.iOS.dll</HintPath>
+      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.4.0.0-beta.2\lib\Xamarin.iOS10\ScanbotBarcodeSDK.Xamarin.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
