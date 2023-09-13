@@ -51,7 +51,7 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
        override it with our native view, which is a 'FrameLayout' in this case (see layout/barcode_camera_view.xml)
     */
     class AndroidBarcodeCameraRenderer : ViewRenderer<NativeBarcodeSDKRenderer.Views.BarcodeCameraView, FrameLayout>,
-        IBarcodeScannerViewCallback, IBarcodeAppearanceDelegate
+        IBarcodeScannerViewCallback
     {
         private bool _isFlashEnabled;
         /// <summary>
