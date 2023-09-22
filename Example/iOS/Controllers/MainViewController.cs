@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ScanbotSDK = ScanbotBarcodeSDK.iOS.Scanbot;
 using ScanbotBarcodeSDK.iOS;
 using UIKit;
 
@@ -180,13 +181,13 @@ namespace BarcodeScannerExample.iOS
             var textConfiguration = new SBSDKUIBarcodeScannerTextConfiguration();
             var behaviourConfiguration = new SBSDKUIBarcodeScannerBehaviorConfiguration();
             var cameraConfiguration = new SBSDKUICameraConfiguration();
-            var selectionOverlayConfiguration = new SBSDKUIBarcodeSelectionOverlayConfiguration();
+            var selectionOverlayConfiguration = new SBSDKUIBarcodeTrackingOverlayConfiguration();
             selectionOverlayConfiguration.OverlayEnabled = true;
             selectionOverlayConfiguration.TextColor = UIColor.Yellow;
             selectionOverlayConfiguration.PolygonColor = UIColor.Yellow;
             selectionOverlayConfiguration.TextContainerColor = UIColor.Black;
 
-            behaviourConfiguration.AcceptedMachineCodeTypes = BarcodeTypes.Instance.AcceptedTypes.ToArray();
+            behaviourConfiguration.AcceptedBarcodeTypes = BarcodeTypes.Instance.AcceptedTypes.ToArray();
             behaviourConfiguration.AdditionalParameters = new SBSDKBarcodeAdditionalParameters { MinimumTextLength = 6 };
             var configuration = new SBSDKUIBarcodeScannerConfiguration(uiConfiguration, textConfiguration, behaviourConfiguration, cameraConfiguration, selectionOverlayConfiguration);
             if (withImage)
@@ -220,7 +221,7 @@ namespace BarcodeScannerExample.iOS
             }
             var batchBarcode = new BatchBarcodeDelegate(this);
             // You can also use the DefaultConfiguration property directly, but then you cannot set the selectionOverlayConfig as it is read only in that case.
-            var selectionOverlayConfiguration = new SBSDKUIBarcodeSelectionOverlayConfiguration();
+            var selectionOverlayConfiguration = new SBSDKUIBarcodeTrackingOverlayConfiguration();
             var uiConfiguration = new SBSDKUIBarcodesBatchScannerUIConfiguration();
             var textConfiguration = new SBSDKUIBarcodesBatchScannerTextConfiguration();
             var behaviourConfiguration = new SBSDKUIBarcodesBatchScannerBehaviorConfiguration();
@@ -237,7 +238,7 @@ namespace BarcodeScannerExample.iOS
             var configuration = new SBSDKUIBarcodesBatchScannerConfiguration(uiConfiguration, textConfiguration, behaviourConfiguration, cameraConfiguration, selectionOverlayConfiguration);
 
             configuration.UiConfiguration.FinderAspectRatio = new SBSDKAspectRatio(1, 0.5);
-            configuration.BehaviorConfiguration.AcceptedMachineCodeTypes = BarcodeTypes.Instance.AcceptedTypes.ToArray();
+            configuration.BehaviorConfiguration.AcceptedBarcodeTypes = BarcodeTypes.Instance.AcceptedTypes.ToArray();
 
             batchBarcode.OpenBatchBarcodeScannerView(configuration);
         }
