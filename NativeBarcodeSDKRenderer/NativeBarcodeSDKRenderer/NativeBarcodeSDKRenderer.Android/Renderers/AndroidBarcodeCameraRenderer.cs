@@ -223,7 +223,7 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
 
         public void OnCameraOpen()
         {
-            cameraView?.ViewController?.UseFlash(IsFlashEnabled);
+            cameraView?.ViewController?.UseFlash(Element.IsFlashEnabled);
             cameraView?.PostDelayed(() =>
             {
                 // Uncomment to disable shutter sound (supported since Android 4.2+):
