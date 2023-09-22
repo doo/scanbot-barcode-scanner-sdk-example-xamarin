@@ -16,7 +16,7 @@ namespace BarcodeScannerExample.iOS
         {
             ScanbotBarcodeSDK.iOS.Scanbot.SetLoggingEnabled(true);
             // TODO: Initialize SDK with correct license
-            //ScanbotSDK.SetLicense("");
+            //ScanbotBarcodeSDK.iOS.Scanbot.SetLicense("");
 
             UIViewController initial = new MainViewController();
             Controller = new UINavigationController(initial);
