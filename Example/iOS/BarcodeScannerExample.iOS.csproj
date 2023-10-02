@@ -23,7 +23,7 @@
     <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
     <MtouchFastDev>true</MtouchFastDev>
     <IOSDebuggerPort>63071</IOSDebuggerPort>
-    <MtouchLink>SdkOnly</MtouchLink>
+    <MtouchLink>None</MtouchLink>
     <MtouchArch>x86_64</MtouchArch>
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
   </PropertyGroup>
@@ -82,13 +82,13 @@
       <HintPath>..\packages\Scanbot.Xamarin.ImagePicker.0.0.2\lib\Xamarin.iOS10\Scanbot.ImagePicker.iOS.dll</HintPath>
     </Reference>
     <Reference Include="ScanbotBarcodeSDK.iOS">
-      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.4.0.0\lib\Xamarin.iOS10\ScanbotBarcodeSDK.iOS.dll</HintPath>
+      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.4.0.1-beta.1\lib\Xamarin.iOS10\ScanbotBarcodeSDK.iOS.dll</HintPath>
     </Reference>
     <Reference Include="ScanbotBarcodeSDK.Xamarin">
-      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.4.0.0\lib\Xamarin.iOS10\ScanbotBarcodeSDK.Xamarin.dll</HintPath>
+      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.4.0.1-beta.1\lib\Xamarin.iOS10\ScanbotBarcodeSDK.Xamarin.dll</HintPath>
     </Reference>
     <Reference Include="ScanbotBarcodeSDK.Xamarin.iOS">
-      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.4.0.0\lib\Xamarin.iOS10\ScanbotBarcodeSDK.Xamarin.iOS.dll</HintPath>
+      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.4.0.1-beta.1\lib\Xamarin.iOS10\ScanbotBarcodeSDK.Xamarin.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
