@@ -97,7 +97,6 @@ namespace ScanbotBarcodeSDKFormsExample
         {
             List = new ListView();
             List.ItemTemplate = new DataTemplate(typeof(BarcodeCell));
-            List.RowHeight = ROWHEIGHT;
             List.HasUnevenRows = true;
             List.ItemsSource = Barcodes;
         }
@@ -119,7 +118,9 @@ namespace ScanbotBarcodeSDKFormsExample
                     Aspect = Aspect.AspectFit,
                     HeightRequest = ROWHEIGHT,
                     WidthRequest = ROWHEIGHT,
-                    BackgroundColor = Color.FromRgb(250, 250, 250)
+                    BackgroundColor = Color.FromRgb(250, 250, 250),
+                    VerticalOptions = LayoutOptions.Start,
+                    HorizontalOptions = LayoutOptions.Start,
                 };
 
                 TypeLabel = new Label
