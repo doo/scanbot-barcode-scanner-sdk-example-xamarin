@@ -78,7 +78,6 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
         protected bool isEnabled = true;
         protected FrameLayout cameraLayout;
         protected BarcodeScannerView cameraView;
-        protected FinderOverlayView finderOverlayView;
         public event PropertyChangedEventHandler PropertyChanged;
         private readonly int REQUEST_PERMISSION_CODE = 200;
 
@@ -152,11 +151,14 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
                     response.SetSaveCameraPreviewFrame(false);
                 }));
 
-                cameraView.InitCamera(new CameraUiSettings(false));
+                cameraView.InitCamera(new CameraUiSettings(true));
                 BarcodeScannerViewWrapper.InitDetectionBehavior(cameraView,
                                                                 detector,
                                                                 new BarcodeDetectorResultHandler((result, error) => HandleFrameHandlerResult(result, error)),
                                                                 this);
+                cameraView.SelectionOverlayController.SetBarcodeAppearanceDelegate(new ColorDelegate());
+                cameraView.ViewController.BarcodeDetectionInterval = 0;
+                cameraView.SelectionOverlayController.SetEnabled(true);
             }
         }
 
@@ -259,6 +261,32 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
         {
             handleResultFunc(result, error);
             return false;
+        }
+    }
+
+    public class ColorDelegate : Java.Lang.Object, BarcodePolygonsView.IBarcodeAppearanceDelegate
+    {
+        public BarcodePolygonsView.BarcodePolygonStyle GetPolygonStyle(
+            BarcodePolygonsView.BarcodePolygonStyle defaultStyle, BarcodeItem barcodeItem)
+        {
+            if (barcodeItem.BarcodeFormat == IO.Scanbot.Sdk.Barcode.Entity.BarcodeFormat.QrCode)
+            {
+
+                return new BarcodePolygonsView.BarcodePolygonStyle(
+                        true, false, false, 1.0f, 1.0f, Color.Red.ToArgb(), Color.Green.ToArgb(), Color.Green.ToArgb(), Color.Red.ToArgb(), true
+                        );
+            }
+            else
+            {
+                return new BarcodePolygonsView.BarcodePolygonStyle(
+                        true, false, false, 1.0f, 1.0f, Color.Blue.ToArgb(), Color.Green.ToArgb(), Color.Green.ToArgb(), Color.Red.ToArgb(), true
+                        );
+            }
+        }
+        public BarcodePolygonsView.BarcodeTextViewStyle GetTextViewStyle(
+            BarcodePolygonsView.BarcodeTextViewStyle defaultStyle, BarcodeItem barcodeItem)
+        {
+            return null;
         }
     }
 }
