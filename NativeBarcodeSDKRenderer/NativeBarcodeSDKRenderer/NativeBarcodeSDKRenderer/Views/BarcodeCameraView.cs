@@ -29,6 +29,17 @@ namespace NativeBarcodeSDKRenderer.Views
             set { SetValue(IsFlashEnabledProperty, value); }
         }
 
+        /// <summary>
+        /// Specifies the way of barcode images generation or disables this generation at all.
+        /// Use, if you want to receive a full sized image with barcodes.
+        /// </summary>
+        public BarcodeImageGenerationType ImageGenerationType { get; set; }
+
+        /// <summary>
+        /// Shows an AR overlay in the camera view.
+        /// </summary>
+        public SelectionOverlayConfiguration OverlayConfiguration { get; set; }
+
         // This is the delegate that will be used from our native controller to
         // notify us that the scanner has returned a valid result.
         // We can set this from our Page class to implement a custom behavior.

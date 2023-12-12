@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
+﻿using NativeBarcodeSDKRenderer.Common;
+
+using System;
 using System.Threading.Tasks;
-using NativeBarcodeSDKRenderer.Common;
 using ScanbotBarcodeSDK.Forms;
+
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.PlatformConfiguration;
@@ -48,19 +46,12 @@ namespace NativeBarcodeSDKRenderer
         /// </summary>
         private void SetupViews()
         {
-            cameraView.OnBarcodeScanResult = (result) =>
-            {
-                string text = "";
-                foreach (Barcode barcode in result.Barcodes)
-                {
-                    text += string.Format("{0} ({1})\n", barcode.Text, barcode.Format.ToString().ToUpper());
-                }
-
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    resultsLabel.Text = text;
-                });
-            };
+            cameraView.OnBarcodeScanResult = HandleBarcodeScanningResult;
+            cameraView.OverlayConfiguration = new SelectionOverlayConfiguration(
+                    automaticSelectionEnabled: false,
+                    polygon: Color.Black, text: Color.Black, textContainer: Color.White,
+                    highlightedPolygonColor: Color.Red, highlightedTextColor: Color.Red, highlightedTextContainerColor: Color.Black);
+            cameraView.ImageGenerationType = BarcodeImageGenerationType.FromVideoFrame;
             SetupIOSAppearance();
         }
 
@@ -111,13 +102,15 @@ namespace NativeBarcodeSDKRenderer
             if (!await CameraPermissionAllowed())
                 return;
 
-            if (!IsLicenseValid)
+            if (!IsLicenseValid && !IsDetectionOn)
             {
                 ShowExpiredLicenseAlert();
                 return;
             }
 
             IsDetectionOn = !IsDetectionOn;
+            cameraView.IsVisible = true;
+            cameraViewImage.IsVisible = false;
         }
 
         private void OnInfoButtonPressed(object sender, EventArgs e)
@@ -227,7 +220,29 @@ namespace NativeBarcodeSDKRenderer
                 imgButtonFlash.BackgroundColor = Color.Transparent;
             }
         }
+
+        private void HandleBarcodeScanningResult(BarcodeResultBundle result)
+        {
+            string text = string.Empty;
+            Barcode barcodeItem = null;
+            foreach (Barcode barcode in result.Barcodes)
+            {
+                text += string.Format("{0} ({1})\n", barcode.Text, barcode.Format.ToString().ToUpper());
+                barcodeItem = barcode;
+            }
+
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                resultsLabel.Text = text;
+                if (cameraView.ImageGenerationType == BarcodeImageGenerationType.CapturedImage)
+                {
+                    IsDetectionOn = false;
+                    cameraView.IsVisible = false;
+                    cameraViewImage.IsVisible = true;
+                    cameraViewImage.Source = barcodeItem?.Image;
+                    cameraViewImage.Aspect = Aspect.AspectFit;
+                }
+            });
+        }
     }
 }
-
-

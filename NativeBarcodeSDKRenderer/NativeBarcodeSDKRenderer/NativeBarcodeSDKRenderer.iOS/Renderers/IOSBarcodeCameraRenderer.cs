@@ -1,13 +1,14 @@
-﻿using System;
-using System.ComponentModel;
-using System.Linq;
-using CoreAudioKit;
-using CoreGraphics;
+﻿using CoreGraphics;
+
 using NativeBarcodeSDKRenderer.iOS.Renderers;
 using NativeBarcodeSDKRenderer.Views;
+
 using ScanbotBarcodeSDK.Forms;
 using ScanbotBarcodeSDK.Forms.iOS;
 using ScanbotBarcodeSDK.iOS;
+using System.ComponentModel;
+using System.Linq;
+
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
@@ -53,16 +54,25 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
 
             if (Control != null)
             {
-                Element.StartDetectionHandler = (sender, args1) =>
+                Element.OnResumeHandler = (sender, e1) =>
                 {
                     cameraView.Start();
                 };
 
-                Element.StopDetectionHandler = (sender, args2) =>
+                Element.StartDetectionHandler = (sender, e2) =>
+                {
+                    cameraView.Start();
+                };
+
+                Element.OnPauseHandler = (sender, e3) =>
                 {
                     cameraView.Stop();
                 };
 
+                Element.StopDetectionHandler = (sender, e4) =>
+                {
+                    cameraView.Stop();
+                };
 
                 Element.SetBinding(BarcodeCameraView.IsFlashEnabledProperty, "IsFlashEnabled", BindingMode.TwoWay);
                 Element.BindingContext = cameraView;
@@ -126,6 +136,7 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
             if (pageRendererViewController != null)
             {
                 cameraView.Initialize(pageRendererViewController);
+                cameraView.SetBarcodeConfigurations(Element);
                 cameraView.ScannerDelegate.OnDetect = HandleBarcodeScannerResults;
                 barcodeScannerResultHandler = Element.OnBarcodeScanResult;
                 isInitialized = true;
@@ -179,24 +190,79 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
         public void Initialize(UIViewController parentViewController)
         {
             Controller = new SBSDKBarcodeScannerViewController(parentViewController, this);
-            Controller.BarcodeImageGenerationType = SBSDKBarcodeImageGenerationType.None;
             ScannerDelegate = new BarcodeScannerDelegate();
             Controller.Delegate = ScannerDelegate;
+        }
+
+        internal void SetBarcodeConfigurations(BarcodeCameraView element)
+        {
+            Controller.BarcodeImageGenerationType = element.ImageGenerationType.ToNative();
+            SetSelectionOverlayConfiguration(element.OverlayConfiguration);
+        }
+
+        private void SetSelectionOverlayConfiguration(SelectionOverlayConfiguration configuration)
+        {
+            if (configuration != null && configuration.Enabled)
+            {
+                var overlayConfiguration = new SBSDKBarcodeTrackingOverlayConfiguration();
+
+                var polygonStyle = new SBSDKBarcodeTrackedViewPolygonStyle();
+                polygonStyle.PolygonColor = configuration.PolygonColor.ToUIColor();
+                polygonStyle.PolygonSelectedColor = configuration.HighlightedPolygonColor?.ToUIColor();
+
+                // use below properties if you want to set background color to the polygon. As of now they are set to clear
+                // eg: to show translucent color over barcode. 
+                polygonStyle.PolygonBackgroundColor = UIColor.Clear;
+                polygonStyle.PolygonBackgroundSelectedColor = UIColor.Clear;
+
+                var textStyle = new SBSDKBarcodeTrackedViewTextStyle();
+                textStyle.TextColor = configuration.TextColor.ToUIColor();
+                textStyle.SelectedTextColor = configuration.HighlightedTextColor?.ToUIColor();
+                textStyle.TextBackgroundColor = configuration.TextContainerColor.ToUIColor();
+                textStyle.TextBackgroundSelectedColor = configuration.HighlightedTextContainerColor?.ToUIColor();
+
+                overlayConfiguration.IsAutomaticSelectionEnabled = configuration.AutomaticSelectionEnabled;
+                overlayConfiguration.TextStyle = textStyle;
+                overlayConfiguration.PolygonStyle = polygonStyle;
+
+                Controller.IsTrackingOverlayEnabled = configuration.Enabled;
+                Controller.TrackingOverlayController.Configuration = overlayConfiguration;
+            }
         }
 
         public void Stop()
         {
             Controller.RecognitionEnabled = false;
+            Controller.FreezeCamera();
         }
 
         public void Start()
         {
             Controller.RecognitionEnabled = true;
+            Controller.UnfreezeCamera();
         }
 
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+    public static class Extension
+    {
+        public static SBSDKBarcodeImageGenerationType ToNative(this BarcodeImageGenerationType imageGenerationType)
+        {
+            switch (imageGenerationType)
+            {
+                case BarcodeImageGenerationType.None:
+                    return SBSDKBarcodeImageGenerationType.None;
+                case BarcodeImageGenerationType.CapturedImage:
+                    return SBSDKBarcodeImageGenerationType.CapturedImage;
+                case BarcodeImageGenerationType.FromVideoFrame:
+                    return SBSDKBarcodeImageGenerationType.FromVideoFrame;
+                default:
+                    return SBSDKBarcodeImageGenerationType.None;
+            }
         }
     }
 }
