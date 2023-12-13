@@ -27,10 +27,6 @@ using ScanbotBarcodeSDK.Forms;
 using System.Collections.Generic;
 
 using static NativeBarcodeSDKRenderer.Views.BarcodeCameraView;
-using static IO.Scanbot.Sdk.Barcode.UI.BarcodePolygonsStaticView;
-
-using AndroidColor = Android.Graphics.Color;
-
 
 /*
     This is the Android Custom Renderer that will provide the actual implementation for BarcodeCameraView.
@@ -51,7 +47,7 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
        override it with our native view, which is a 'FrameLayout' in this case (see layout/barcode_camera_view.xml)
     */
     class AndroidBarcodeCameraRenderer : ViewRenderer<NativeBarcodeSDKRenderer.Views.BarcodeCameraView, FrameLayout>,
-        IBarcodeScannerViewCallback
+        IBarcodeScannerViewCallback, BarcodePolygonsView.IBarcodeHighlightDelegate, BarcodePolygonsView.IBarcodeAppearanceDelegate
     {
         private bool _isFlashEnabled;
         /// <summary>
@@ -157,6 +153,17 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
                                                                 detector,
                                                                 new BarcodeDetectorResultHandler((result, error) => HandleFrameHandlerResult(result, error)),
                                                                 this);
+                SetSelectionOverlayConfiguration();
+            }
+        }
+
+        private void SetSelectionOverlayConfiguration()
+        {
+            if (Element?.OverlayConfiguration?.Enabled == true)
+            {
+                cameraView.SelectionOverlayController.SetEnabled(Element.OverlayConfiguration.Enabled);
+                cameraView.SelectionOverlayController.SetBarcodeHighlightedDelegate(this);
+                cameraView.SelectionOverlayController.SetBarcodeAppearanceDelegate(this);
             }
         }
 
@@ -164,7 +171,9 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
         {
             if (result == null) { return false; }
 
-            var outResult = new ScanbotBarcodeSDK.Forms.BarcodeResultBundle //ScanbotSDK.Xamarin.Forms.BarcodeScanningResult
+            if (Element?.OverlayConfiguration?.Enabled == true) { return false; }
+
+            var outResult = new ScanbotBarcodeSDK.Forms.BarcodeResultBundle
             {
                 Barcodes = result.BarcodeItems.ToFormsBarcodeList(),
                 Image = result.PreviewFrame.ToImageSource()
@@ -240,6 +249,85 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
         {
             // get the image here
         }
+
+        #region Selection Overlay configuration
+
+        public bool ShouldHighlight(BarcodeItem barcodeItem)
+        {
+            return Element?.OverlayConfiguration?.AutomaticSelectionEnabled ?? false;
+        }
+
+        public BarcodePolygonsView.BarcodePolygonStyle GetPolygonStyle(BarcodePolygonsView.BarcodePolygonStyle defaultStyle, BarcodeItem barcodeItem)
+        {
+            return GetOverlayPolygonStyle(defaultStyle);
+        }
+
+        public BarcodePolygonsView.BarcodeTextViewStyle GetTextViewStyle(BarcodePolygonsView.BarcodeTextViewStyle defaultStyle, BarcodeItem barcodeItem)
+        {
+            return GetOverlayTextStyle(defaultStyle);
+        }
+
+        private BarcodePolygonsView.BarcodePolygonStyle GetOverlayPolygonStyle(BarcodePolygonsView.BarcodePolygonStyle defaultStyle)
+        {
+            if (Element.OverlayConfiguration != null)
+            {
+                var polygonColor = Element.OverlayConfiguration.PolygonColor.ToAndroid();
+                var polygonHighlightedColor = defaultStyle.StrokeHighlightedColor;
+                if (Element.OverlayConfiguration.HighlightedPolygonColor != null)
+                {
+                    polygonHighlightedColor = Element.OverlayConfiguration.HighlightedPolygonColor.Value.ToAndroid();
+                }
+
+                var polygonStyle = new BarcodePolygonsView.BarcodePolygonStyle(drawPolygon: defaultStyle.DrawPolygon,
+                   useFill: false, // default fill is true. Please set true if you want to fill color into the barcode polygon.
+                   useFillHighlighted: defaultStyle.UseFillHighlighted,
+                   cornerRadius: defaultStyle.CornerRadius,
+                   strokeWidth: defaultStyle.StrokeWidth,
+                   strokeColor: polygonColor,
+                   strokeHighlightedColor: polygonHighlightedColor,
+                   fillColor: defaultStyle.FillColor,
+                   fillHighlightedColor: defaultStyle.FillHighlightedColor,
+                   shouldDrawShadows: defaultStyle.ShouldDrawShadows);
+
+                return polygonStyle;
+            }
+            return defaultStyle;
+        }
+
+        private BarcodePolygonsView.BarcodeTextViewStyle GetOverlayTextStyle(BarcodePolygonsView.BarcodeTextViewStyle defaultStyle)
+        {
+            if (Element.OverlayConfiguration != null)
+            {
+                var textColor = Element.OverlayConfiguration.TextColor.ToAndroid();
+                var textContainerColor = Element.OverlayConfiguration.TextContainerColor.ToAndroid();
+
+                var textHighlightedColor = defaultStyle.TextHighlightedColor;
+                if (Element.OverlayConfiguration.HighlightedTextColor != null)
+                {
+                    textHighlightedColor = Element.OverlayConfiguration.HighlightedTextColor.Value.ToAndroid();
+                }
+
+                var textContainerHighlightedColor = defaultStyle.TextContainerHighlightedColor;
+                if (Element.OverlayConfiguration.HighlightedTextContainerColor != null)
+                {
+                    textContainerHighlightedColor = Element.OverlayConfiguration.HighlightedTextContainerColor.Value.ToAndroid();
+                }
+
+                // this proeprty isn't available in the common class, hence passing the default one.
+                var textFormat = BarcodeOverlayTextFormat.CodeAndType;
+
+                var textStyle = new BarcodePolygonsView.BarcodeTextViewStyle(
+                    textColor: textColor,
+                    textHighlightedColor: textHighlightedColor,
+                    textContainerColor: textContainerColor,
+                    textContainerHighlightedColor: textContainerHighlightedColor,
+                    textFormat: textFormat);
+                return textStyle;
+            }
+            return defaultStyle;
+        }
+
+        #endregion
     }
 
     // Here we define a custom BarcodeDetectorResultHandler. Whenever a result is ready, the frame handler
