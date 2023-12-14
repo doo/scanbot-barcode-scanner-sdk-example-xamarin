@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Linq;
 
 using UIKit;
+
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 
@@ -33,8 +34,6 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
                 return null;
             }
         }
-
-        private BarcodeCameraView.BarcodeScannerResultHandler barcodeScannerResultHandler;
 
         public IOSBarcodeCameraRenderer() : base() { }
 
@@ -79,14 +78,6 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
             }
 
             base.OnElementChanged(e);
-        }
-
-        private void HandleBarcodeScannerResults(SBSDKBarcodeScannerResult[] codes)
-        {
-            barcodeScannerResultHandler?.Invoke(new BarcodeResultBundle()
-            {
-                Barcodes = codes.ToFormsBarcodes()
-            });
         }
 
         public override void LayoutSubviews()
@@ -137,23 +128,8 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
             {
                 cameraView.Initialize(pageRendererViewController);
                 cameraView.SetBarcodeConfigurations(Element);
-                cameraView.ScannerDelegate.OnDetect = HandleBarcodeScannerResults;
-                barcodeScannerResultHandler = Element.OnBarcodeScanResult;
                 isInitialized = true;
             }
-        }
-    }
-
-    // Since we cannot directly inherit from SBSDKBarcodeScannerViewControllerDelegate in our ViewRenderer,
-    // we have created this wrapper class to allow binding to its events through the use of delegates
-    class BarcodeScannerDelegate : SBSDKBarcodeScannerViewControllerDelegate
-    {
-        public delegate void OnDetectHandler(SBSDKBarcodeScannerResult[] codes);
-        public OnDetectHandler OnDetect;
-
-        public override void DidDetectBarcodes(SBSDKBarcodeScannerViewController controller, SBSDKBarcodeScannerResult[] codes)
-        {
-            OnDetect?.Invoke(codes);
         }
     }
 
@@ -182,21 +158,24 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
         }
 
         public SBSDKBarcodeScannerViewController Controller { get; private set; }
-        public BarcodeScannerDelegate ScannerDelegate { get; private set; }
         public event PropertyChangedEventHandler PropertyChanged;
+        private BarcodeScannerDelegate scannerDelegate;
+        private BarcodeCameraView element;
 
         public IOSBarcodeCameraView(CGRect frame) : base(frame) { }
 
         public void Initialize(UIViewController parentViewController)
         {
             Controller = new SBSDKBarcodeScannerViewController(parentViewController, this);
-            ScannerDelegate = new BarcodeScannerDelegate();
-            Controller.Delegate = ScannerDelegate;
+            scannerDelegate = new BarcodeScannerDelegate();
+            Controller.Delegate = scannerDelegate;
         }
 
         internal void SetBarcodeConfigurations(BarcodeCameraView element)
         {
+            this.element = element;
             Controller.BarcodeImageGenerationType = element.ImageGenerationType.ToNative();
+            scannerDelegate.OnDetect = HandleBarcodeScannerResults;
             SetSelectionOverlayConfiguration(element.OverlayConfiguration);
         }
 
@@ -204,29 +183,27 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
         {
             if (configuration != null && configuration.Enabled)
             {
-                var overlayConfiguration = new SBSDKBarcodeTrackingOverlayConfiguration();
 
-                var polygonStyle = new SBSDKBarcodeTrackedViewPolygonStyle();
-                polygonStyle.PolygonColor = configuration.PolygonColor.ToUIColor();
-                polygonStyle.PolygonSelectedColor = configuration.HighlightedPolygonColor?.ToUIColor();
+                Controller.IsTrackingOverlayEnabled = configuration.Enabled;
+                Controller.TrackingOverlayController.Configuration.IsSelectable = true;
+                Controller.TrackingOverlayController.Configuration.IsAutomaticSelectionEnabled = configuration.AutomaticSelectionEnabled;
+
+                Controller.TrackingOverlayController.Configuration.PolygonStyle.PolygonColor = configuration.PolygonColor.ToUIColor();
+                Controller.TrackingOverlayController.Configuration.PolygonStyle.PolygonSelectedColor = configuration.HighlightedPolygonColor?.ToUIColor();
 
                 // use below properties if you want to set background color to the polygon. As of now they are set to clear
                 // eg: to show translucent color over barcode. 
-                polygonStyle.PolygonBackgroundColor = UIColor.Clear;
-                polygonStyle.PolygonBackgroundSelectedColor = UIColor.Clear;
+                Controller.TrackingOverlayController.Configuration.PolygonStyle.PolygonBackgroundColor = UIColor.Clear;
+                Controller.TrackingOverlayController.Configuration.PolygonStyle.PolygonBackgroundSelectedColor = UIColor.Clear;
 
-                var textStyle = new SBSDKBarcodeTrackedViewTextStyle();
-                textStyle.TextColor = configuration.TextColor.ToUIColor();
-                textStyle.SelectedTextColor = configuration.HighlightedTextColor?.ToUIColor();
-                textStyle.TextBackgroundColor = configuration.TextContainerColor.ToUIColor();
-                textStyle.TextBackgroundSelectedColor = configuration.HighlightedTextContainerColor?.ToUIColor();
+                Controller.TrackingOverlayController.Configuration.TextStyle.TextColor = configuration.TextColor.ToUIColor();
+                Controller.TrackingOverlayController.Configuration.TextStyle.SelectedTextColor = configuration.HighlightedTextColor?.ToUIColor();
+                Controller.TrackingOverlayController.Configuration.TextStyle.TextBackgroundColor = configuration.TextContainerColor.ToUIColor();
+                Controller.TrackingOverlayController.Configuration.TextStyle.TextBackgroundSelectedColor = configuration.HighlightedTextContainerColor?.ToUIColor();
 
-                overlayConfiguration.IsAutomaticSelectionEnabled = configuration.AutomaticSelectionEnabled;
-                overlayConfiguration.TextStyle = textStyle;
-                overlayConfiguration.PolygonStyle = polygonStyle;
-
-                Controller.IsTrackingOverlayEnabled = configuration.Enabled;
-                Controller.TrackingOverlayController.Configuration = overlayConfiguration;
+                var barcodeTrackingDelegate = new BarcodeTrackingOverlayDelegate();
+                barcodeTrackingDelegate.DidTapBarcodeOverlay = HandleDidTapOnBarcodeOverlay;
+                Controller.TrackingOverlayController.Delegate = barcodeTrackingDelegate;
             }
         }
 
@@ -245,6 +222,32 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void HandleBarcodeScannerResults(SBSDKBarcodeScannerResult[] codes)
+        {
+            var returnResults = true;
+            if (Controller.IsTrackingOverlayEnabled) 
+            {
+                // return results if tracking overlay is set to automatic selection true
+                returnResults = Controller.TrackingOverlayController?.Configuration?.IsAutomaticSelectionEnabled ?? false;
+            }
+
+            if (returnResults)
+            {
+                this.element?.OnBarcodeScanResult.Invoke(new BarcodeResultBundle()
+                {
+                    Barcodes = codes.ToFormsBarcodes()
+                });
+            }
+        }
+
+        private void HandleDidTapOnBarcodeOverlay(SBSDKBarcodeScannerResult barcode)
+        {
+            this.element?.OnBarcodeScanResult.Invoke(new BarcodeResultBundle()
+            {
+                Barcodes = new System.Collections.Generic.List<Barcode> { barcode.ToFormsBarcode() }
+            });
         }
     }
 
