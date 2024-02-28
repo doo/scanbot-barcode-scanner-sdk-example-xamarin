@@ -82,7 +82,7 @@
       <HintPath>..\packages\Scanbot.Xamarin.ImagePicker.0.0.2\lib\Xamarin.iOS10\Scanbot.ImagePicker.iOS.dll</HintPath>
     </Reference>
     <Reference Include="ScanbotBarcodeSDK.iOS">
-      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.4.0.2\lib\xamarin.iOS10\ScanbotBarcodeSDK.iOS.dll</HintPath>
+      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.4.2.0-alpha.2\lib\xamarin.iOS10\ScanbotBarcodeSDK.iOS.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing.Common.dll" />
   </ItemGroup>
@@ -138,6 +138,5 @@
     <BundleResource Include="Resources\flash_on_white.png" />
     <BundleResource Include="Resources\flash_off_white.png" />
   </ItemGroup>
-  <Import Project="..\BarcodeScannerExample\BarcodeScannerExample.projitems" Label="Shared" Condition="Exists('..\BarcodeScannerExample\BarcodeScannerExample.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

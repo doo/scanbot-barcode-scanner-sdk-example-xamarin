@@ -184,7 +184,7 @@ namespace BarcodeScannerExample.Droid
                 highlightedPolygonColor: Color.Pink,
                 highlightedTextColor: Color.Purple)
             );
-            var intent = BatchBarcodeScannerActivity.NewIntent(this, configuration, null);
+            var intent = BatchBarcodeScannerActivity.NewIntent(this, configuration);
             StartActivityForResult(intent, BARCODE_DEFAULT_UI_REQUEST_CODE);
         }
 

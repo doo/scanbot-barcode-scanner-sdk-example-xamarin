@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using ScanbotSDK = ScanbotBarcodeSDK.iOS.Scanbot;
+using ScanbotSDK = ScanbotBarcodeSDK.iOS.ScanbotSDKGlobal;
 using ScanbotBarcodeSDK.iOS;
 using UIKit;
 

@@ -108,7 +108,7 @@ namespace ScanbotBarcodeSDKFormsExample
                 var configuration = new BatchBarcodeScannerConfiguration
                 {
                     AcceptedFormats = BarcodeTypes.Instance.AcceptedTypes,
-                    OverlayConfiguration = new SelectionOverlayConfiguration(Color.Yellow, Color.Yellow, Color.Black, automaticSelectionEnabled: true)
+                    OverlayConfiguration = new SelectionOverlayConfiguration(automaticSelectionEnabled: true, overlayFormat: BarcodeDialogFormat.TypeAndCode, Color.Yellow, Color.Yellow, Color.Black)
                 };
 
                 TestCloseView(true);
@@ -211,10 +211,11 @@ namespace ScanbotBarcodeSDKFormsExample
                 AcceptedFormats = BarcodeTypes.Instance.AcceptedTypes,
                 SuccessBeepEnabled = true,
                 OverlayConfiguration = new SelectionOverlayConfiguration (
+                    automaticSelectionEnabled: true,
+                    overlayFormat: BarcodeDialogFormat.TypeAndCode,
                     polygon: Color.Yellow,
                     text: Color.Yellow,
                     textContainer: Color.Black,
-                    automaticSelectionEnabled: true,
                     highlightedPolygonColor: Color.Pink,
                     highlightedTextColor: Color.Red,
                     highlightedTextContainerColor: Color.PeachPuff),
@@ -225,7 +226,6 @@ namespace ScanbotBarcodeSDKFormsExample
                     ConfirmButtonTitle = "Confirm!",
                     RetryButtonTitle = "Try Again!",
                     DialogTextFormat = BarcodeDialogFormat.TypeAndCode
-                }
             };
 
             if (withImage)

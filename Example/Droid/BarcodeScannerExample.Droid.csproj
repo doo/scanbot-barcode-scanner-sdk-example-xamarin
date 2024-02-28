@@ -154,7 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ScanbotBarcodeSDK.Xamarin">
-      <Version>4.0.2</Version>
+      <Version>4.2.0-alpha.2</Version>
     </PackageReference>
     <PackageReference Include="Scanbot.Xamarin.ImagePicker">
       <Version>0.0.2</Version>

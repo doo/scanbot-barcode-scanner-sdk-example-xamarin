@@ -12,6 +12,7 @@
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
@@ -53,15 +54,15 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="ScanbotBarcodeSDK.Xamarin.Forms">
+      <Version>4.2.0-alpha.2</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2578" />
     <PackageReference Include="Scanbot.Xamarin.Forms.ImagePicker">
       <Version>0.0.2</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Essentials">
       <Version>1.7.7</Version>
-    </PackageReference>
-    <PackageReference Include="ScanbotBarcodeSDK.Xamarin.Forms">
-      <Version>4.0.2</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

@@ -52,7 +52,7 @@ namespace BarcodeScannerExample.iOS
 
         public EventHandler<ScannerEventArgs> ResultsReceived;
 
-        public override void DidDetect(
+        public override void DidDetectResults(
             SBSDKUIBarcodeScannerViewController viewController, SBSDKBarcodeScannerResult[] barcodeResults)
         {
             Invoke(viewController, barcodeResults, barcodeResults.First()?.BarcodeImage);
