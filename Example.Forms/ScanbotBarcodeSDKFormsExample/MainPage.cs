@@ -226,6 +226,7 @@ namespace ScanbotBarcodeSDKFormsExample
                     ConfirmButtonTitle = "Confirm!",
                     RetryButtonTitle = "Try Again!",
                     DialogTextFormat = BarcodeDialogFormat.TypeAndCode
+                }
             };
 
             if (withImage)
