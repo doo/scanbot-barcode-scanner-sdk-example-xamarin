@@ -70,6 +70,9 @@
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Renderers\IOSBarcodeCameraRenderer.cs" />
+    <Compile Include="Delegates\BarcodeScannerDelegates.cs" />
+    <Compile Include="Utils\ViewUtils.cs" />
+    <Compile Include="Utils\Extensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -140,6 +143,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Renderers\" />
+    <Folder Include="Delegates\" />
+    <Folder Include="Utils\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\ui_scanning_flash_on.png" />

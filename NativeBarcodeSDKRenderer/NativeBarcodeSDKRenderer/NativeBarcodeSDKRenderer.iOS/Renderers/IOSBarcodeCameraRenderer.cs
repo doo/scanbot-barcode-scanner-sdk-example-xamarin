@@ -1,14 +1,17 @@
-﻿using System;
-using System.ComponentModel;
-using System.Linq;
-using CoreAudioKit;
-using CoreGraphics;
+﻿using CoreGraphics;
+using NativeBarcodeSDKRenderer.iOS.Delegates;
 using NativeBarcodeSDKRenderer.iOS.Renderers;
+using NativeBarcodeSDKRenderer.iOS.Utils;
 using NativeBarcodeSDKRenderer.Views;
+
 using ScanbotBarcodeSDK.Forms;
 using ScanbotBarcodeSDK.Forms.iOS;
 using ScanbotBarcodeSDK.iOS;
+using System.ComponentModel;
+using System.Linq;
+
 using UIKit;
+
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 
@@ -17,8 +20,6 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
 {
     class IOSBarcodeCameraRenderer : ViewRenderer<BarcodeCameraView, IOSBarcodeCameraView>
     {
-        private bool isInitialized = false;
-
         private IOSBarcodeCameraView cameraView;
         private UIViewController CurrentViewController
         {
@@ -32,8 +33,6 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
                 return null;
             }
         }
-
-        private BarcodeCameraView.BarcodeScannerResultHandler barcodeScannerResultHandler;
 
         public IOSBarcodeCameraRenderer() : base() { }
 
@@ -51,39 +50,42 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
             cameraView = new IOSBarcodeCameraView(new CGRect(x, y, width, height));
             SetNativeControl(cameraView);
 
-            if (Control != null)
-            {
-                Element.StartDetectionHandler = (sender, args1) =>
-                {
-                    cameraView.Start();
-                };
-
-                Element.StopDetectionHandler = (sender, args2) =>
-                {
-                    cameraView.Stop();
-                };
-
-
-                Element.SetBinding(BarcodeCameraView.IsFlashEnabledProperty, "IsFlashEnabled", BindingMode.TwoWay);
-                Element.BindingContext = cameraView;
-            }
-
             base.OnElementChanged(e);
-        }
 
-        private void HandleBarcodeScannerResults(SBSDKBarcodeScannerResult[] codes)
-        {
-            barcodeScannerResultHandler?.Invoke(new BarcodeResultBundle()
+            Element.OnResumeHandler = (sender, e1) =>
             {
-                Barcodes = codes.ToFormsBarcodes()
-            });
+                cameraView.Controller.UnfreezeCamera();
+                cameraView.ScannerDelegate.isScanning = true;
+            };
+
+            Element.StartDetectionHandler = (sender, e2) =>
+            {
+                cameraView.Controller.UnfreezeCamera();
+                cameraView.ScannerDelegate.isScanning = true;
+            };
+
+            Element.OnPauseHandler = (sender, e3) =>
+            {
+                cameraView.Controller.FreezeCamera();
+                cameraView.ScannerDelegate.isScanning = false;
+            };
+
+            Element.StopDetectionHandler = (sender, e4) =>
+            {
+                cameraView.Controller.FreezeCamera();
+                cameraView.ScannerDelegate.isScanning = false;
+            };
+
+
+            Element.SetBinding(BarcodeCameraView.IsFlashEnabledProperty, "IsFlashEnabled", BindingMode.TwoWay);
+            Element.BindingContext = cameraView;
         }
 
         public override void LayoutSubviews()
         {
             base.LayoutSubviews();
             if (Control == null) { return; }
-            if (!isInitialized)
+            if (!cameraView.IsInitialised)
             {
                 FindAndInitialiseView();
             }
@@ -126,23 +128,8 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
             if (pageRendererViewController != null)
             {
                 cameraView.Initialize(pageRendererViewController);
-                cameraView.ScannerDelegate.OnDetect = HandleBarcodeScannerResults;
-                barcodeScannerResultHandler = Element.OnBarcodeScanResult;
-                isInitialized = true;
+                cameraView.SetBarcodeConfigurations(Element);
             }
-        }
-    }
-
-    // Since we cannot directly inherit from SBSDKBarcodeScannerViewControllerDelegate in our ViewRenderer,
-    // we have created this wrapper class to allow binding to its events through the use of delegates
-    class BarcodeScannerDelegate : SBSDKBarcodeScannerViewControllerDelegate
-    {
-        public delegate void OnDetectHandler(SBSDKBarcodeScannerResult[] codes);
-        public OnDetectHandler OnDetect;
-
-        public override void DidDetectBarcodes(SBSDKBarcodeScannerViewController controller, SBSDKBarcodeScannerResult[] codes)
-        {
-            OnDetect?.Invoke(codes);
         }
     }
 
@@ -170,28 +157,92 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
             }
         }
 
+        public bool initialised = false;
         public SBSDKBarcodeScannerViewController Controller { get; private set; }
         public BarcodeScannerDelegate ScannerDelegate { get; private set; }
+        internal bool IsInitialised = false;
+        private BarcodeCameraView element;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public IOSBarcodeCameraView(CGRect frame) : base(frame) { }
 
         public void Initialize(UIViewController parentViewController)
         {
+            initialised = true;
             Controller = new SBSDKBarcodeScannerViewController(parentViewController, this);
-            Controller.BarcodeImageGenerationType = SBSDKBarcodeImageGenerationType.None;
             ScannerDelegate = new BarcodeScannerDelegate();
             Controller.Delegate = ScannerDelegate;
         }
 
-        public void Stop()
+        internal void SetBarcodeConfigurations(BarcodeCameraView element)
         {
-            Controller.RecognitionEnabled = false;
+            this.element = element;
+            Controller.AcceptedBarcodeTypes = SBSDKBarcodeType.AllTypes;
+            Controller.BarcodeImageGenerationType = element.ImageGenerationType.ToNative();
+            ScannerDelegate.OnDetect = HandleBarcodeScannerResults;
+            SetSelectionOverlayConfiguration(element.OverlayConfiguration);
         }
 
-        public void Start()
+        private void SetSelectionOverlayConfiguration(SelectionOverlayConfiguration configuration)
         {
-            Controller.RecognitionEnabled = true;
+            if (configuration != null && configuration.Enabled)
+            {
+                var overlayConfiguration = new SBSDKBarcodeTrackingOverlayConfiguration();
+
+                var polygonStyle = new SBSDKBarcodeTrackedViewPolygonStyle();
+                polygonStyle.PolygonColor = configuration.PolygonColor.ToUIColor();
+                polygonStyle.PolygonSelectedColor = configuration.HighlightedPolygonColor?.ToUIColor();
+
+                // use below properties if you want to set background color to the polygon. As of now they are set to clear
+                // eg: to show translucent color over barcode. 
+                polygonStyle.PolygonBackgroundColor = UIColor.Clear;
+                polygonStyle.PolygonBackgroundSelectedColor = UIColor.Clear;
+
+                var textStyle = new SBSDKBarcodeTrackedViewTextStyle();
+                textStyle.TrackingOverlayTextFormat = configuration.OverlayTextFormat.ToNative();
+                textStyle.TextColor = configuration.TextColor.Value.ToUIColor();
+                textStyle.SelectedTextColor = configuration.HighlightedTextColor.Value.ToUIColor();
+                textStyle.TextBackgroundColor = configuration.TextContainerColor.Value.ToUIColor();
+                textStyle.TextBackgroundSelectedColor = configuration.HighlightedTextContainerColor?.ToUIColor();
+
+                overlayConfiguration.IsAutomaticSelectionEnabled = configuration.AutomaticSelectionEnabled;
+                overlayConfiguration.IsSelectable = true;
+                overlayConfiguration.TextStyle = textStyle;
+                overlayConfiguration.PolygonStyle = polygonStyle;
+
+                Controller.IsTrackingOverlayEnabled = configuration.Enabled;
+                Controller.TrackingOverlayController.Configuration = overlayConfiguration;
+                Controller.TrackingOverlayController.Delegate = new BarcodeTrackingOverlayDelegate
+                {
+                    DidTapBarcodeOverlay = HandleDidTapOnBarcodeOverlay
+                };
+            }
+        }
+
+        private void HandleBarcodeScannerResults(SBSDKBarcodeScannerResult[] codes)
+        {
+            var returnResults = true;
+            if (Controller.IsTrackingOverlayEnabled)
+            {
+                // return results if tracking overlay is set to automatic selection true
+                returnResults = Controller.TrackingOverlayController?.Configuration?.IsAutomaticSelectionEnabled ?? false;
+            }
+
+            if (returnResults)
+            {
+                this.element?.OnBarcodeScanResult.Invoke(new BarcodeResultBundle()
+                {
+                    Barcodes = codes.ToFormsBarcodes()
+                });
+            }
+        }
+
+        private void HandleDidTapOnBarcodeOverlay(SBSDKBarcodeScannerResult barcode)
+        {
+            this.element?.OnBarcodeScanResult.Invoke(new BarcodeResultBundle()
+            {
+                Barcodes = new System.Collections.Generic.List<Barcode> { barcode.ToFormsBarcode() }
+            });
         }
 
         protected void OnPropertyChanged(string propertyName)
