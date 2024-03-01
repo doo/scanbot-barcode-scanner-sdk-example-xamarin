@@ -1,5 +1,5 @@
 ﻿using UIKit;
-using ScanbotSDK = ScanbotBarcodeSDK.iOS.Scanbot;
+using ScanbotSDK = ScanbotBarcodeSDK.iOS.ScanbotSDKGlobal;
 namespace BarcodeScannerExample.iOS
 {
     public class Alert
