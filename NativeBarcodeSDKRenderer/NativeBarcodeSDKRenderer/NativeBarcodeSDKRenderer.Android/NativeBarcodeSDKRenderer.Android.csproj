@@ -68,6 +68,7 @@
     <Compile Include="MainApplication.cs" />
     <Compile Include="Renderers\AndroidBarcodeCameraRenderer.cs" />
     <Compile Include="Renderers\Function1Impl.cs" />
+    <Compile Include="Renderers\BarcodeScannerDelegates.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

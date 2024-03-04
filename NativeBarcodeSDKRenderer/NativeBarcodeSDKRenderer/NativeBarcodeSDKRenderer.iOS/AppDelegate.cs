@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Foundation;
-using NativeBarcodeSDKRenderer.Common;
-using ScanbotBarcodeSDK.iOS;
+﻿using Foundation;
 using UIKit;
 
 namespace NativeBarcodeSDKRenderer.iOS
@@ -30,19 +24,6 @@ namespace NativeBarcodeSDKRenderer.iOS
             LoadApplication(new App());
             Xamarin.Essentials.Platform.Init(() => Window.RootViewController);
             return base.FinishedLaunching(app, options);
-        }
-
-        /// <summary>
-        /// Show message on top of the Root window
-        /// </summary>
-        /// <param name="message"></param>
-        /// <param name="buttonTitle"></param>
-        internal void ShowAlert(string message, string buttonTitle)
-        {
-            var alert = UIAlertController.Create("Alert", message, UIAlertControllerStyle.Alert);
-            var action = UIAlertAction.Create(buttonTitle ?? "Ok", UIAlertActionStyle.Cancel, (obj) => { });
-            alert.AddAction(action);
-            Window?.RootViewController?.PresentViewController(alert, true, null);
         }
     }
 }
