@@ -42,7 +42,10 @@ namespace BarcodeScannerExample.iOS
 
         public override void DidDetectBarcodes(SBSDKBarcodeScannerViewController controller, SBSDKBarcodeScannerResult[] codes)
         {
-            ResultReceived?.Invoke(this, new ScannerEventArgs(codes.ToList(), codes.First()?.BarcodeImage));
+            if (codes.Length > 0)
+            {
+                ResultReceived?.Invoke(this, new ScannerEventArgs(codes.ToList(), codes.First()?.BarcodeImage));
+            }
         }
     }
 
@@ -51,11 +54,14 @@ namespace BarcodeScannerExample.iOS
         public bool WaitForImage { get; set; }
 
         public EventHandler<ScannerEventArgs> ResultsReceived;
+        public Action OnDidCancel;
 
-        public override void DidDetectResults(
-            SBSDKUIBarcodeScannerViewController viewController, SBSDKBarcodeScannerResult[] barcodeResults)
+        public override void DidDetectResults(SBSDKUIBarcodeScannerViewController viewController, SBSDKBarcodeScannerResult[] barcodeResults)
         {
-            Invoke(viewController, barcodeResults, barcodeResults.First()?.BarcodeImage);
+            if (barcodeResults.Length > 0)
+            {
+                Invoke(viewController, barcodeResults, barcodeResults.First()?.BarcodeImage);
+            }
         }
 
         ScannerEventArgs args;
@@ -76,6 +82,11 @@ namespace BarcodeScannerExample.iOS
 
 
             ResultsReceived?.Invoke(this, args);
+        }
+
+        public override void DidCancel(SBSDKUIBarcodeScannerViewController viewController)
+        {
+            OnDidCancel?.Invoke();
         }
     }
 }

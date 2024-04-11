@@ -74,15 +74,15 @@
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ScanbotBarcodeSDK.iOS, Version=1.0.8866.42956, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.4.2.0-beta.5\lib\xamarin.iOS10\ScanbotBarcodeSDK.iOS.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
     <Reference Include="Scanbot.ImagePicker.iOS">
       <HintPath>..\packages\Scanbot.Xamarin.ImagePicker.0.0.2\lib\Xamarin.iOS10\Scanbot.ImagePicker.iOS.dll</HintPath>
-    </Reference>
-    <Reference Include="ScanbotBarcodeSDK.iOS">
-      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.4.2.0-beta.3\lib\xamarin.iOS10\ScanbotBarcodeSDK.iOS.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing.Common.dll" />
   </ItemGroup>
