@@ -155,6 +155,22 @@
 				android:background="#50000000" />
 
 			<TextView
+				android:id="@+id/rtu_ui_aroverlay"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center_vertical"
+				android:paddingHorizontal="16dp"
+				android:paddingVertical="20dp"
+				style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
+				android:text="Barcode Scanner with AR Overlay"
+				android:textColor="@color/primary_material_light" />
+
+			<FrameLayout
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:background="#50000000" />
+
+			<TextView
 				android:id="@+id/batch_rtu_ui"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"

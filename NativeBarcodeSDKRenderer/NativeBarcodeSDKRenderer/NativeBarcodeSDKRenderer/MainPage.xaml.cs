@@ -46,10 +46,14 @@ namespace NativeBarcodeSDKRenderer
         private void SetupViews()
         {
             cameraView.OnBarcodeScanResult = HandleBarcodeScanningResult;
-            cameraView.OverlayConfiguration = new SelectionOverlayConfiguration(
-                automaticSelectionEnabled: true, overlayFormat: BarcodeDialogFormat.Code,
-                polygon: Color.Black, text: Color.Black, textContainer: Color.White,
-                highlightedPolygonColor: Color.Red, highlightedTextColor: Color.Red, highlightedTextContainerColor: Color.Black);
+
+            // To use the AR Overlay feature, please uncomment below code.
+            // cameraView.OverlayConfiguration = new SelectionOverlayConfiguration(automaticSelectionEnabled: true,
+            //    overlayFormat: BarcodeDialogFormat.Code,
+            //    polygon: Color.Black,
+            //    text: Color.Black,
+            //    textContainer: Color.White);
+
             cameraView.ImageGenerationType = BarcodeImageGenerationType.FromVideoFrame;
 
             SetupIOSAppearance();
@@ -182,7 +186,7 @@ namespace NativeBarcodeSDKRenderer
 
                     if (!isAllowed)
                     {
-                        await DisplayAlert("Alert", "Please turn on the camera permissions from setting screen, to turn on scanning feature.", "Ok");
+                        await DisplayAlert("Alert", "Please allow the camera permissions from setting screen, to use the scanning feature.", "Ok");
                     }
                     break;
 

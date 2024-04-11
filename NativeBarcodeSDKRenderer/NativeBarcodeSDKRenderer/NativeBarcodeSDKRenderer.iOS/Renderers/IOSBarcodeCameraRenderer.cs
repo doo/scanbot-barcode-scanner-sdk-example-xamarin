@@ -189,26 +189,62 @@ namespace NativeBarcodeSDKRenderer.iOS.Renderers
             {
                 var overlayConfiguration = new SBSDKBarcodeTrackingOverlayConfiguration();
 
-                var polygonStyle = new SBSDKBarcodeTrackedViewPolygonStyle();
-                polygonStyle.PolygonColor = configuration.PolygonColor.ToUIColor();
-                polygonStyle.PolygonSelectedColor = configuration.HighlightedPolygonColor?.ToUIColor();
+                Controller.TrackingOverlayController.Configuration.IsAutomaticSelectionEnabled =
+                       configuration.AutomaticSelectionEnabled ?? false;
 
-                // use below properties if you want to set background color to the polygon. As of now they are set to clear
-                // eg: to show translucent color over barcode. 
-                polygonStyle.PolygonBackgroundColor = UIColor.Clear;
-                polygonStyle.PolygonBackgroundSelectedColor = UIColor.Clear;
+                if (configuration.PolygonColor != null)
+                {
+                    Controller.TrackingOverlayController.Configuration.PolygonStyle.PolygonColor =
+                    configuration.PolygonColor.Value.ToUIColor();
+                }
 
-                var textStyle = new SBSDKBarcodeTrackedViewTextStyle();
-                textStyle.TrackingOverlayTextFormat = configuration.OverlayTextFormat.ToNative();
-                textStyle.TextColor = configuration.TextColor.Value.ToUIColor();
-                textStyle.SelectedTextColor = configuration.HighlightedTextColor.Value.ToUIColor();
-                textStyle.TextBackgroundColor = configuration.TextContainerColor.Value.ToUIColor();
-                textStyle.TextBackgroundSelectedColor = configuration.HighlightedTextContainerColor?.ToUIColor();
+                if (configuration.HighlightedPolygonColor != null)
+                {
+                    Controller.TrackingOverlayController.Configuration.PolygonStyle.PolygonSelectedColor =
+                        configuration.HighlightedPolygonColor.Value.ToUIColor();
+                }
 
-                overlayConfiguration.IsAutomaticSelectionEnabled = configuration.AutomaticSelectionEnabled;
-                overlayConfiguration.IsSelectable = true;
-                overlayConfiguration.TextStyle = textStyle;
-                overlayConfiguration.PolygonStyle = polygonStyle;
+                if (configuration.PolygonBackgroundColor != null)
+                {
+                    Controller.TrackingOverlayController.Configuration.PolygonStyle.PolygonBackgroundColor =
+                    configuration.PolygonBackgroundColor.Value.ToUIColor();
+                }
+
+                if (configuration.PolygonBackgroundSelectedColor != null)
+                {
+                    Controller.TrackingOverlayController.Configuration.PolygonStyle.PolygonBackgroundSelectedColor =
+                    configuration.PolygonBackgroundSelectedColor.Value.ToUIColor();
+                }
+
+                if (configuration.TextColor != null)
+                {
+                    Controller.TrackingOverlayController.Configuration.TextStyle.TextColor =
+                    configuration.TextColor.Value.ToUIColor();
+                }
+
+                if (configuration.HighlightedTextColor != null)
+                {
+                    Controller.TrackingOverlayController.Configuration.TextStyle.SelectedTextColor =
+                    configuration.HighlightedTextColor.Value.ToUIColor();
+                }
+
+                if (configuration.TextContainerColor != null)
+                {
+                    Controller.TrackingOverlayController.Configuration.TextStyle.TextBackgroundColor =
+                    configuration.TextContainerColor.Value.ToUIColor();
+                }
+
+                if (configuration.HighlightedTextContainerColor != null)
+                {
+                    Controller.TrackingOverlayController.Configuration.TextStyle.TextBackgroundSelectedColor =
+                    configuration.HighlightedTextContainerColor.Value.ToUIColor();
+                }
+
+                if (configuration.OverlayTextFormat != null)
+                {
+                    Controller.TrackingOverlayController.Configuration.TextStyle.TrackingOverlayTextFormat =
+                    configuration.OverlayTextFormat.Value.ToNative();
+                }
 
                 Controller.IsTrackingOverlayEnabled = configuration.Enabled;
                 Controller.TrackingOverlayController.Configuration = overlayConfiguration;
