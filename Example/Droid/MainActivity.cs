@@ -36,6 +36,7 @@ namespace BarcodeScannerExample.Droid
             FindViewById<TextView>(Resource.Id.barcode_camerax_demo).Click += OnBarcodeCameraXDemoClick;
             FindViewById<TextView>(Resource.Id.rtu_ui).Click += OnRTUUIClick;
             FindViewById<TextView>(Resource.Id.rtu_ui_image).Click += OnRTUUIImageClick;
+            FindViewById<TextView>(Resource.Id.rtu_ui_aroverlay).Click += OnRTUUIAROverlayClick;
             FindViewById<TextView>(Resource.Id.batch_rtu_ui).Click += OnBatchRTUUIClick;
             FindViewById<TextView>(Resource.Id.rtu_ui_import).Click += OnImportClick;
             FindViewById<TextView>(Resource.Id.settings).Click += OnSettingsClick;
@@ -79,6 +80,15 @@ namespace BarcodeScannerExample.Droid
                 return;
             }
             StartBarcodeScannerActivity(BarcodeImageGenerationType.VideoFrame);
+        }
+
+        private void OnRTUUIAROverlayClick(object sender, EventArgs e)
+        {
+            if (!Alert.CheckLicense(this, SDK))
+            {
+                return;
+            }
+            StartBarcodeScannerActivityWithAROverlay();
         }
 
         private void OnBatchRTUUIClick(object sender, EventArgs e)
@@ -154,15 +164,22 @@ namespace BarcodeScannerExample.Droid
             var list = BarcodeTypes.Instance.AcceptedTypes;
             configuration.SetBarcodeFormatsFilter(list);
             configuration.SetBarcodeImageGenerationType(type);
+            var intent = BarcodeScannerActivity.NewIntent(this, configuration);
+            StartActivityForResult(intent, BARCODE_DEFAULT_UI_REQUEST_CODE);
+        }
+
+        void StartBarcodeScannerActivityWithAROverlay()
+        {
+            var configuration = new BarcodeScannerConfiguration();
+            var list = BarcodeTypes.Instance.AcceptedTypes;
+            configuration.SetBarcodeFormatsFilter(list);
             configuration.SetSelectionOverlayConfiguration(new IO.Scanbot.Sdk.UI.View.Barcode.SelectionOverlayConfiguration(
                 overlayEnabled: true,
                 automaticSelectionEnabled: false,
                 textFormat: IO.Scanbot.Sdk.Barcode.UI.BarcodeOverlayTextFormat.Code,
                 polygonColor: Color.Yellow,
                 textColor: Color.Yellow,
-                textContainerColor: Color.Black,
-                highlightedPolygonColor: Color.Pink,
-                highlightedTextColor: Color.Purple)
+                textContainerColor: Color.Black)
             );
 
             var intent = BarcodeScannerActivity.NewIntent(this, configuration);
@@ -174,16 +191,6 @@ namespace BarcodeScannerExample.Droid
             var configuration = new BatchBarcodeScannerConfiguration();
             var list = BarcodeTypes.Instance.AcceptedTypes;
             configuration.SetBarcodeFormatsFilter(list);
-            configuration.SetSelectionOverlayConfiguration(new IO.Scanbot.Sdk.UI.View.Barcode.SelectionOverlayConfiguration(
-                overlayEnabled: true,
-                automaticSelectionEnabled: false,
-                textFormat: IO.Scanbot.Sdk.Barcode.UI.BarcodeOverlayTextFormat.Code,
-                polygonColor: Color.Yellow,
-                textColor: Color.Yellow,
-                textContainerColor: Color.Black,
-                highlightedPolygonColor: Color.Pink,
-                highlightedTextColor: Color.Purple)
-            );
             var intent = BatchBarcodeScannerActivity.NewIntent(this, configuration);
             StartActivityForResult(intent, BARCODE_DEFAULT_UI_REQUEST_CODE);
         }

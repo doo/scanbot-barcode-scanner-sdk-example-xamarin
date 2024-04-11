@@ -35,6 +35,7 @@ namespace ScanbotBarcodeSDKFormsExample
             {
                 CreateCell("RTU UI - BARCODE SCANNER", RTUUIClicked()),
                 CreateCell("RTU UI WITH BARCODE IMAGE", RTUUIWithImageClicked()),
+                CreateCell("RTU UI WITH AR OVERLAY", RTUUIWithARClicked()),
                 CreateCell("RTU UI - BATCH BARCODE SCANNER", BatchClicked()),
                 CreateCell("PICK IMAGE FROM LIBRARY", ImportButtonClicked()),
                 CreateCell("SET ACCEPTED BARCODE TYPES", BarcodeButtonClicked()),
@@ -99,7 +100,30 @@ namespace ScanbotBarcodeSDKFormsExample
                     await Navigation.PushAsync(new BarcodeResultsPage(result.Image, result.Barcodes));
                 }
             };
-        }   
+        }
+
+        EventHandler RTUUIWithARClicked()
+        {
+            return async (sender, e) =>
+            {
+                if (!Utils.CheckLicense(this))
+                {
+                    return;
+                }
+                var config = GetScannerConfiguration(false);
+                config.OverlayConfiguration = new SelectionOverlayConfiguration(automaticSelectionEnabled: false,
+                                                                                overlayFormat: BarcodeDialogFormat.TypeAndCode,
+                                                                                polygon: Color.Yellow,
+                                                                                text: Color.Yellow,
+                                                                                textContainer: Color.Black);
+                TestCloseView(false);
+                var result = await SBSDK.Scanner.Open(config);
+                if (result.Status == OperationResult.Ok)
+                {
+                    await Navigation.PushAsync(new BarcodeResultsPage(result.Barcodes));
+                }
+            };
+        }
 
         EventHandler BatchClicked()
         {
@@ -210,23 +234,7 @@ namespace ScanbotBarcodeSDKFormsExample
             {
                 AcceptedFormats = BarcodeTypes.Instance.AcceptedTypes,
                 SuccessBeepEnabled = true,
-                OverlayConfiguration = new SelectionOverlayConfiguration (
-                    automaticSelectionEnabled: true,
-                    overlayFormat: BarcodeDialogFormat.TypeAndCode,
-                    polygon: Color.Yellow,
-                    text: Color.Yellow,
-                    textContainer: Color.Black,
-                    highlightedPolygonColor: Color.Pink,
-                    highlightedTextColor: Color.Red,
-                    highlightedTextContainerColor: Color.PeachPuff),
-                ConfirmationDialogConfiguration = new BarcodeConfirmationDialogConfiguration {
-                    ResultWithConfirmation = true,
-                    Title = "Barcode Results",
-                    Message = "The barcode results are shown below.",
-                    ConfirmButtonTitle = "Confirm!",
-                    RetryButtonTitle = "Try Again!",
-                    DialogTextFormat = BarcodeDialogFormat.TypeAndCode
-                }
+                ConfirmationDialogConfiguration = new BarcodeConfirmationDialogConfiguration { ResultWithConfirmation = true }
             };
 
             if (withImage)

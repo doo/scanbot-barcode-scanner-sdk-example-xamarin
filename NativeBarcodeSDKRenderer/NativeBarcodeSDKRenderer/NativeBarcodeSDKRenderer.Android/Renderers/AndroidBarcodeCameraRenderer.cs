@@ -254,20 +254,13 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
         {
             if (Element.OverlayConfiguration != null)
             {
-                var polygonColor = Element.OverlayConfiguration.PolygonColor.ToAndroid();
-                var polygonHighlightedColor = defaultStyle.StrokeHighlightedColor;
-                if (Element.OverlayConfiguration.HighlightedPolygonColor != null)
-                {
-                    polygonHighlightedColor = Element.OverlayConfiguration.HighlightedPolygonColor.Value.ToAndroid();
-                }
-
                 var polygonStyle = new BarcodePolygonsView.BarcodePolygonStyle(drawPolygon: defaultStyle.DrawPolygon,
                    useFill: false, // default fill is true. Please set true if you want to fill color into the barcode polygon.
                    useFillHighlighted: defaultStyle.UseFillHighlighted,
                    cornerRadius: defaultStyle.CornerRadius,
                    strokeWidth: defaultStyle.StrokeWidth,
-                   strokeColor: polygonColor,
-                   strokeHighlightedColor: polygonHighlightedColor,
+                   strokeColor: Element.OverlayConfiguration.PolygonColor?.ToAndroid() ?? defaultStyle.StrokeColor,
+                   strokeHighlightedColor: Element.OverlayConfiguration.HighlightedPolygonColor?.ToAndroid() ?? defaultStyle.StrokeHighlightedColor,
                    fillColor: defaultStyle.FillColor,
                    fillHighlightedColor: defaultStyle.FillHighlightedColor,
                    shouldDrawShadows: defaultStyle.ShouldDrawShadows);
@@ -281,35 +274,18 @@ namespace NativeBarcodeSDKRenderers.Droid.Renderers
         {
             if (Element.OverlayConfiguration != null)
             {
-                var textColor = Element.OverlayConfiguration.TextColor.Value.ToAndroid();
-                var textContainerColor = Element.OverlayConfiguration.TextContainerColor.Value.ToAndroid();
-                var textFormat = Element.OverlayConfiguration.OverlayTextFormat.ToNative();
-
-                var textHighlightedColor = defaultStyle.TextHighlightedColor;
-                if (Element.OverlayConfiguration.HighlightedTextColor != null)
-                {
-                    textHighlightedColor = Element.OverlayConfiguration.HighlightedTextColor.Value.ToAndroid();
-                }
-
-                var textContainerHighlightedColor = defaultStyle.TextContainerHighlightedColor;
-                if (Element.OverlayConfiguration.HighlightedTextContainerColor != null)
-                {
-                    textContainerHighlightedColor = Element.OverlayConfiguration.HighlightedTextContainerColor.Value.ToAndroid();
-                }
-
-                var textStyle = new BarcodePolygonsView.BarcodeTextViewStyle(
-                    textColor: textColor,
-                    textHighlightedColor: textHighlightedColor,
-                    textContainerColor: textContainerColor,
-                    textContainerHighlightedColor: textContainerHighlightedColor,
-                    textFormat: textFormat);
+                  var textStyle = new BarcodePolygonsView.BarcodeTextViewStyle(
+                    textColor: Element.OverlayConfiguration.TextColor?.ToAndroid() ?? defaultStyle.TextColor,
+                    textHighlightedColor: Element.OverlayConfiguration.HighlightedTextColor?.ToAndroid() ?? defaultStyle.TextHighlightedColor,
+                    textContainerColor: Element.OverlayConfiguration.TextContainerColor?.ToAndroid() ?? defaultStyle.TextContainerColor,
+                    textContainerHighlightedColor: Element.OverlayConfiguration.HighlightedTextContainerColor?.ToAndroid() ?? defaultStyle.TextContainerHighlightedColor,
+                    textFormat: Element.OverlayConfiguration.OverlayTextFormat?.ToNative() ?? defaultStyle.TextFormat);
                 return textStyle;
             }
             return defaultStyle;
         }
 
         #endregion
-
     }
 
     public static class Extension
