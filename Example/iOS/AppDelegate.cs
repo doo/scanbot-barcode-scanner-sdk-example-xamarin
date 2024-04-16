@@ -14,9 +14,9 @@ namespace BarcodeScannerExample.iOS
 
         public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
         {
-            ScanbotBarcodeSDK.iOS.Scanbot.SetLoggingEnabled(true);
+            ScanbotBarcodeSDK.iOS.ScanbotSDKGlobal.SetLoggingEnabled(true);
             // TODO: Initialize SDK with correct license
-            //ScanbotBarcodeSDK.iOS.Scanbot.SetLicense("");
+            //ScanbotBarcodeSDK.iOS.ScanbotSDKGlobal.SetLicense("");
 
             UIViewController initial = new MainViewController();
             Controller = new UINavigationController(initial);
@@ -40,7 +40,6 @@ namespace BarcodeScannerExample.iOS
 
             return true;
         }
-
     }
 }
 

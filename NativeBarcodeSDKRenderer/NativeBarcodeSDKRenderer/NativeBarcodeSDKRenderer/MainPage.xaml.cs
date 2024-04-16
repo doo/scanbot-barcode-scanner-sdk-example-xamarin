@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using NativeBarcodeSDKRenderer.Common;
 using ScanbotBarcodeSDK.Forms;
@@ -25,7 +21,8 @@ namespace NativeBarcodeSDKRenderer
             set
             {
                 isDetectionOn = value;
-                MainThread.BeginInvokeOnMainThread(() => ToggleUIOnScanning(value));
+                scanButton.Text = value ? "STOP SCANNING" : "START SCANNING";
+                RefreshCamera();
             }
         }
 
@@ -48,19 +45,17 @@ namespace NativeBarcodeSDKRenderer
         /// </summary>
         private void SetupViews()
         {
-            cameraView.OnBarcodeScanResult = (result) =>
-            {
-                string text = "";
-                foreach (Barcode barcode in result.Barcodes)
-                {
-                    text += string.Format("{0} ({1})\n", barcode.Text, barcode.Format.ToString().ToUpper());
-                }
+            cameraView.OnBarcodeScanResult = HandleBarcodeScanningResult;
 
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    resultsLabel.Text = text;
-                });
-            };
+            // To use the AR Overlay feature, please uncomment below code.
+            // cameraView.OverlayConfiguration = new SelectionOverlayConfiguration(automaticSelectionEnabled: true,
+            //    overlayFormat: BarcodeDialogFormat.Code,
+            //    polygon: Color.Black,
+            //    text: Color.Black,
+            //    textContainer: Color.White);
+
+            cameraView.ImageGenerationType = BarcodeImageGenerationType.FromVideoFrame;
+
             SetupIOSAppearance();
         }
 
@@ -78,14 +73,13 @@ namespace NativeBarcodeSDKRenderer
             {
                 IsDetectionOn = false;
             }
-            else
-            {
-                if (string.IsNullOrWhiteSpace(ScanbotSDKConfiguration.LICENSE_KEY))
-                {
-                    await ShowTrialLicenseAlert();
-                }
 
-                ToggleUIOnScanning(IsDetectionOn); // Update UI with IsDetection flag status
+            // Update UI with IsDetection flag status
+            RefreshCamera();
+
+            if (string.IsNullOrWhiteSpace(ScanbotSDKConfiguration.LICENSE_KEY))
+            {
+                await ShowTrialLicenseAlert();
             }
         }
 
@@ -98,10 +92,8 @@ namespace NativeBarcodeSDKRenderer
 
             scanButton.Clicked -= OnScanButtonPressed;
             infoButton.Clicked -= OnInfoButtonPressed;
-            if (IsDetectionOn)
-            {
-                cameraView.StopDetection();
-            }
+
+            PauseCamera();
         }
 
         /// Scanning Button click event.
@@ -111,13 +103,15 @@ namespace NativeBarcodeSDKRenderer
             if (!await CameraPermissionAllowed())
                 return;
 
-            if (!IsLicenseValid)
+            if (!IsLicenseValid && !IsDetectionOn)
             {
                 ShowExpiredLicenseAlert();
                 return;
             }
 
             IsDetectionOn = !IsDetectionOn;
+            cameraView.IsVisible = true;
+            cameraViewImage.IsVisible = false;
         }
 
         private void OnInfoButtonPressed(object sender, EventArgs e)
@@ -144,14 +138,21 @@ namespace NativeBarcodeSDKRenderer
             Padding = safeInsets;
         }
 
-        // Updates UI when the Barcode scanning is turned on/off.
-        private void ToggleUIOnScanning(bool isDetectionOn)
+        private void PauseCamera()
         {
-            if (isDetectionOn)
+            IsDetectionOn = false;
+            cameraView.Pause();
+        }
+
+        // Updates UI when the Barcode scanning is turned on/off.
+        private void RefreshCamera()
+        {
+            if (IsDetectionOn)
             {
                 cameraView.StartDetection();
                 scanButton.Text = "STOP SCANNING";
                 resultsPreviewLayout.BackgroundColor = Color.White;
+                resultsLabel.Text = string.Empty;
             }
             else
             {
@@ -185,7 +186,7 @@ namespace NativeBarcodeSDKRenderer
 
                     if (!isAllowed)
                     {
-                        await DisplayAlert("Alert", "Please turn on the camera permissions from setting screen, to turn on scanning feature.", "Ok");
+                        await DisplayAlert("Alert", "Please allow the camera permissions from setting screen, to use the scanning feature.", "Ok");
                     }
                     break;
 
@@ -226,6 +227,30 @@ namespace NativeBarcodeSDKRenderer
             {
                 imgButtonFlash.BackgroundColor = Color.Transparent;
             }
+        }
+
+        private void HandleBarcodeScanningResult(BarcodeResultBundle result)
+        {
+            string text = string.Empty;
+            Barcode barcodeItem = null;
+            foreach (Barcode barcode in result.Barcodes)
+            {
+                text += string.Format("{0} ({1})\n", barcode.Text, barcode.Format.ToString().ToUpper());
+                barcodeItem = barcode;
+            }
+
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                resultsLabel.Text = text;
+                if (cameraView.ImageGenerationType == BarcodeImageGenerationType.CapturedImage)
+                {
+                    IsDetectionOn = false;
+                    cameraView.IsVisible = false;
+                    cameraViewImage.IsVisible = true;
+                    cameraViewImage.Source = barcodeItem?.Image;
+                    cameraViewImage.Aspect = Aspect.AspectFit;
+                }
+            });
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using ScanbotSDK = ScanbotBarcodeSDK.iOS.Scanbot;
+using ScanbotSDK = ScanbotBarcodeSDK.iOS.ScanbotSDKGlobal;
 using ScanbotBarcodeSDK.iOS;
 using UIKit;
 
@@ -47,6 +47,7 @@ namespace BarcodeScannerExample.iOS
             ContentView.ClassicButton.TouchUpInside += OnClassicButtonClick;
             ContentView.RTUUIButton.TouchUpInside += OnRTUUIButtonClick;
             ContentView.RTUUIImageButton.TouchUpInside += OnRTUUIImageButtonClick;
+            ContentView.RTUUIAROverlayButton.TouchUpInside += OnRTUUIAROverlayButtonClick;
             ContentView.LibraryButton.TouchUpInside += OnLibraryButtonClick;
             ContentView.CodeTypesButton.TouchUpInside += OnCodeTypeButtonClick;
             ContentView.StorageClearButton.TouchUpInside += OnClearStorageButtonClick;
@@ -61,6 +62,7 @@ namespace BarcodeScannerExample.iOS
             ContentView.ClassicButton.TouchUpInside -= OnClassicButtonClick;
             ContentView.RTUUIButton.TouchUpInside -= OnRTUUIButtonClick;
             ContentView.RTUUIImageButton.TouchUpInside -= OnRTUUIImageButtonClick;
+            ContentView.RTUUIAROverlayButton.TouchUpInside -= OnRTUUIAROverlayButtonClick;
             ContentView.LibraryButton.TouchUpInside -= OnLibraryButtonClick;
             ContentView.CodeTypesButton.TouchUpInside -= OnCodeTypeButtonClick;
             ContentView.StorageClearButton.TouchUpInside -= OnClearStorageButtonClick;
@@ -115,6 +117,29 @@ namespace BarcodeScannerExample.iOS
                 return;
             }
             OpenRTUUIBarcodeScanner(true);
+        }
+
+        private void OnRTUUIAROverlayButtonClick(object sender, EventArgs e)
+        {
+            if (!Alert.CheckLicense(this))
+            {
+                return;
+            }
+
+            var defaultConfiguration = SBSDKUIBarcodeScannerConfiguration.DefaultConfiguration;
+
+            defaultConfiguration.TrackingOverlayConfiguration.OverlayEnabled = true;
+            defaultConfiguration.TrackingOverlayConfiguration.AutomaticSelectionEnabled = false;
+            defaultConfiguration.TrackingOverlayConfiguration.TextColor = UIColor.Yellow;
+            defaultConfiguration.TrackingOverlayConfiguration.PolygonColor = UIColor.Yellow;
+            defaultConfiguration.TrackingOverlayConfiguration.TextContainerColor = UIColor.Black;
+
+            defaultConfiguration.BehaviorConfiguration.AcceptedBarcodeTypes = BarcodeTypes.Instance.AcceptedTypes.ToArray();
+
+            // On result received handler
+            receiver.ResultsReceived += OnScanResultReceived;
+
+            SBSDKUIBarcodeScannerViewController.PresentOn((UIViewController)this, defaultConfiguration, receiver);
         }
 
         private async void OnLibraryButtonClick(object sender, EventArgs e)
@@ -182,10 +207,6 @@ namespace BarcodeScannerExample.iOS
             var behaviourConfiguration = new SBSDKUIBarcodeScannerBehaviorConfiguration();
             var cameraConfiguration = new SBSDKUICameraConfiguration();
             var selectionOverlayConfiguration = new SBSDKUIBarcodeTrackingOverlayConfiguration();
-            selectionOverlayConfiguration.OverlayEnabled = true;
-            selectionOverlayConfiguration.TextColor = UIColor.Yellow;
-            selectionOverlayConfiguration.PolygonColor = UIColor.Yellow;
-            selectionOverlayConfiguration.TextContainerColor = UIColor.Black;
 
             behaviourConfiguration.AcceptedBarcodeTypes = BarcodeTypes.Instance.AcceptedTypes.ToArray();
             behaviourConfiguration.AdditionalParameters = new SBSDKBarcodeAdditionalParameters { MinimumTextLength = 6 };
@@ -204,7 +225,6 @@ namespace BarcodeScannerExample.iOS
             receiver.ResultsReceived += OnScanResultReceived;
 
             SBSDKUIBarcodeScannerViewController.PresentOn((UIViewController)this, configuration, receiver);
-
         }
 
         /// <summary>
@@ -220,23 +240,7 @@ namespace BarcodeScannerExample.iOS
                 return;
             }
             var batchBarcode = new BatchBarcodeDelegate(this);
-            // You can also use the DefaultConfiguration property directly, but then you cannot set the selectionOverlayConfig as it is read only in that case.
-            var selectionOverlayConfiguration = new SBSDKUIBarcodeTrackingOverlayConfiguration();
-            var uiConfiguration = new SBSDKUIBarcodesBatchScannerUIConfiguration();
-            var textConfiguration = new SBSDKUIBarcodesBatchScannerTextConfiguration();
-            var behaviourConfiguration = new SBSDKUIBarcodesBatchScannerBehaviorConfiguration();
-            var cameraConfiguration = new SBSDKUICameraConfiguration();
-
-            selectionOverlayConfiguration.OverlayEnabled = true;
-            selectionOverlayConfiguration.TextColor = UIColor.Yellow;
-            selectionOverlayConfiguration.PolygonColor = UIColor.Yellow;
-            selectionOverlayConfiguration.TextContainerColor = UIColor.Black;
-            selectionOverlayConfiguration.HighlightedPolygonColor = UIColor.Gray;
-            selectionOverlayConfiguration.HighlightedTextColor = UIColor.Purple;
-            selectionOverlayConfiguration.HighlightedTextContainerColor = UIColor.Gray;
-
-            var configuration = new SBSDKUIBarcodesBatchScannerConfiguration(uiConfiguration, textConfiguration, behaviourConfiguration, cameraConfiguration, selectionOverlayConfiguration);
-
+            var configuration = SBSDKUIBarcodesBatchScannerConfiguration.DefaultConfiguration;
             configuration.UiConfiguration.FinderAspectRatio = new SBSDKAspectRatio(1, 0.5);
             configuration.BehaviorConfiguration.AcceptedBarcodeTypes = BarcodeTypes.Instance.AcceptedTypes.ToArray();
 

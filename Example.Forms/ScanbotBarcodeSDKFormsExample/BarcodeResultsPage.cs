@@ -65,7 +65,7 @@ namespace ScanbotBarcodeSDKFormsExample
             if (barcodes == null)
             {
                 //var copy = Utils.Copy(source);
-                DetectBarcodes(Utils.Copy(source), delegate
+                DetectBarcodes(Utils.Copy(SnappedImage.Source), delegate
                 {
                     InitializeList();
                     Container.Children.Remove(Loader);
@@ -84,7 +84,7 @@ namespace ScanbotBarcodeSDKFormsExample
 
         async void DetectBarcodes(ImageSource source, Action callback = null)
         {
-            //Barcodes = await SBSDK.Operations.DetectBarcodesFrom(source);
+            Barcodes = await SBSDK.Operations.DetectBarcodesFromImage(new DetectBarcodesOnImageConfiguration(source));
             callback();
         }
 
