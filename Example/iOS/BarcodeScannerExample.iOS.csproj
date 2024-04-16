@@ -83,7 +83,7 @@
     </Reference>
     <Reference Include="System.Drawing.Common.dll" />
     <Reference Include="ScanbotBarcodeSDK.iOS">
-      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.4.2.0-beta.5\lib\xamarin.iOS10\ScanbotBarcodeSDK.iOS.dll</HintPath>
+      <HintPath>..\packages\ScanbotBarcodeSDK.Xamarin.4.2.0\lib\xamarin.iOS10\ScanbotBarcodeSDK.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
