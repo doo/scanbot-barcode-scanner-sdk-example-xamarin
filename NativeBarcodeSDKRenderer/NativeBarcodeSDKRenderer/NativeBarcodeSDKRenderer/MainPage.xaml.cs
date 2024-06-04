@@ -62,7 +62,7 @@ namespace NativeBarcodeSDKRenderer
         /// <summary>
         /// OnAppearing - Invoked on every Page forground
         /// </summary>
-        async protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
 
@@ -124,7 +124,7 @@ namespace NativeBarcodeSDKRenderer
             DisplayAlert("Error", "Your SDK license has expired", "Close");
         }
 
-        async private Task ShowTrialLicenseAlert()
+        private async Task ShowTrialLicenseAlert()
         {
             await DisplayAlert("Welcome", "You are using the Trial SDK License. The SDK will be active for one minute.", "Close");
         }

@@ -12,7 +12,8 @@ namespace NativeBarcodeSDKRenderer
     {
         SinglePage,
         NavigationPage,
-        TabbedPage
+        TabbedPage,
+        Shell
     }
 
     public partial class App : Application
@@ -22,7 +23,7 @@ namespace NativeBarcodeSDKRenderer
         // Using this constant we can switch between different application
         // structures (SinglePage, NavigationPage, TabbedPage) to make
         // sure everything works under every circumstance.
-        const ApplicationType APPLICATION_TYPE = ApplicationType.SinglePage;
+        const ApplicationType APPLICATION_TYPE = ApplicationType.Shell;
 
         public App ()
         {
@@ -74,6 +75,8 @@ namespace NativeBarcodeSDKRenderer
                     tabbedPage.Children.Add(new SecondPage { Title = "2" });
                     tabbedPage.Children.Add(new ThirdPage { Title = "3" });
                     return tabbedPage;
+                case ApplicationType.Shell:
+                    return new AppShell();
                 default:
                     return new MainPage();
 
