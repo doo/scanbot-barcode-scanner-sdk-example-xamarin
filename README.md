@@ -1,55 +1,105 @@
-# Scanbot Barcode Scanner SDK Example App for Xamarin & Xamarin.Forms
 
-These example apps demonstrate how to integrate the [Scanbot Barcode Scanner SDK for Xamarin and Xamarin.Forms](https://scanbot.io/developer/xamarin-barcode-scanner/).
+![Scanbot SDK Logo](/ReadMes_Batch1/Images/ScanbotSDKLogo.png)
 
+# Example App for the Scanbot Xamarin Barcode Scanner SDK & Xamarin forms Barcode Scanner SDK
+
+This example app demonstrates how to integrate the Scanbot Xamarin Barcode Scanner into your Xamarin app for Android and iOS platforms.
 
 ## What is the Scanbot Barcode Scanner SDK?
 
-Scanbot Barcode Scanner SDK is a simple to use high level API, providing a collection of classes and functions for scanning and parsing 1D and 2D barcodes from your mobile device's camera or other image sources like your photo library.
+The Scanbot [Barcode Scanner SDK](https://scanbot.io/barcode-scanner-sdk/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites) is a set of simple and intuitive high-level APIs that allows you to scan barcodes fast and reliably from your mobile devices or websites.
 
-The SDK for Xamarin is available as NuGet packages:
-- [ScanbotBarcodeSDK.Xamarin](https://www.nuget.org/packages/ScanbotBarcodeSDK.Xamarin)
-- [ScanbotBarcodeSDK.Xamarin.Forms](https://www.nuget.org/packages/ScanbotBarcodeSDK.Xamarin.Forms)
+It operates entirely offline on the user's device and takes only 0.04 seconds per scan. Scans are accurate even under challenging conditions, including damaged, small, or distant barcodes and low-light environments.
 
+The SDK can be integrated into your app within minutes and comes with Ready-To-Use UI components, which allow you to customize the barcode scanner to your needs.
 
-## Trial License
-
-The Scanbot SDK will run without a license for one minute per session!
-
-After the trial period has expired, all SDK functions and UI components will stop working. You have to restart the app to get another one-minute trial period.
-
-To try the Scanbot SDK without a one-minute limit, you can get a free “no-strings-attached” trial license. Please submit the [Trial License Form](https://scanbot.io/trial/) on our website.
-
-## Free Developer Support
-
-We provide free "no-strings-attached" developer support for the implementation & testing of the Scanbot SDK.
-If you encounter technical issues with integrating the Scanbot SDK or need advice on choosing the appropriate
-framework or features, please visit our [Support Page](https://docs.scanbot.io/support/).
-
-## Supported Barcode Types
-
-- [1D Barcodes](https://scanbot.io/products/barcode-software/1d-barcode-scanner/): [Codabar](https://scanbot.io/en/sdk/scanner-sdk/barcode-scanner-sdk/codabar), [Code 39](https://scanbot.io/en/sdk/scanner-sdk/barcode-scanner-sdk/code-39), [Code 93](https://scanbot.io/products/barcode-software/1d-barcode-scanner/code-93/), [Code 128](https://scanbot.io/products/barcode-software/1d-barcode-scanner/code-128/), [IATA 2 of 5](https://scanbot.io/products/barcode-software/1d-barcode-scanner/standard-2-of-5/), [Industrial 2 of 5](https://scanbot.io/products/barcode-software/1d-barcode-scanner/industrial-2-of-5/), [ITF](https://scanbot.io/en/sdk/scanner-sdk/barcode-scanner-sdk/itf), [EAN-8](https://scanbot.io/en/sdk/scanner-sdk/barcode-scanner-sdk/ean-code), [EAN-13](https://scanbot.io/en/sdk/scanner-sdk/barcode-scanner-sdk/ean-code), [MSI Plessey](https://scanbot.io/en/sdk/scanner-sdk/barcode-scanner-sdk/msi-plessey), [RSS 14](https://scanbot.io/products/barcode-software/1d-barcode-scanner/gs1-databar/), [RSS Expanded (Databar)](https://scanbot.io/products/barcode-software/1d-barcode-scanner/gs1-databar/), [UPC-A](https://scanbot.io/products/barcode-software/1d-barcode-scanner/upc/), [UPC-E](https://scanbot.io/en/sdk/scanner-sdk/barcode-scanner-sdk/upc-code).
-- [2D Barcodes](https://scanbot.io/products/barcode-software/2d-barcode-scanner/): [Aztec](https://scanbot.io/en/sdk/scanner-sdk/barcode-scanner-sdk/aztec), [Data Matrix](https://scanbot.io/en/sdk/scanner-sdk/barcode-scanner-sdk/datamatrix), [PDF417](https://scanbot.io/products/barcode-software/2d-barcode-scanner/pdf417/), [QR Code](https://scanbot.io/products/barcode-software/2d-barcode-scanner/qr-code/).
-
-💡 Also check out our blog post [Types of barcodes](https://scanbot.io/blog/types-of-barcodes/).
-
-
-## Supported Data Parsers:
-
-- [AAMVA](https://scanbot.io/blog/drivers-license-barcode-parser/): Parse the AAMVA data format from PDF-417 barcodes on US driver's licenses.
-- Boarding pass data from PDF417 barcodes.
-- Parser for German Medical Certificates (aka. Disability Certificate or AU-Bescheinigung) coded in a PDF-417 barcode.
-- [GS1](https://scanbot.io/products/barcode-software/1d-barcode-scanner/gs1-databar/) encoded data from barcodes.
-- Data from PDF-417 barcodes on ID Cards.
-- Parse and extract data from XML of Data Matrix barcodes on Medical Plans (German Medikationsplan).
-- Data parser of QR-Code values printed on SEPA pay forms.
-- vCard data from a QR-Code (e.g. on business cards).
-- [Swiss QR](https://scanbot.io/products/barcode-software/2d-barcode-scanner/swiss-qr/) data from a QR-Code for easy, automatic and efficient payments.
-
-For more details please refer to the SDK documentation.
+💡 For more details about the Scanbot Barcode Scanner SDK, check out our [documentation](https://docs.scanbot.io/barcode-scanner-sdk/xamarin/introduction/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites). You can download our Xamarin SDKs as Nuget packages [here](https://www.nuget.org/profiles/Scanbot).
 
 ## Requirements
-Latest version of [Microsoft Visual Studio](https://visualstudio.microsoft.com/xamarin/) with Xamarin Platform.
 
-## Documentation
-For more details about the Scanbot Barcode Scanner SDK for Xamarin please see this [documentation](https://docs.scanbot.io/barcode-scanner-sdk/xamarin/introduction/).
+The latest version of [Microsoft Visual Studio](https://visualstudio.microsoft.com/xamarin/) with Xamarin Platform.
+
+>**Note**: Please make sure that camera permissions on your device are configured accordingly.
+
+## Features of the Barcode Xamarin Scanner SDK
+
+### Out-of-the-box barcode scanning workflows
+
+The Scanbot Barcode Scanner SDK offers the following scan modes right out of the box in our ready-to-use UI.
+
+#### Single Scanning
+
+This is the Barcode Scanner SDK's default scanning mode. It is optimized for detecting a single barcode at a time and is easily configurable to your needs. You can show a confirmation screen that displays detected barcode data.
+
+#### Batch & Multi scanning
+
+The barcode scanner can also be configured to scan multiple barcodes in succession (without closing the scanning screen every time), to capture multiple barcodes from the camera view at once, or to count the scanned items.
+
+#### Find & Pick
+
+Given one or more barcodes, the SDK will visually highlight and scan the correct items for your users. It automatically selects the barcode with the right barcode value from your camera feed.
+
+| ![Batch Scanning](.images/batch-scanning.png) | ![Multi Scanning](.images/multi-scanning.png) | ![Find and Pick](.images/find-pick.png) |
+| :-- | :-- | :-- |
+
+### AR Overlay
+
+The Scanbot Barcode Scanner SDK includes an optional AR Overlay for all scanning modes. It provides real-time barcode highlighting, preview, and tap-to-select functionalities.
+
+Recognized barcodes are highlighted with a customizable frame and text, clearly distinguishing scanned from unscanned items. Users can select barcodes manually by tapping or instead rely on automatic selection.
+
+### Scanning barcodes from an image
+
+The Scanbot Barcode Scanner SDK also supports still images, enabling barcode scanning from JPG and other image files. It supports single-image and multi-image detection and returns a list of recognized barcodes.
+
+### Supported barcodes
+
+The Scanbot Barcode Scanner library supports all common 1D- or 2D barcodes, such as QR codes, Data Matrix codes, as well as multiple postal symbologies, including:
+
+| Barcode type       | Barcode formats                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| :----------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1D Barcodes        | [EAN](https://scanbot.io/barcode-scanner-sdk/ean/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites), [UPC](https://scanbot.io/barcode-scanner-sdk/upc/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites), [Code 128](https://scanbot.io/barcode-scanner-sdk/code-128/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites), [GS1-128](https://scanbot.io/barcode-scanner-sdk/gs1-128/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites), [Code 39](https://scanbot.io/barcode-scanner-sdk/code-39/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites), [Codabar](https://scanbot.io/barcode-scanner-sdk/codabar/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites), [ITF](https://scanbot.io/barcode-scanner-sdk/itf-code/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites), Code 25, Code 32, Code 93, Code 11, MSI Plessey, Standard 2 of 5, IATA 2 of 5, Databar (RSS), GS1 Composite                                                                                                                                                                                                                                                                                                           |
+| 2D Barcodes        | [QR Code](https://scanbot.io/glossary/qr-code/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites), [Micro QR Code](https://scanbot.io/barcode-scanner-sdk/micro-qr-code/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites), [Aztec Code](https://scanbot.io/barcode-scanner-sdk/aztec-code/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites), [PDF417 Code](https://scanbot.io/barcode-scanner-sdk/pdf417/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites), [Data Matrix Code,](https://scanbot.io/barcode-scanner-sdk/data-matrix/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites) [GiroCode](https://scanbot.io/glossary/giro-code/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites), [NTIN Code](https://scanbot.io/glossary/gtin/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites), [PPN](https://scanbot.io/glossary/ppn/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites), [UDI](https://scanbot.io/glossary/udi/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites), [Royal Mail Mailmark](https://scanbot.io/barcode-scanner-sdk/royal-mail/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites), MaxiCode |
+| Postal Symbologies | USPS Intelligent Mail (IMb), Royal Mail RM4SCC Barcode, Australia Post 4-State Customer Code, Japan Post 4-State Customer Code, KIX                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+
+💡 Please visit our [docs](https://docs.scanbot.io/barcode-scanner-sdk/xamarin/supported-barcodes/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites) for a complete overview of the supported barcode symbologies. 
+
+## Additional information
+
+### Guides and Tutorials
+
+Integrating the Scanbot Xamarin Barcode Scanner plugin into your own applications takes just a few minutes, and our step-by-step guides make the process even easier. 
+
+Whether you're a seasoned developer or just starting, our tutorials provide clear instructions for adding barcode scanning functionality with minimal effort.
+
+💡 Check out our [developer blog](https://scanbot.io/techblog/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites) for a collection of in-depth tutorials, use cases, and best practices.
+
+### Free integration support
+
+We know that using an open-source barcode library can be challenging without support. That’s why we offer [free developer support](https://docs.scanbot.io/support/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites) via Slack, MS Teams, or email to integrate our Barcode Scanner SDK into your applications.
+
+As a customer, you also get access to a dedicated support Slack or Microsoft Teams channel to talk directly to your Customer Success Manager and our engineers.
+
+### Licensing and pricing
+
+The Scanbot SDK examples will run for one minute per session without a license. After that, all functionalities and UI components will stop working. 
+
+To try the Xamarin Barcode Scanner SDK without the one-minute limit, you can request a free, no-strings-attached [7-day trial license](https://scanbot.io/trial/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites).
+
+Our pricing model is simple: Unlimited barcode scanning for a flat annual license fee, full support included. There are no tiers, usage charges, or extra fees. [Contact](https://scanbot.io/contact-sales/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites) our team to receive your quote.
+
+### Other supported platforms
+
+Besides Xamarin & Xamarin.Forms, the Scanbot Barcode Scanner SDK is also available on:
+
+* [Android (native)](https://github.com/doo/scanbot-barcode-scanner-sdk-example-android)
+* [Compose Multiplatform / KMP](https://github.com/doo/scanbot-barcode-scanner-sdk-example-kmp)
+* [iOS (native)](https://github.com/doo/scanbot-barcode-scanner-sdk-example-ios)
+* [JavaScript (web)](https://github.com/doo/scanbot-barcode-scanner-sdk-example-web)
+* [Flutter](https://github.com/doo/scanbot-barcode-scanner-sdk-example-flutter)
+* [React Native](https://github.com/doo/scanbot-barcode-scanner-sdk-example-react-native)
+* [Capacitor & Ionic](https://github.com/doo/scanbot-barcode-scanner-sdk-example-capacitor-ionic)
+* [Cordova & Ionic](https://github.com/doo/scanbot-barcode-scanner-sdk-example-cordova-ionic)
+* [.NET MAUI](https://github.com/doo/scanbot-barcode-sdk-maui-example)
+* [UWP](https://github.com/doo/scanbot-barcode-scanner-sdk-example-windows)
+* [Linux](https://github.com/doo/scanbot-sdk-example-linux)
