@@ -1,5 +1,9 @@
-
-![Scanbot SDK Logo](/ReadMes_Batch1/Images/ScanbotSDKLogo.png)
+<p align="left">
+  <img src=".images/ScanbotSDKLogo.png#gh-light-mode-only" width="15%" />
+</p>
+<p align="left">
+  <img src=".images/ScanbotSDKLogo_darkmode.png#gh-dark-mode-only" width="15%" />
+</p>
 
 # Example App for the Scanbot Xamarin Barcode Scanner SDK & Xamarin forms Barcode Scanner SDK
 
@@ -8,6 +12,8 @@ This example app demonstrates how to integrate the Scanbot Xamarin Barcode Scann
 ## What is the Scanbot Barcode Scanner SDK?
 
 The Scanbot [Barcode Scanner SDK](https://scanbot.io/barcode-scanner-sdk/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites) is a set of simple and intuitive high-level APIs that allows you to scan barcodes fast and reliably from your mobile devices or websites.
+
+The SDK utilizes your device's camera, which can be freely switched. You can also apply various filters to narrow down the results by barcode type or content, with regex pattern support to ensure you only capture the specific barcodes relevant to your application.
 
 It operates entirely offline on the user's device and takes only 0.04 seconds per scan. Scans are accurate even under challenging conditions, including damaged, small, or distant barcodes and low-light environments.
 
@@ -21,38 +27,7 @@ The latest version of [Microsoft Visual Studio](https://visualstudio.microsoft.c
 
 >**Note**: Please make sure that camera permissions on your device are configured accordingly.
 
-## Features of the Barcode Xamarin Scanner SDK
-
-### Out-of-the-box barcode scanning workflows
-
-The Scanbot Barcode Scanner SDK offers the following scan modes right out of the box in our ready-to-use UI.
-
-#### Single Scanning
-
-This is the Barcode Scanner SDK's default scanning mode. It is optimized for detecting a single barcode at a time and is easily configurable to your needs. You can show a confirmation screen that displays detected barcode data.
-
-#### Batch & Multi scanning
-
-The barcode scanner can also be configured to scan multiple barcodes in succession (without closing the scanning screen every time), to capture multiple barcodes from the camera view at once, or to count the scanned items.
-
-#### Find & Pick
-
-Given one or more barcodes, the SDK will visually highlight and scan the correct items for your users. It automatically selects the barcode with the right barcode value from your camera feed.
-
-| ![Batch Scanning](.images/batch-scanning.png) | ![Multi Scanning](.images/multi-scanning.png) | ![Find and Pick](.images/find-pick.png) |
-| :-- | :-- | :-- |
-
-### AR Overlay
-
-The Scanbot Barcode Scanner SDK includes an optional AR Overlay for all scanning modes. It provides real-time barcode highlighting, preview, and tap-to-select functionalities.
-
-Recognized barcodes are highlighted with a customizable frame and text, clearly distinguishing scanned from unscanned items. Users can select barcodes manually by tapping or instead rely on automatic selection.
-
-### Scanning barcodes from an image
-
-The Scanbot Barcode Scanner SDK also supports still images, enabling barcode scanning from JPG and other image files. It supports single-image and multi-image detection and returns a list of recognized barcodes.
-
-### Supported barcodes
+## Supported barcodes
 
 The Scanbot Barcode Scanner library supports all common 1D- or 2D barcodes, such as QR codes, Data Matrix codes, as well as multiple postal symbologies, including:
 
@@ -63,6 +38,12 @@ The Scanbot Barcode Scanner library supports all common 1D- or 2D barcodes, such
 | Postal Symbologies | USPS Intelligent Mail (IMb), Royal Mail RM4SCC Barcode, Australia Post 4-State Customer Code, Japan Post 4-State Customer Code, KIX                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 
 💡 Please visit our [docs](https://docs.scanbot.io/barcode-scanner-sdk/xamarin/supported-barcodes/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites) for a complete overview of the supported barcode symbologies. 
+
+### Data Parsers
+
+The Scanbot Barcode Scanner SDK supports a variety of data parsers that extract structured information from 2D barcodes such as QR Codes and Data Matrix. These include parsers for documents such as driving licences (AAMVA), boarding passes, medical certificates, SEPA forms, Swiss QR codes and vCard business cards.
+
+💡 Please refer to our [documentation](https://docs.scanbot.io/barcode-scanner-sdk/xamarin/supported-barcodes/#data-parsers) for a full list of supported data parsers.
 
 ## Additional information
 
